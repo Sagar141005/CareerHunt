@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+
+@keyframes scroll-horizontal {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.scroll-horizontal {
+    display: flex;
+    animation: scroll-horizontal 30s linear infinite;
+    width: max-content;
+}
