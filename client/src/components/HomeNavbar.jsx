@@ -5,7 +5,7 @@ const HomeNavbar = () => {
   return (
     <div className='h-20 bg-white mx-auto flex justify-between items-center rounded-4xl w-5xl'>
       <div className='ml-3 flex items-center'>
-        <img src="/eer.png" className='rounded-4xl h-18' alt="" />
+        <img src="/Logo.png" className='h-40' alt="" />
       </div>
       <div className='flex items-center gap-3'>
         <input className='bg-[#F8F9FA] rounded-2xl w-xl h-10 text-base p-4' type="search" placeholder='Search jobs here' />
