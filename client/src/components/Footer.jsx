@@ -6,7 +6,7 @@ const Footer = () => {
     <div className='bg-[#F8F9FA] h-auto w-full flex flex-col'>
       <div className=' flex justify-between items-center  p-8'>
         <div className='flex flex-col flex-3 px-4 items-start gap-4'>
-        <img className='rounded-4xl h-18' src="/eer.png" alt="" />
+        <img className='h-80' src="/Logo.png" alt="" />
         <div>
             <h3>Empowering job seekers and recruiters with smart tools like</h3>
             <h3>resume checks, job tracking, and easy job posting.</h3>
