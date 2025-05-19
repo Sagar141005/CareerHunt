@@ -9,8 +9,8 @@ const UserDashboard = () => {
       <HomeNavbar />
       <div className='h-auto w-full px-8'>
         <div className='pt-60'>
-            <h1 className='text-9xl text-[#1A1C1F] font-bold'>Hello, Sagar 👋</h1>
-            <p className='text-xl'>Stay focused!</p>
+            <h1 className='text-8xl text-[#1A1C1F] font-bold'>Hello, Sagar 👋</h1>
+            <p className='text-2xl text-[#0164FC] font-bold'>Stay focused!</p>
         </div>
         <div className='pt-40 flex flex-col items-center gap-8'>
             <h3 className='text-4xl text-[#1A1C1F] font-bold'>Find your dream job now</h3>
@@ -20,7 +20,7 @@ const UserDashboard = () => {
             </div>
         </div>
         <div className='pt-20'>
-            <h3 className='text-xl'>Jobs you may be interested in</h3>
+            <h3 className='text-2xl text-[#1A1C1F] font-semibold'>Jobs you may be interested in</h3>
             <div>
 
             </div>
