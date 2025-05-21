@@ -1,5 +1,6 @@
 import { RiSearchLine } from '@remixicon/react'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const HomeNavbar = () => {
   return (
@@ -12,8 +13,16 @@ const HomeNavbar = () => {
         <button><RiSearchLine size={20} color='currentColor' /></button>
       </div>
       <div className='flex items-center gap-4 mr-4'>
-        <button className='text-[#0164FC] font-bold '>LOG IN</button>
-        <button className='bg-[#0164FC] text-white font-bold p-2 px-3 rounded-xl'>SIGN UP</button>
+        <Link 
+        to='/login'
+        className='text-[#0164FC] font-bold'>
+          LOG IN
+        </Link>
+        <Link 
+        to='/signup'
+        className='bg-[#0164FC] text-white font-bold p-2 px-3 rounded-xl'>
+          SIGN UP
+        </Link>
       </div>
     </div>
   )

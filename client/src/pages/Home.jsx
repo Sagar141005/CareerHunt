@@ -4,6 +4,7 @@ import { RiArticleLine, RiListCheck3 } from '@remixicon/react'
 import Review from '../components/Review'
 import { reviews } from '../data/reviews'
 import Footer from '../components/Footer'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
   return (
@@ -13,8 +14,12 @@ const Home = () => {
         <div>
             <p className='text-[#0164FC] font-semibold text-md'>TRUSTED BY OVER 100K JOB SEEKERS!</p>
             <h1 className='text-[#1A1C1F] font-bold text-7xl'>Cut the Confusion. </h1>
-            <h1 className='text-[#1A1C1F] font-bold text-7xl mb-4'>Claim Your <span className='text-[#0164FC]'>Career.</span></h1>
-            <button className='bg-[#0164FC] text-white font-bold p-4 px-6 rounded-xl'>SIGN UP FOR FREE</button>
+            <h1 className='text-[#1A1C1F] font-bold text-7xl mb-8'>Claim Your <span className='text-[#0164FC]'>Career.</span></h1>
+            <Link 
+            to='/signup'
+            className='bg-[#0164FC] text-white font-bold p-4 px-6 rounded-xl'>
+              SIGN UP FOR FREE
+            </Link>
         </div>
         <div className='flex flex-col items-center'>
             <div className='flex mb-2'>
@@ -90,7 +95,11 @@ const Home = () => {
           <h1 className='text-[#1A1C1F] font-extrabold text-6xl pb-4'>Right People, Not Just Resumes</h1>
           <p className='text-[#1A1C1F] text-lg w-1/2 mx-auto'>Whether you're hiring for one role or many, we make it easy to post jobs and manage responses—all in one place. Reach people who are actively looking, without the noise of traditional job boards.</p>
         </div>
-        <button className='bg-black text-white font-bold p-4 px-6 rounded-xl'>Post a Job</button>
+        <Link 
+        to='/recruiter/dashboard'
+        className='bg-black text-white font-bold p-4 px-6 rounded-xl'>
+          Post a Job
+        </Link>
       </div>
       <div className='bg-[#F8F9FA] h-96 overflow-x-hidden w-full p-8 py-12'>
         <div className='scroll-horizontal space-x-4'>
