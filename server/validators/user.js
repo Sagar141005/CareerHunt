@@ -1,4 +1,4 @@
-import { body, param } from 'express-validator';
+import { body } from 'express-validator';
 
 export const signupValidator = [
     body('name')
@@ -15,6 +15,11 @@ export const signupValidator = [
 ]
 
 export const loginValidator = [
+    (req, res, next) => {
+        console.log('Request Body before validation:', req.body);
+        console.log('Running loginValidator');
+        next();
+    },
     body('email')
         .notEmpty().withMessage("Email is required")
         .isEmail().withMessage("Invalid email"),

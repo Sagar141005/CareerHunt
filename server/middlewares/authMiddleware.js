@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/user';
-import { validationResult } from 'express-validator';
+import User from '../models/user.js';
+import { validationResult } from 'express-validator'
 
 export const protectAndVerifyRole = (roles) => {
     return async (req, res, next) => {
@@ -31,9 +31,11 @@ export const protectAndVerifyRole = (roles) => {
 };
 
 export const validateRequest = (req, res, next) => {
-    const errors = validateRequest(req);
+    console.log('Running validateRequest');
+    const errors = validationResult(req);
 
     if(!errors.isEmpty()) {
+        console.log('Validation errors:', errors.array());
         return res.status(400).json({ errors: errors.array() });
     }
 

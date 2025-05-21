@@ -1,11 +1,11 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from 'cors';
-import connectDB from "./config/db";
+import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
-import userRoutes from './routes/user'
-import jobApplyRoutes from './routes/jobApply'
-import jobPostRoutes from './routes/jobPost'
+import userRoutes from './routes/user.js'
+import jobApplyRoutes from './routes/jobApply.js'
+import jobPostRoutes from './routes/jobPost.js'
 import morgan from 'morgan';
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
@@ -22,7 +22,10 @@ const limiter = rateLimit({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+    origin: process.env.VITE_URL,
+    credentials: true
+}));
 app.use(cookieParser());
 app.use(helmet());
 app.use(limiter);

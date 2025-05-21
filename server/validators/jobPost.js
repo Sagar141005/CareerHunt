@@ -41,7 +41,8 @@ export const updateJobPostValidator = [
     body('type')
     .optional().isIn(['On-site', 'Remote', 'Hybrid']).withMessage("Invalid type"),
     body('deadline')
-    .optional().withMessage("Deadline must be a valid date")
+    .optional()
+    .isISO8601().withMessage("Deadline must be a valid date")
 ]
 
 export const updateStatusValidator = [

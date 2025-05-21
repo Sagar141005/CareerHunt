@@ -1,4 +1,4 @@
-import User from "../models/user";
+import User from "../models/user.js";
 import jwt from 'jsonwebtoken';
 
 export const signupUser = async (req, res) => {
@@ -25,15 +25,18 @@ export const signupUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
     const { email, password } = req.body;
+    console.log("Request Body from login:", req.body)
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).select('+password');
         if(!user) {
             return res.status(400).json({ message: "Email or password is incorrect"});
         }
+        console.log("Comparing password:", password, user.password);
         const isMatch = await user.comparePassword(password);
         if(!isMatch) {
             return res.status(400).json({ message: "Email or password is incorrect"});
         }
+        console.log("workingg")
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '24h'});
 
@@ -44,7 +47,7 @@ export const loginUser = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000
         })
         
-        res.status(200).json({ message: "User logged in successfully"});
+        res.status(200).json({ message: "User logged in successfully", token});
     } catch (error) {
         res.status(500).json({ message: "Error logging user", error: error.message });
     }

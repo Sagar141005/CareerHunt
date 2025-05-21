@@ -1,4 +1,4 @@
-import Job from '../models/jobApply';
+import Job from '../models/jobApply.js';
 
 export const applyToJob = async (req, res) => {
     try {

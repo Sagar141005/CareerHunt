@@ -1,7 +1,7 @@
 import express from "express";
-import { createJobPost, deleteJobPost, getAllJobPosts, getApplicationsForJobPost, getJobPostById, updateJobPost, updateStatus } from "../controllers/job";
-import { protectAndVerifyRole, validateRequest } from "../middlewares/authMiddleware";
-import { jobPostBodyValidator, jobPostIdValidator, updateJobPostValidator, updateStatusValidator } from "../validators/jobPost";
+import { createJobPost, deleteJobPost, getAllJobPosts, getApplicationsForJobPost, getJobPostById, updateJobPost, updateStatus } from "../controllers/jobPost.js";
+import { protectAndVerifyRole, validateRequest } from "../middlewares/authMiddleware.js";
+import { jobPostBodyValidator, jobPostIdValidator, updateJobPostValidator, updateStatusValidator } from "../validators/jobPost.js";
 
 
 const router = express.Router();

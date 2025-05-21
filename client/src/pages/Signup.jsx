@@ -14,19 +14,19 @@ const Signup = () => {
         e.preventDefault();
 
         try {
-            const respone = await api.post('/auth/signup', {
+            const response = await api.post('/auth/signup', {
                 name,
                 email,
                 password,
                 role
             });
 
-            console.log("Signup successfull", respone.data);
+            console.log("Signup successfull", response.data);
 
-            navigate('/userDashboard');
+            navigate('/login');
             
         } catch (error) {
-            console.error("Signup failed", error.respone?.data || error.message);
+            console.error("Signup failed", error.response?.data || error.message);
         }
     }
   return (
@@ -34,7 +34,7 @@ const Signup = () => {
       <div className='flex flex-col items-center p-auto flex-1 bg-white'>
         <div className='m-auto flex flex-col items-center gap-6'>
             <h1 className='text-shadow-2xs text-3xl font-extrabold'>SIGN UP</h1>
-                <form className='flex flex-col gap-4'>
+                <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
                     <div>
                         <label htmlFor="role">Select your role:</label>
                         <div className='flex items-center gap-4'>
@@ -45,7 +45,7 @@ const Signup = () => {
                                 id='role'
                                 value='jobseeker'
                                 checked={role === 'jobseeker'}
-                                onChange={(e) => e.target.value}
+                                onChange={(e) => setRole(e.target.value)}
                                 />
                                 <span>Job Seeker</span>
                             </label>
@@ -56,7 +56,7 @@ const Signup = () => {
                                 id='role'
                                 value='recruiter'
                                 checked={role === 'recruiter'}
-                                onChange={(e) => e.target.value}
+                                onChange={(e) => setRole(e.target.value)}
                                 />
                                 <span>Recruiter</span>
                             </label>
@@ -95,7 +95,7 @@ const Signup = () => {
                         id='password'
                         placeholder='Password'
                         value={password}
-                        onChange={(e) => e.target.value}
+                        onChange={(e) => setPassword(e.target.value)}
                         required/>
                     </div>
                     <button 
