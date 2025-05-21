@@ -8,16 +8,21 @@ import RecruiterDashboard from "./pages/RecruiterDashboard"
 import JobPost from "./components/JobPost"
 import Signup from "./pages/signup"
 import Login from "./pages/Login"
+import { Route, Routes } from "react-router-dom"
 
 
 
 function App() {
 
   return (
-    <div className="bg-[#F8F9FA] w-screen h-screen">
-        <Login />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/user/dashboard" element={<UserDashboard />} />
+      <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
 
-    </div>
+    </Routes>
   )
 }
 
