@@ -6,19 +6,19 @@ import { jobPostBodyValidator, jobPostIdValidator, updateJobPostValidator, updat
 
 const router = express.Router();
 
-router.post('/create', jobPostBodyValidator, validateRequest, protectAndVerifyRole, createJobPost);
+router.post('/create', jobPostBodyValidator, validateRequest, protectAndVerifyRole(['recruiter']), createJobPost);
 
-router.get('/:jobPostId', jobPostIdValidator, validateRequest, protectAndVerifyRole, getJobPostById);
+router.get('/:jobPostId', jobPostIdValidator, validateRequest, protectAndVerifyRole(['recruiter']), getJobPostById);
 
-router.get('/all', protectAndVerifyRole, getAllJobPosts);
+router.get('/all', protectAndVerifyRole(['recruiter']), getAllJobPosts);
 
-router.put('/:jobPostId', updateJobPostValidator, validateRequest, protectAndVerifyRole, updateJobPost);
+router.put('/:jobPostId', updateJobPostValidator, validateRequest, protectAndVerifyRole(['recruiter']), updateJobPost);
 
-router.get('/applications/:jobPostId', jobPostIdValidator, validateRequest, protectAndVerifyRole, getApplicationsForJobPost);
+router.get('/applications/:jobPostId', jobPostIdValidator, validateRequest, protectAndVerifyRole(['recruiter']), getApplicationsForJobPost);
 
-router.put('/:jobPostId/:userId', updateStatusValidator, validateRequest, protectAndVerifyRole, updateStatus);
+router.put('/:jobPostId/:userId', updateStatusValidator, validateRequest, protectAndVerifyRole(['recruiter']), updateStatus);
 
-router.delete('/:jobPostId', jobPostIdValidator, validateRequest, protectAndVerifyRole, deleteJobPost);
+router.delete('/:jobPostId', jobPostIdValidator, validateRequest, protectAndVerifyRole(['recruiter']), deleteJobPost);
 
 
 export default router;

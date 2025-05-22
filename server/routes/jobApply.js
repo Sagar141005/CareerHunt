@@ -5,13 +5,13 @@ import { applyToJobValidator, jobIdValidator } from "../validators/jobApply.js";
 
 const router = express.Router();
 
-router.post('/:jobPostId', applyToJobValidator , validateRequest, protectAndVerifyRole, applyToJob);
+router.post('/:jobPostId', applyToJobValidator , validateRequest, protectAndVerifyRole(['jobseeker']), applyToJob);
 
-router.get('/all', protectAndVerifyRole, getAllJobApplications);
+router.get('/all', protectAndVerifyRole(['jobseeker']), getAllJobApplications);
 
-router.get('/:jobId', jobIdValidator, validateRequest, protectAndVerifyRole, getJobApplication);
+router.get('/:jobId', jobIdValidator, validateRequest, protectAndVerifyRole(['jobseeker']), getJobApplication);
 
-router.patch('/withdraw/:jobId', jobIdValidator, validateRequest, protectAndVerifyRole, withdrawApplication);
+router.patch('/withdraw/:jobId', jobIdValidator, validateRequest, protectAndVerifyRole(['jobseeker']), withdrawApplication);
 
 
 export default router;

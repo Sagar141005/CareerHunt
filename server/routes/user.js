@@ -9,7 +9,7 @@ router.post('/signup', signupValidator, validateRequest, signupUser);
 
 router.post('/login', loginValidator, validateRequest, loginUser);
 
-router.get('/profile', protectAndVerifyRole, profile);
+router.get('/profile', protectAndVerifyRole(['jobseeker', 'recruiter']), profile);
 
 router.post('/logout', logoutUser);
 

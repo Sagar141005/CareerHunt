@@ -9,16 +9,12 @@ const Login = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log("Sending data to server:", { email, password });
 
     try {
       const response = await api.post('/auth/login', { 
         email, 
         password 
       });
-      console.log("Login successfull", response.data);
-
-      localStorage.setItem('token', response.data.token);
 
       navigate('/user/dashboard');
     } catch (error) {

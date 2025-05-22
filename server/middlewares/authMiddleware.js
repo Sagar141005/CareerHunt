@@ -31,7 +31,6 @@ export const protectAndVerifyRole = (roles) => {
 };
 
 export const validateRequest = (req, res, next) => {
-    console.log('Running validateRequest');
     const errors = validationResult(req);
 
     if(!errors.isEmpty()) {
