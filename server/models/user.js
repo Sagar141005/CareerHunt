@@ -11,6 +11,12 @@ const UserSchema = new mongoose.Schema({
     profilePic: {
         type: String
     },
+    bio: {
+        type: String
+    }, 
+    location: {
+        type: String
+    },
     email: {
         type: String,
         required: true,
@@ -40,11 +46,6 @@ const UserSchema = new mongoose.Schema({
     recruiterProfile: {
         companyName: {
             type: String,
-            required: function() { return this.role === 'recruiter'}
-        },
-        companyWebsite: {
-            type: String,
-            required: function() { return this.role === 'recruiter'}
         },
         position: {
             type: String

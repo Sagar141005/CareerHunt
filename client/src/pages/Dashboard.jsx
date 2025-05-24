@@ -1,20 +1,20 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
-import UserDashboard from './UserDashboard';
-import RecruiterDashboard from './RecruiterDashboard';
+import UserDashboard from '../components/UserDashboard';
+import RecruiterDashboard from '../components/RecruiterDashboard';
 import { useEffect } from 'react';
 
 const Dashboard = () => {
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(!user) {
+        if(!loading && !user) {
             navigate('/login');
         }
-    }, [user, navigate]);
+    }, [user, loading, navigate]);
 
-    if (!user) {
+    if(loading || !user) {
         return <p>Loading...</p>
     }
 

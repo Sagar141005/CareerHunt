@@ -6,6 +6,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [ user, setUser ] = useState(null);
+    const [ loading, setLoading ] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -16,9 +17,8 @@ export const AuthProvider = ({ children }) => {
             } catch (error) {
                 console.error("Authorization failed", error.response?.data || error.message);
                 setUser(null);
-                if(error.response?.status === 401) {
-                    navigate('/login');
-                }
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     }
     
     return (
-        <AuthContext.Provider value={{ user, setUser, logout }}>
+        <AuthContext.Provider value={{ user, setUser, loading, logout }}>
             {children}
         </AuthContext.Provider>
     )

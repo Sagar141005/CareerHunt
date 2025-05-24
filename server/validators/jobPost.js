@@ -16,7 +16,7 @@ export const jobPostBodyValidator = [
     body('description')
       .isString().withMessage("Description must be a string")
       .notEmpty().withMessage("Company description is required")
-      .isLength({ min: 10, max: 500 }).withMessage("Description length must be between 10 to 500 characters"),
+      .isLength({ min: 10 }).withMessage("Description must be 10 characters long"),
     body('location')
       .optional().isString().withMessage("Location must be a string"),
     body('type')

@@ -100,7 +100,7 @@ const Signup = () => {
                     </div>
                     <button 
                     type='submit'
-                    className='bg-gradient-to-br from-blue-300 to-blue-700 p-4 rounded-2xl text-white font-bold text-lg mt-4 shadow-md hover:to-blue-800 transition duration-300 hover:shadow-xl'>
+                    className='bg-gradient-to-br from-blue-300 to-blue-700 p-4 rounded-2xl text-white font-bold text-lg mt-4 shadow-md hover:shadow-xl'>
                         Sign Up
                     </button>
                 </form>

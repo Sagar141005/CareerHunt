@@ -22,7 +22,6 @@ const JobPostSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: [10, "Description should be atleast 10 characters long."],
-        maxlength: [500, "Description should not exceed 500 characters."]
     },
     location: {
         type: String
