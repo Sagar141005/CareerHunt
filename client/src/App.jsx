@@ -3,13 +3,14 @@ import Navbar from "./components/HomeNavbar"
 import Home from "./pages/Home"
 import Review from "./components/Review"
 import Footer from "./components/Footer"
-import UserDashboard from "./pages/UserDashboard"
-import RecruiterDashboard from "./pages/RecruiterDashboard"
+import UserDashboard from "./components/UserDashboard"
+import RecruiterDashboard from "./components/RecruiterDashboard"
 import JobPost from "./components/JobPost"
 import Signup from "./pages/signup"
 import Login from "./pages/Login"
 import { Route, Routes } from "react-router-dom"
 import Dashboard from "./pages/Dashboard"
+import PostJob from "./pages/PostJob"
 
 
 
@@ -21,8 +22,9 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard/>} />
-
+      <Route path="/job/post" element={<PostJob />} />
     </Routes>
+    
   )
 }
 
