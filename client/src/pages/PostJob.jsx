@@ -31,7 +31,7 @@ const PostJob = () => {
         return null;
     }
 
-    if(user.role === 'jobseeker') {
+    if(user.role !== 'recruiter') {
         navigate('/dashboard');
         console.error("Not Authenticated");
         return null;
