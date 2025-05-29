@@ -8,9 +8,9 @@ const router = express.Router();
 
 router.post('/create', jobPostBodyValidator, validateRequest, protectAndVerifyRole(['recruiter']), createJobPost);
 
-router.get('/:jobPostId', jobPostIdValidator, validateRequest, protectAndVerifyRole(['recruiter']), getJobPostById);
-
 router.get('/all', protectAndVerifyRole(['recruiter']), getAllJobPosts);
+
+router.get('/:jobPostId', jobPostIdValidator, validateRequest, protectAndVerifyRole(['recruiter']), getJobPostById);
 
 router.put('/:jobPostId', updateJobPostValidator, validateRequest, protectAndVerifyRole(['recruiter']), updateJobPost);
 

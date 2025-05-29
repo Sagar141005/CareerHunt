@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap');
 
 @keyframes scroll-horizontal {
     0% {
@@ -14,7 +14,7 @@ html, body {
     padding: 0;
     margin: 0;
     height: 100%;
-    font-family: 'Figtree', sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     background-color: #F8F9FA;
 }
 

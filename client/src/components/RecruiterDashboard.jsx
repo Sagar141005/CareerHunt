@@ -14,7 +14,7 @@ const RecruiterDashboard = () => {
   const capitalisedName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
 
   return (
-    <div className='bg-neutral-200 flex gap-8'>
+    <div className='bg-[#F2F2F2] flex gap-6'>
       <RecruiterPannel />
       <div>
         <div className='flex items-center justify-between'>
@@ -73,7 +73,7 @@ const RecruiterDashboard = () => {
           </div>
           </div>
           <div className='flex flex-col gap-4'>
-            <div className='bg-white w-40 h-70 mr-8 rounded-xl shadow-lg shadow-neutral-300 p-4'>
+            <div className='bg-white w-42 h-70 mr-6 rounded-xl shadow-lg shadow-neutral-300 p-4'>
               <h3 className='text-xl font-bold mb-4'>Profile</h3>
               <div className='flex flex-col items-center gap-4'>
                 <img className='h-30 w-30 object-cover content-center rounded-full' src="https://plus.unsplash.com/premium_photo-1664536392896-cd1743f9c02c?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
@@ -84,7 +84,7 @@ const RecruiterDashboard = () => {
                 </div>
               </div>
             </div>
-            <div className='bg-white w-40 h-90 mr-8 rounded-xl shadow-lg shadow-neutral-300'>
+            <div className='bg-white w-42 h-90 mr-6 rounded-xl shadow-lg shadow-neutral-300'>
             <h3 className='text-xl font-bold p-4'>Hired</h3>
               <div className='flex flex-col justify-between items-center'>
                 <img className='h-40 -mt-4' src="./image.png" alt="" />

@@ -1,19 +1,35 @@
 import React from 'react'
+import { formatDistanceToNow } from "date-fns";
 
 const JobPost = ({ job }) => {
+
+  const isOpen = (deadline) => {
+    const now = new Date();
+    const jobDeadline = new Date(deadline);
+    return jobDeadline >= now;
+  }
+
+
   return (
-    <div className='w-sm bg-white rounded-2xl shadow-lg hover:shadow-2xl p-4'> 
-      <h2 className='text-xl font-bold'>{job.title}</h2>
-      <div className='mb-2'>
-        <p className='text-lg text-[#474D6A]'>Created at: {new Date(job.createdAt).toLocaleDateString()}</p>
-        <div className='flex items-center gap-4'>
-            <p className='text-lg text-[#474D6A] gap-4 flex items-center'>Applicants: <span className='text-blue-700 font-semibold -ml-3'>{job.applicantsCount || 0}</span> <span className='w-0.5 h-5 bg-[#474D6A] inline-block'></span></p>
-            <p className='text-lg text-[#474D6A]'>Status: <span className='text-green-600 font-semibold'>{job.status || open}</span></p>
+    <div className='w-70 h-64 bg-white rounded-xl flex flex-col gap-4 p-4'>
+      <div className='h-10 w-9 border border-neutral-300 rounded-full flex items-center justify-center'>
+        <img className='object-cover content-center' src={job.companyLogo} alt="" />
+      </div>
+      <div className='flex items-baseline gap-2'>
+        <h5 className='text-md'>{job.company}</h5>
+        <p className='text-xs text-neutral-400'>{formatDistanceToNow(new Date(job.createdAt), { addSuffix: true })}</p>
+      </div>
+      <div>
+        <h2 className='text-xl font-semibold text-black'>{job.title}</h2>
+        <div className='flex gap-2'>
+          <h4 className='text-xs font-light bg-neutral-200 py-2 px-3 rounded-lg w-fit'>{job.type}</h4>
+          <h4 className='text-xs font-light bg-neutral-200 py-2 px-3 rounded-lg w-fit'>{isOpen ? "Open" : "Closed"}</h4>
         </div>
       </div>
-      <div className='flex items-center gap-8'>
-        <button className='text-md p-3 px-5 bg-black rounded-xl text-white'>View Candidates</button>
-        <button className='text-md p-3 px-5 bg-blue-700 rounded-xl text-white'>Edit Job</button>
+      <div className='h-0.5 w-full bg-neutral-100'></div>
+      <div className='flex justify-between'>
+        <button className='text-white font-medium bg-[#010101] py-2 px-4 rounded-lg'>Edit</button>
+        <button className='text-white font-medium bg-blue-700 py-2 px-4 rounded-lg'>View Applicants</button>
       </div>
     </div>
   )

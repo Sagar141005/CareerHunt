@@ -38,7 +38,7 @@ export const getJobPostById = async (req, res) => {
             return res.status(404).json({ message: "Job not found" });
         }
 
-        res.status(200).json({ message: "Job post found", data: { jobPost } });
+        res.status(200).json({ message: "Job post found", jobPost });
         
     } catch (error) {
         res.status(500).json({ message: "An error occurred", error: error.message });
@@ -54,7 +54,7 @@ export const getAllJobPosts = async (req, res) => {
             return res.status(404).json({ message: "No job posts found"});
         }
 
-        res.status(200).json({ message: "Job posts found successfully", data: { jobPosts } });
+        res.status(200).json({ message: "Job posts found successfully", jobPosts });
     } catch (error) {
         res.status(500).json({ message: "An error occurred", error: error.message });
     }
