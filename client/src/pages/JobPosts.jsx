@@ -27,7 +27,7 @@ const JobPosts = () => {
     <div className='w-full h-screen bg-[#F2F2F2] flex gap-6 overflow-hidden'>
       <RecruiterPannel />
       <div className='flex-1 overflow-y-auto'>
-      <div className='flex items-baseline justify-between'>
+        <div className='flex items-baseline justify-between'>
           <h2 className='text-xl font-bold py-8'>Jobs</h2>
           <CurrentDate />
         </div>

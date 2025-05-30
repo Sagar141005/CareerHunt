@@ -82,7 +82,7 @@ const PostJob = () => {
 
   return (
     <div className='w-full min-h-screen flex flex-col items-center justify-center gap-10'>
-        <h1 className='text-4xl font-extrabold text-[#1A1C1F]'>Create Job Post</h1>
+        <h1 className='text-4xl font-extrabold text-[#1A1C1F]'>Job Details</h1>
       <form onSubmit={handleSubmit} className='flex flex-col items-start gap-2'>
         <div className='flex flex-col items-start gap-1'>
             <label 

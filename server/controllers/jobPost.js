@@ -22,9 +22,9 @@ export const createJobPost = async (req, res) => {
         const jobPost = new JobPost(jobPostData);
         await jobPost.save();
 
-        res.status(201).json({ message: "Job post created successfully", data: { jobPost } });
+        return res.status(201).json({ message: "Job post created successfully", data: { jobPost } });
     } catch (error) {
-        res.status(500).json({ message: "Error occurred while creating job post", error: error.message});
+        return res.status(500).json({ message: "Error occurred while creating job post", error: error.message});
     }
 }
 
@@ -38,10 +38,10 @@ export const getJobPostById = async (req, res) => {
             return res.status(404).json({ message: "Job not found" });
         }
 
-        res.status(200).json({ message: "Job post found", jobPost });
+        return res.status(200).json({ message: "Job post found", jobPost });
         
     } catch (error) {
-        res.status(500).json({ message: "An error occurred", error: error.message });
+        return res.status(500).json({ message: "An error occurred", error: error.message });
     }
 }
 
@@ -54,9 +54,9 @@ export const getAllJobPosts = async (req, res) => {
             return res.status(404).json({ message: "No job posts found"});
         }
 
-        res.status(200).json({ message: "Job posts found successfully", jobPosts });
+        return res.status(200).json({ message: "Job posts found successfully", jobPosts });
     } catch (error) {
-        res.status(500).json({ message: "An error occurred", error: error.message });
+        return res.status(500).json({ message: "An error occurred", error: error.message });
     }
 }
 
@@ -71,9 +71,9 @@ export const updateJobPost = async (req, res) => {
             return res.status(404).json({ message: "Job post not found or unauthorized" });
         }
 
-        res.status(200).json({ message: "Job post updated successfully", data: { updatedJobPost } });
+        return res.status(200).json({ message: "Job post updated successfully", data: { updatedJobPost } });
     } catch (error) {
-        res.status(500).json({ message: "An error occurred", error: error.message });
+        return res.status(500).json({ message: "An error occurred", error: error.message });
     }
 }
 
@@ -88,9 +88,43 @@ export const getApplicationsForJobPost = async (req, res) => {
         }
 
         const applications = await Job.find({ jobPostId }).populate('userId', 'name email');
-        res.status(200).json({ data: { applications } });
+        return res.status(200).json({ data: { applications } });
     } catch (error) {
-        res.status(500).json({ message: "An error occurred", error: error.message });
+        return res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+}
+
+export const search = async (req, res) => {
+    try {
+        const recruiterId = req.user._id;
+        const query = req.query.q?.trim();
+
+        if(!query) {
+            return res.status(400).json({ message: "Query is required" });
+        }
+
+        const allJobPosts = await JobPost.find({ recruiter: recruiterId });
+
+        const jobPosts = allJobPosts.filter(job =>
+            job.title.toLowerCase().includes(query.toLowerCase())
+        );
+
+        const jobIds = allJobPosts.map(job => job._id);
+
+        const applicants = await Job.find({
+            jobPostId: { $in: jobIds }
+        }).populate('userId').populate('jobPostId').limit(10);
+
+        const filteredApplicants = applicants.filter(app =>
+            app.userId?.name?.toLowerCase().includes(query.toLowerCase())
+        );
+
+        return res.status(200).json({
+            jobPosts,
+            applicants: filteredApplicants,
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "An error occurred", error: error.message });
     }
 }
 
@@ -118,9 +152,9 @@ export const updateStatus = async (req, res) => {
         job.status = status;
         await job.save();
 
-        res.status(200).json({ message: "Job status updated successfully", data: { job } });
+        return res.status(200).json({ message: "Job status updated successfully", data: { job } });
     } catch (error) {
-        res.status(500).json({ message: "An error occurred", error: error.message });
+        return res.status(500).json({ message: "An error occurred", error: error.message });
     }
 }
 
@@ -136,8 +170,8 @@ export const deleteJobPost = async (req, res) => {
 
         await JobPost.deleteOne({ _id: jobPostId });
 
-        res.status(200).json({ message: "Job post deleted successfully" });
+        return res.status(200).json({ message: "Job post deleted successfully" });
     } catch (error) {
-        res.status(500).json({ message: "An error occurred while deleting job post", error: error.message });
+        return res.status(500).json({ message: "An error occurred while deleting job post", error: error.message });
     }
 }

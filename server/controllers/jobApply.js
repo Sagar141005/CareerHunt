@@ -23,10 +23,10 @@ export const applyToJob = async (req, res) => {
         const job = new Job(jobData);
         await job.save();
 
-        res.status(201).json({ message: "Successfully applied to job", data: { job } });
+        return res.status(201).json({ message: "Successfully applied to job", data: { job } });
 
     } catch (error) {
-        res.status(500).json({ message: "An error occurred", error: error.message });
+        return res.status(500).json({ message: "An error occurred", error: error.message });
     }
 }
 
@@ -41,10 +41,10 @@ export const getJobApplication = async (req, res) => {
             return res.status(404).json({ message: "Job not found" });
         }
 
-        res.status(200).json({ data: { job } });
+        return res.status(200).json({ data: { job } });
         
     } catch (error) {
-        res.status(500).json({ message: "An error occurred", error: error.message });
+        return res.status(500).json({ message: "An error occurred", error: error.message });
     }
 }
 
@@ -57,9 +57,9 @@ export const getAllJobApplications = async (req, res) => {
             return res.status(404).json({ message: "No jobs found" });
         }
 
-        res.status(200).json({ data: { jobs } });
+        return res.status(200).json({ data: { jobs } });
     } catch (error) {
-        res.status(500).json({ message: "An error occurred", error: error.message });
+        return res.status(500).json({ message: "An error occurred", error: error.message });
     }
 }
 
@@ -77,8 +77,8 @@ export const withdrawApplication = async (req, res) => {
             return res.status(404).json({ message: "Job not found or you're not authorized to withdraw from it" });
         }
 
-        res.status(200).json({ message: "Application withdrawn successfully", data: { job } });
+        return res.status(200).json({ message: "Application withdrawn successfully", data: { job } });
     } catch (error) {
-        res.status(500).json({ message: "Error while withdrawing from job", error: error.message });
+        return res.status(500).json({ message: "Error while withdrawing from job", error: error.message });
     }
 }

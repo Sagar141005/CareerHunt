@@ -12,6 +12,7 @@ import { Route, Routes } from "react-router-dom"
 import Dashboard from "./pages/Dashboard"
 import PostJob from "./pages/PostJob"
 import JobPosts from "./pages/JobPosts"
+import Applications from "./pages/Applications"
 
 
 
@@ -25,6 +26,7 @@ function App() {
       <Route path="/dashboard" element={<Dashboard/>} />
       <Route path="/post/job" element={<PostJob />} />
       <Route path="/job/posts" element={<JobPosts />} />
+      <Route path="/applications" element={<Applications />} />
     </Routes>
     
   )
