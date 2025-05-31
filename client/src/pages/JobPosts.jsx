@@ -3,12 +3,28 @@ import RecruiterPannel from '../components/RecruiterPannel'
 import CurrentDate from '../components/CurrentDate'
 import JobPost from '../components/JobPost'
 import api from '../api/axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 const JobPosts = () => {
 
-    const [ jobs, setJobs ] = useState([]);
+    const { user, loading } = useAuth();
 
+    const [ jobs, setJobs ] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(!loading && !user) {
+            navigate('/login');
+        }
+    }, [ user, loading, navigate ]);
+
+    useEffect(() => {
+      if (user && user.role !== 'recruiter') {
+        navigate('/dashboard');
+        console.error("Not Authenticated");
+      }
+    }, [user, navigate]);
 
     useEffect(() => {
         const fetchJobs = async () => {
@@ -22,6 +38,10 @@ const JobPosts = () => {
 
         fetchJobs();
     }, [])
+
+    if(loading) {
+      return <p>Loading...</p>
+  }
 
   return (
     <div className='w-full h-screen bg-[#F2F2F2] flex gap-6 overflow-hidden'>

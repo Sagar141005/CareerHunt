@@ -1,5 +1,6 @@
 import React from 'react'
 import { formatDistanceToNow } from "date-fns";
+import { Link } from 'react-router-dom';
 
 const JobPost = ({ job }) => {
 
@@ -29,7 +30,11 @@ const JobPost = ({ job }) => {
       <div className='h-0.5 w-full bg-neutral-100'></div>
       <div className='flex justify-between'>
         <button className='text-white font-medium bg-[#010101] py-2 px-4 rounded-lg'>Edit</button>
-        <button className='text-white font-medium bg-blue-700 py-2 px-4 rounded-lg'>View Applicants</button>
+        <Link 
+        to={`/applications/applicants/${job._id}`}
+        className='text-white font-medium bg-blue-700 py-2 px-4 rounded-lg'>
+          View Applicants
+        </Link>
       </div>
     </div>
   )

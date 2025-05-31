@@ -42,7 +42,7 @@ const Signup = () => {
                                 <input 
                                 type='radio'
                                 name='role'
-                                id='role'
+                                id='jobseeker'
                                 value='jobseeker'
                                 checked={role === 'jobseeker'}
                                 onChange={(e) => setRole(e.target.value)}
@@ -53,7 +53,7 @@ const Signup = () => {
                                 <input 
                                 type='radio'
                                 name='role'
-                                id='role'
+                                id='recruiter'
                                 value='recruiter'
                                 checked={role === 'recruiter'}
                                 onChange={(e) => setRole(e.target.value)}

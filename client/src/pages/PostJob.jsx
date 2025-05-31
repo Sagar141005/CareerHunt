@@ -22,20 +22,12 @@ const PostJob = () => {
         }
     }, [ user, loading, navigate ]);
 
-    if(loading) {
-        return <p>Loading...</p>
-    }
-
-    if(!user) {
-        navigate('/login');
-        return null;
-    }
-
-    if(user.role !== 'recruiter') {
-        navigate('/dashboard');
-        console.error("Not Authenticated");
-        return null;
-    }
+    useEffect(() => {
+        if (user && user.role !== 'recruiter') {
+          navigate('/dashboard');
+          console.error("Not Authenticated");
+        }
+      }, [user, navigate]);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -77,6 +69,10 @@ const PostJob = () => {
             console.error(error.response?.data || error.message);
         }
 
+    }
+
+    if(loading) {
+        return <p>Loading...</p>
     }
 
 

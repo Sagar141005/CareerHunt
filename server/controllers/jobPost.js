@@ -88,7 +88,7 @@ export const getApplicationsForJobPost = async (req, res) => {
         }
 
         const applications = await Job.find({ jobPostId }).populate('userId', 'name email');
-        return res.status(200).json({ data: { applications } });
+        return res.status(200).json({  applications });
     } catch (error) {
         return res.status(500).json({ message: "An error occurred", error: error.message });
     }

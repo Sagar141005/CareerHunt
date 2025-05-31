@@ -2,12 +2,14 @@ import { RiArrowRightSLine, RiCloseLine } from '@remixicon/react';
 import React, { useEffect, useRef, useState } from 'react'
 import api from '../api/axios';
 import { SyncLoader } from 'react-spinners';
+import { Link } from 'react-router-dom';
 
 const RecruiterSearch = () => {
+
     const [ input, setInput ] = useState("");
     const [ results, setResults ] = useState([]);
     const [ typingTimeout, setTypingTimeout ] = useState(null);
-    const [ loading, setLoading ] = useState(false);
+    const [ loader, setLoader ] = useState(false);
     const [ searched, setSearched ] = useState(false);
     const [ showResults, setShowResults ] = useState(false);
 
@@ -17,13 +19,13 @@ const RecruiterSearch = () => {
         if(!input.trim()) {
             setResults([]);
             setSearched(false);
-            setLoading(false);
+            setLoader(false);
             return;
         }
 
         if(typingTimeout) clearTimeout(typingTimeout);
         setSearched(true);
-        setLoading(true);
+        setLoader(true);
 
         const timeout = setTimeout( async() => {
             try {
@@ -36,7 +38,7 @@ const RecruiterSearch = () => {
                 console.error(error.response?.data || error.message);
             } finally {
                 setShowResults(true);
-                setLoading(false);
+                setLoader(false);
             }
         }, 400);
 
@@ -82,9 +84,9 @@ const RecruiterSearch = () => {
                 </div>
                 {input && showResults && (
                 <div className='absolute top-full mt-2 w-full bg-white shadow-lg rounded-xl z-50 max-h-72 overflow-y-auto border border-gray-200'>
-                    {loading ? (
+                    {loader ? (
                        <div className="flex justify-center items-center py-6">
-                       <SyncLoader color="#63b3ed" loading={loading} size={12} />
+                       <SyncLoader color="#63b3ed" size={12} />
                      </div>
                     ) : results.length === 0 && searched ? (
                         <div className='px-6 py-4 text-center text-sm text-gray-500'>No results found</div>
@@ -94,14 +96,15 @@ const RecruiterSearch = () => {
                             <>
                             <h4 className='text-xs text-gray-500 px-6 pt-4'>Jobs</h4>
                             {jobResults.map((item, index) => (
-                                 <div
-                                 key={`job-${index}`}
-                                 className='px-8 py-3 rounded-xl hover:bg-neutral-200 cursor-pointer flex items-center justify-between group'>
-                                     <h4 className='text-gray-800 font-medium'>{item.title}</h4>
-                                     <RiArrowRightSLine
-                                     className='group-hover:bg-blue-400 group-hover:text-white rounded-full bg-transparent text-blue-500' 
-                                     size={22}/>
-                                 </div>
+                                <Link
+                                to={`/applications/applicants/${item._id}`}
+                                key={`job-${index}`}
+                                className='px-8 py-3 rounded-xl hover:bg-neutral-200 cursor-pointer flex items-center justify-between group'>
+                                    <h4 className='text-gray-800 font-medium'>{item.title}</h4>
+                                    <RiArrowRightSLine
+                                    className='group-hover:bg-blue-400 group-hover:text-white rounded-full bg-transparent text-blue-500' 
+                                    size={22}/>
+                                </Link>
                             ))}
                             </>
                         )}
@@ -110,14 +113,15 @@ const RecruiterSearch = () => {
                             <>
                             <h4 className='text-xs text-gray-500 px-6 pt-4'>Applicants</h4>
                             {applicantResults.map((item, index) => (
-                                 <div
-                                 key={`applicant-${index}`}
-                                 className='px-8 py-3 rounded-xl hover:bg-neutral-200 cursor-pointer flex items-center justify-between group'>
-                                     <h4 className='text-gray-800 font-medium'>{item.userId?.name}</h4>
-                                     <RiArrowRightSLine
-                                     className='group-hover:bg-blue-400 group-hover:text-white rounded-full bg-transparent text-blue-500' 
-                                     size={22}/>
-                                 </div>
+                                <Link
+                                to={`/applications/applicant/${item._id}`}
+                                key={`applicant-${index}`}
+                                className='px-8 py-3 rounded-xl hover:bg-neutral-200 cursor-pointer flex items-center justify-between group'>
+                                    <h4 className='text-gray-800 font-medium'>{item.userId?.name}</h4>
+                                    <RiArrowRightSLine
+                                    className='group-hover:bg-blue-400 group-hover:text-white rounded-full bg-transparent text-blue-500' 
+                                    size={22}/>
+                                </Link>
                             ))}
                             </>
                         )}

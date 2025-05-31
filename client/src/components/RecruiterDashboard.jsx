@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import RecruiterPannel from './RecruiterPannel'
 import RadialChart from './RadialChart'
@@ -6,12 +6,33 @@ import SplineChart from './SplineChart'
 import HorizontalBar from './HorizontalBar'
 import Applicant from './Applicant'
 import CurrentDate from './CurrentDate'
+import { useNavigate } from 'react-router-dom'
 
 
 const RecruiterDashboard = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
   const firstName = user.name.split(" ")[0];
   const capitalisedName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+
+  const navigate = useNavigate();
+
+    useEffect(() => {
+        if(!loading && !user) {
+            navigate('/login');
+        }
+    }, [ user, loading, navigate ]);
+
+    useEffect(() => {
+      if (user && user.role !== 'recruiter') {
+        navigate('/dashboard');
+        console.error("Not Authenticated");
+      }
+    }, [user, navigate]);
+
+    if(loading) {
+      return <p>Loading...</p>
+  }
 
   return (
     <div className='bg-[#F2F2F2] flex gap-6'>
