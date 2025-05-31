@@ -21,7 +21,7 @@ const RecruiterPannel = () => {
         <div className='flex flex-col gap-4 pl-6'>
             {
                 menuItem.map(({ label, icon: Icon, path}) => {
-                    const isActive = location.pathname === path;
+                    const isActive = location.pathname.startsWith(path);
 
                     return (
                         <Link to={path} key={label}>
