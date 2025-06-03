@@ -6,7 +6,7 @@ export const signupUser = async (req, res) => {
     try {
         const existingUser = await User.findOne({ email });
         if(existingUser) {
-            return res.status(400).json({ message: "User already exists" });
+            return res.status(409).json({ message: "User already exists" });
         }
 
         const newUser = new User({
@@ -28,12 +28,12 @@ export const loginUser = async (req, res) => {
     try {
         const user = await User.findOne({ email }).select('+password');
         if(!user) {
-            return res.status(400).json({ message: "Email or password is incorrect"});
+            return res.status(401).json({ message: "Invalid credentials"});
         }
         console.log("Comparing password:", password, user.password);
         const isMatch = await user.comparePassword(password);
         if(!isMatch) {
-            return res.status(400).json({ message: "Email or password is incorrect"});
+            return res.status(401).json({ message: "Invalid credentials"});
         }
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '24h'});
@@ -45,9 +45,9 @@ export const loginUser = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000
         })
         
-        return res.status(200).json({ message: "User logged in successfully" });
+        return res.status(200).json({ message: "User logged in successfully", user });
     } catch (error) {
-        return res.status(500).json({ message: "Error logging user", error: error.message });
+        return res.status(500).json({ message: "Error logging in", error: error.message });
     }
 }
 
@@ -62,7 +62,7 @@ export const profile = async (req, res) => {
         }
         return res.status(200).json({ message: "Profile fetched successfully",  user });
     } catch (error) {
-        return res.status(500).json({ message: "An error occurred", error: error.message });
+        return res.status(500).json({ message: "Error fetching profile", error: error.message });
     }
 }
 
@@ -76,6 +76,6 @@ export const logoutUser = async (req, res) => {
 
         return res.status(200).json({ message: "User logged out successfully" });
     } catch (error) {
-        return res.status(500).json({ message: "An error occurred", error: error.message });
+        return res.status(500).json({ message: "Logout failed", error: error.message });
     }
 }

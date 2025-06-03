@@ -1,5 +1,5 @@
 import express from "express";
-import { createJobPost, deleteJobPost, getAllJobPosts, getApplicationsForJobPost, getJobPostById, search, updateJobPost, updateStatus } from "../controllers/jobPost.js";
+import { createJobPost, deleteJobPost, getJobApplications, getApplicationsForJobPost, getJobPostById, search, updateJobPost, updateStatus, getAllJobPosts } from "../controllers/jobPost.js";
 import { protectAndVerifyRole, validateRequest } from "../middlewares/authMiddleware.js";
 import { jobPostBodyValidator, jobPostIdValidator, updateJobPostValidator, updateStatusValidator } from "../validators/jobPost.js";
 
@@ -7,6 +7,8 @@ import { jobPostBodyValidator, jobPostIdValidator, updateJobPostValidator, updat
 const router = express.Router();
 
 router.post('/create', jobPostBodyValidator, validateRequest, protectAndVerifyRole(['recruiter']), createJobPost);
+
+router.get('/applications/all', protectAndVerifyRole(['recruiter']), getJobApplications);
 
 router.get('/all', protectAndVerifyRole(['recruiter']), getAllJobPosts);
 

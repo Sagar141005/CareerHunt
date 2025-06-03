@@ -28,30 +28,15 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        select: false
+        select: false,
+        minlength: 8
     },
     role: {
         type: String,
         enum: ['jobseeker', 'recruiter'],
         default: 'jobseeker'
-    }, 
-    resume: {
-        url: {
-            type: String
-        },
-        score: {
-            type: Number
-        }
-    },
-    recruiterProfile: {
-        companyName: {
-            type: String,
-        },
-        position: {
-            type: String
-        }
     }
-}, { timestamps: true });
+}, { timestamps: true, strict: true });
 
 UserSchema.pre("save", async function(next) {
     if(!this.isModified('password')) return next();

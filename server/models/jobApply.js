@@ -13,7 +13,7 @@ const JobSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['Saved', 'Applied', 'Interview', 'Withdrawn' , 'Offer', 'Rejected'],
+        enum: ['Saved', 'Applied', 'Withdrawn' , 'Shortlist', 'On-hold', 'Interview', 'Rejected', 'Hired'],
         default: 'Saved',
         required: true
     },

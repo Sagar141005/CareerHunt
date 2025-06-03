@@ -11,19 +11,15 @@ export const applyToJob = async (req, res) => {
             return res.status(400).json({ message: "Already applied to job"});
         }
 
-        const jobData = {
+        const job = new Job({
             userId,
             jobPostId,
+            status: 'Applied',
             notes
-        };
-        if(notes) {
-            jobData.notes = notes;
-        }
-
-        const job = new Job(jobData);
+        });
         await job.save();
 
-        return res.status(201).json({ message: "Successfully applied to job", data: { job } });
+        return res.status(201).json({ message: "Successfully applied to job",  job });
 
     } catch (error) {
         return res.status(500).json({ message: "An error occurred", error: error.message });
@@ -51,7 +47,7 @@ export const getJobApplication = async (req, res) => {
 export const getAllJobApplications = async (req, res) => {
     try {
         const userId = req.user._id;
-        const jobs = await Job.find({ userId: userId }).populate('jobPostId', 'recruiter company companyLogo title description location type');
+        const jobs = await Job.find({ userId: userId }).sort({ createdAt: -1 }).populate('jobPostId', 'recruiter company companyLogo title description location type');
         
         if(jobs.length === 0) {
             return res.status(404).json({ message: "No jobs found" });

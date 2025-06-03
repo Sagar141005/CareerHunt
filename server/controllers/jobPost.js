@@ -1,10 +1,28 @@
 import JobPost from '../models/jobPost.js';
-import Job from '../models/jobPost.js';
+import Job from '../models/jobApply.js';
+
+const VALID_STATUSES = ['Interview', 'Shortlist', 'On-hold', 'Rejected'];
 
 export const createJobPost = async (req, res) => {
     try {
         const recruiterId = req.user._id;
-        const { company, companyLogo, title, description, location, type, deadline} = req.body;
+        const {
+            company,
+            companyLogo,
+            title,
+            description,
+            location,
+            type,
+            deadline,
+            level,        
+            department,   
+            tags          
+        } = req.body;
+
+
+        if (!company || !title || !description || !type || !location) {
+            return res.status(400).json({ message: "Missing required fields." });
+        }      
 
         const jobPostData = {
             recruiter: recruiterId,
@@ -12,15 +30,15 @@ export const createJobPost = async (req, res) => {
             companyLogo,
             title,
             description,
+            location,
             type,
-            deadline
-        }
-        if(location) {
-            jobPostData.location = location;
-        }
-
-        const jobPost = new JobPost(jobPostData);
-        await jobPost.save();
+            deadline,
+            level,
+            department,
+            tags
+          };
+          const jobPost = new JobPost(jobPostData);
+          await jobPost.save();
 
         return res.status(201).json({ message: "Job post created successfully", data: { jobPost } });
     } catch (error) {
@@ -32,7 +50,7 @@ export const getJobPostById = async (req, res) => {
     try {
         const recruiterId = req.user._id;
         const { jobPostId } = req.params;
-        const jobPost = await JobPost.findOne({ _id: jobPostId, recruiter: recruiterId });
+        const jobPost = await JobPost.findOne({ _id: jobPostId, recruiter: recruiterId }).lean();
 
         if(!jobPost) {
             return res.status(404).json({ message: "Job not found" });
@@ -48,9 +66,9 @@ export const getJobPostById = async (req, res) => {
 export const getAllJobPosts = async (req, res) => {
     try {
         const recruiterId = req.user._id;
-        const jobPosts = await JobPost.find({ recruiter: recruiterId }).sort({ createdAt: -1 });
+        const jobPosts = await JobPost.find({ recruiter: recruiterId }).sort({ createdAt: -1 }).lean();
 
-        if(!jobPosts) {
+        if(jobPosts.length === 0) {
             return res.status(404).json({ message: "No job posts found"});
         }
 
@@ -64,14 +82,16 @@ export const updateJobPost = async (req, res) => {
     try {
         const recruiterId = req.user._id;
         const { jobPostId } = req.params;
-        const updateData = req.body;
 
-        const updatedJobPost = await JobPost.findOneAndUpdate({ _id: jobPostId, recruiter: recruiterId}, updateData, { new: true });
+        const allowedUpdates = ['title', 'description', 'company', 'companyLogo', 'location', 'type', 'deadline', 'tags', 'level', 'department', 'isActive'];
+        const filteredData = Object.fromEntries(Object.entries(req.body).filter(([key]) => allowedUpdates.includes(key)));
+
+        const updatedJobPost = await JobPost.findOneAndUpdate({ _id: jobPostId, recruiter: recruiterId }, filteredData, { new: true });
         if(!updatedJobPost) {
             return res.status(404).json({ message: "Job post not found or unauthorized" });
         }
 
-        return res.status(200).json({ message: "Job post updated successfully", data: { updatedJobPost } });
+        return res.status(200).json({ message: "Job post updated successfully", updatedJobPost });
     } catch (error) {
         return res.status(500).json({ message: "An error occurred", error: error.message });
     }
@@ -82,7 +102,7 @@ export const getApplicationsForJobPost = async (req, res) => {
         const recruiterId = req.user._id;
         const { jobPostId } = req.params;
 
-        const jobPost = await JobPost.findOne({ _id: jobPostId, recruiter: recruiterId });
+        const jobPost = await JobPost.findOne({ _id: jobPostId, recruiter: recruiterId }).lean();
         if(!jobPost) {
             return res.status(404).json({ message: "Job post not found or unauthorized" });
         }
@@ -91,6 +111,43 @@ export const getApplicationsForJobPost = async (req, res) => {
         return res.status(200).json({  applications });
     } catch (error) {
         return res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+}
+
+export const getJobApplications = async (req, res) => {
+    try {
+        const recruiterId = req.user._id;
+        const { statusQuery, since } = req.query;
+        const statusArray = statusQuery ? statusQuery.split(',') : [];
+        
+        const jobPosts = await JobPost.find({ recruiter: recruiterId }).lean();
+        if(jobPosts.length === 0) {
+            return res.status(404).json({ message: "No job posts found for this recruiter." });
+        }
+        const jobPostIds = jobPosts.map(job => job._id);
+
+        const filter = {
+            jobPostId: { $in: jobPostIds }
+        };
+
+        if(statusArray.length) {
+            filter.status = { $in: statusArray}
+        };
+        if(since) {
+            const sinceDate = new Date(since);
+            if(isNaN(sinceDate)) {
+                return res.status(400).json({ message: "Invalid 'since' date format." });
+            }
+            filter.createdAt = { $gte: sinceDate }
+        };
+
+        const applications = await Job.find(filter)
+        .populate('userId', 'name email')
+        .populate('jobPostId', 'title company');
+
+        return res.status(200).json({ applications });
+    } catch (error) {
+        return res.status(500).json({ message: "An error occurred while retrieving job applications", error: error.message });
     }
 }
 
@@ -103,13 +160,16 @@ export const search = async (req, res) => {
             return res.status(400).json({ message: "Query is required" });
         }
 
-        const allJobPosts = await JobPost.find({ recruiter: recruiterId });
+        const jobPosts = await JobPost.find({ 
+            recruiter: recruiterId,
+            $or: [
+                { title: { $regex: query, $options: 'i' } },
+                { description: { $regex: query, $options: 'i' } },
+                { tags: { $in: [query.toLowerCase()] } },
+            ]
+        }).lean();
 
-        const jobPosts = allJobPosts.filter(job =>
-            job.title.toLowerCase().includes(query.toLowerCase())
-        );
-
-        const jobIds = allJobPosts.map(job => job._id);
+        const jobIds = jobPosts.map(job => job._id);
 
         const applicants = await Job.find({
             jobPostId: { $in: jobIds }
@@ -134,8 +194,7 @@ export const updateStatus = async (req, res) => {
         const { jobPostId, userId } = req.params;
         const { status } = req.body;
 
-        const validStatus = ['Interview', 'Offer', 'Rejected'];
-        if(!validStatus.includes(status)) {
+        if(!VALID_STATUSES.includes(status)) {
             return res.status(400).json({ message: "Invalid status value" });
         }
 
@@ -152,7 +211,7 @@ export const updateStatus = async (req, res) => {
         job.status = status;
         await job.save();
 
-        return res.status(200).json({ message: "Job status updated successfully", data: { job } });
+        return res.status(200).json({ message: "Job status updated successfully", job });
     } catch (error) {
         return res.status(500).json({ message: "An error occurred", error: error.message });
     }
