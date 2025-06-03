@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await api.get('/auth/logout');
+            await api.post('/auth/logout');
         } finally {
             setUser(null);
             navigate('/login');

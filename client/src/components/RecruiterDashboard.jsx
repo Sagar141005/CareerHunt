@@ -7,10 +7,23 @@ import HorizontalBar from './HorizontalBar'
 import Applicant from './Applicant'
 import CurrentDate from './CurrentDate'
 import { useNavigate } from 'react-router-dom'
+import useMonthlyGrowth from "../hooks/useMonthlyGrowth";
 
+
+const formatCount = (count) => {
+  if (!count) return 0;
+  if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`;
+  if (count >= 1000) return `${(count / 1000).toFixed(1)}K`;
+  return count;
+};
 
 const RecruiterDashboard = () => {
   const { user, loading } = useAuth();
+
+  const all = useMonthlyGrowth("");
+  const shortlist = useMonthlyGrowth("Shortlist");
+  const onHold = useMonthlyGrowth("On-Hold");
+  const hired = useMonthlyGrowth("Hired");
 
   const firstName = user.name.split(" ")[0];
   const capitalisedName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
@@ -48,21 +61,21 @@ const RecruiterDashboard = () => {
               <div className='bg-white w-80 h-40 rounded-xl shadow-lg shadow-neutral-300 flex items-center px-4'>
                 <div className='flex flex-col w-40'>
                   <h5 className='text-neutral-500 text-xs font-semibold mb-2'>APPLICATIONS</h5>
-                  <h3 className='text-4xl font-semibold'>2.5K</h3>
+                  <h3 className='text-4xl font-semibold'>{formatCount(all.currentCount)}</h3>
                 </div>
                 <div className='flex-grow'></div>
                 <div className='w-1/2 -mr-6'>
-                  <RadialChart value={67} label="" size={52} color='#FF5DCB' />
+                  <RadialChart growth={all.growth} label="" size="52%" color='#3B82F6' />
                 </div>
               </div>
               <div className='bg-white w-80 h-40 rounded-xl shadow-lg shadow-neutral-300 flex items-center px-4'>
               <div className='flex flex-col w-40'>
                   <h5 className='text-neutral-500 text-xs font-semibold mb-2'>SHORTLISTED</h5>
-                  <h3 className='text-4xl font-semibold'>1.8K</h3>
+                  <h3 className='text-4xl font-semibold'>{formatCount(shortlist.currentCount)}</h3>
                 </div>
                 <div className='flex-grow'></div>
                 <div className='w-1/2 -mr-6'>
-                  <RadialChart value={39} label="" size={52} color='#4AD588' />
+                  <RadialChart growth={shortlist.growth} label="" size="52%" color='#22C55E' />
                 </div>
               </div>
             </div>
@@ -78,11 +91,11 @@ const RecruiterDashboard = () => {
           <div className='bg-white w-80 h-40 rounded-xl shadow-lg shadow-neutral-300 flex items-center px-4'>
           <div className='flex flex-col w-40'>
                   <h5 className='text-neutral-500 text-xs font-semibold mb-2'>ON-HOLD</h5>
-                  <h3 className='text-4xl font-semibold'>0.7K</h3>
+                  <h3 className='text-4xl font-semibold'>{formatCount(onHold.currentCount)}</h3>
                 </div>
                 <div className='flex-grow'></div>
                 <div className='w-1/2 -mr-6'>
-                  <RadialChart value={15} label="" size={52} color='#FDBA48' />
+                  <RadialChart growth={onHold.growth} label="" size="52%" color='#FACC15' />
                 </div>
               </div>
           <div className='bg-white w-80 h-50 rounded-xl shadow-lg shadow-neutral-300'>
@@ -97,11 +110,11 @@ const RecruiterDashboard = () => {
             <div className='bg-white w-42 h-70 mr-6 rounded-xl shadow-lg shadow-neutral-300 p-4'>
               <h3 className='text-xl font-bold mb-4'>Profile</h3>
               <div className='flex flex-col items-center gap-4'>
-                <img className='h-30 w-30 object-cover content-center rounded-full' src="https://plus.unsplash.com/premium_photo-1664536392896-cd1743f9c02c?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
+                <img className='h-30 w-30 object-cover content-center rounded-full' src="./Recruiter.jpg" alt="" />
                 <div className='flex flex-col items-center'>
-                  <h3 className='text-lg font-bold text-neutral-950'>Rob Dial</h3>
+                  <h3 className='text-lg font-bold text-neutral-950'>{user.name}</h3>
                   <h3  className='text-md font-semibold text-neutral-700'>Google</h3>
-                  <h4 className='text-xs font-medium text-neutral-500'>Recruiting Manager</h4>
+                  <h4 className='text-xs font-medium text-neutral-500'>{user.role}</h4>
                 </div>
               </div>
             </div>
@@ -109,7 +122,7 @@ const RecruiterDashboard = () => {
             <h3 className='text-xl font-bold p-4'>Hired</h3>
               <div className='flex flex-col justify-between items-center'>
                 <img className='h-40 -mt-4' src="./image.png" alt="" />
-                <RadialChart value={24} label="" size={52} color='#e5bd1e' />
+                <RadialChart growth={hired.growth} label="" size="52%" color='#FB923C' />
               </div>
             </div>
           </div>

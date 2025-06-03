@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import api from '../api/axios';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
+
+  const { user, setUser } = useAuth();
+
   const [ email, setEmail ] = useState("");
   const [ password, setPassword ] = useState("");
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -16,12 +21,20 @@ const Login = () => {
         password 
       });
 
-      navigate('/dashboard');
+      console.log("Login response:", response.data.user);
+      setUser(response.data.user);
+      setHasSubmitted(true);
+
     } catch (error) {
       console.error("Login failed", error.response?.data || error.message);
     }
-
   }
+
+  useEffect(() => {
+    if (hasSubmitted && user) {
+      navigate('/dashboard');
+    }
+  }, [hasSubmitted, user, navigate]);
 
   return (
     <div className='w-full h-screen flex'>

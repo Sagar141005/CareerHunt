@@ -1,15 +1,47 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import api from '../api/axios'
 
 const Applicant = () => {
+  const [ users, setUsers ] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get('/job-posts/all');
+        setUsers(response.data.applications || []);
+        
+      } catch (error) {
+        console.error("Error fetching users", error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (users.length === 0) {
+    return <p className="text-gray-500 font-light px-2 py-2">No applicants found</p>;
+  }
   return (
-    <div className='flex items-center gap-2 px-3 py-2 rounded-2xl hover:bg-gray-100'>
-      <div>
-        <img className='h-10 w-10 object-cover content-center rounded-full' src="https://plus.unsplash.com/premium_photo-1664536392896-cd1743f9c02c?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
-      </div>
-      <div className=''>
-        <h4 className='text-md font-medium text-gray-800'>Douglas Roy</h4>
-        <p className='text-sm font-light text-neutral-500'>Applied for <span className='text-neutral-600'>iOS Developer</span></p>
-      </div>
+    <div>
+      {users.slice(0, 10).map((user, index) => (
+        <div
+          key={index}
+          className='flex items-center gap-2 px-3 py-2 rounded-2xl hover:bg-gray-100'
+        >
+          <div>
+            <img
+              className='h-10 w-10 object-cover content-center rounded-full'
+              src={user.userId?.profileImage || 'https://via.placeholder.com/40'}
+              alt={user.userId?.name || 'User'}
+            />
+          </div>
+          <div>
+            <h4 className='text-md font-medium text-gray-800'>{user.userId?.name}</h4>
+            <p className='text-sm font-light text-neutral-500'>
+              Applied for{' '}
+              <span className='text-neutral-600'>{user.jobPostId?.title || 'Unknown Role'}</span>
+            </p>
+          </div>
+        </div>
+      ))}
     </div>
   )
 }

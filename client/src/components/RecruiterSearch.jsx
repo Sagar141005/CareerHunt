@@ -98,6 +98,7 @@ const RecruiterSearch = () => {
                             {jobResults.map((item, index) => (
                                 <Link
                                 to={`/applications/applicants/${item._id}`}
+                                state={{ title: item.title }}
                                 key={`job-${index}`}
                                 className='px-8 py-3 rounded-xl hover:bg-neutral-200 cursor-pointer flex items-center justify-between group'>
                                     <h4 className='text-gray-800 font-medium'>{item.title}</h4>

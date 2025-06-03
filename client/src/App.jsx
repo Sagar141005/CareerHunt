@@ -13,6 +13,9 @@ import Dashboard from "./pages/Dashboard"
 import PostJob from "./pages/PostJob"
 import JobPosts from "./pages/JobPosts"
 import Applications from "./pages/Applications"
+import Applicants from "./pages/Applicants"
+import Profile from "./pages/Profile"
+import Setting from "./pages/Setting"
 
 
 
@@ -23,10 +26,13 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/profile" element={<Profile />} />
       <Route path="/dashboard" element={<Dashboard/>} />
+      <Route path="/setting" element={<Setting/>} />
       <Route path="/post/job" element={<PostJob />} />
       <Route path="/job/posts" element={<JobPosts />} />
       <Route path="/applications" element={<Applications />} />
+      <Route path="/applications/applicants/:jobId" element={<Applicants />} />
     </Routes>
     
   )

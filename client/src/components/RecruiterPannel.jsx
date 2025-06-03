@@ -1,6 +1,7 @@
 import { RiBriefcaseLine, RiCollageLine, RiFile3Line, RiSettings2Line } from '@remixicon/react'
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const menuItem = [
     {label: 'Dashboard', icon: RiCollageLine, path: '/dashboard' },
@@ -10,6 +11,9 @@ const menuItem = [
 ];
 
 const RecruiterPannel = () => {
+
+    const { user, loading } = useAuth();
+
     const location = useLocation();
 
   return (
@@ -43,17 +47,19 @@ const RecruiterPannel = () => {
             
       </div>
       </div>
-      <div className='flex flex-col items-center gap-3 p-4'>
+      <Link 
+      to='/profile'
+      className='flex flex-col items-center gap-3 p-4'>
         <div className='bg-neutral-200 h-0.5 w-40 rounded-full'></div>
         <div className='flex gap-4 items-center p-2 px-5 hover:bg-neutral-100 hover:rounded-3xl'>
             <div>
-                <img className='h-8 w-8 object-cover content-center rounded-full border-2 border-neutral-400' src="https://plus.unsplash.com/premium_photo-1664536392896-cd1743f9c02c?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
+                <img className='h-8 w-8 object-cover content-center rounded-full ring-2 ring-neutral-300' src="./Recruiter.jpg" alt="" />
             </div>
             <div>
-                <h5 className='text-sm font-medium text-neutral-600'>Ed Richards</h5>
+                <h5 className='text-sm font-medium text-neutral-600'>{user.name}</h5>
             </div>
         </div>
-      </div>
+      </Link>
     </div>
   )
 }

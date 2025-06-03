@@ -1,7 +1,11 @@
 import React from "react";
 import ReactApexChart from 'react-apexcharts';
 
-const RadialChart = ({ value, label, color, size }) => {
+
+const RadialChart = ({ growth, label, color, size }) => {
+
+  const safeGrowth = (typeof growth === 'number' && !isNaN(growth)) ? growth : 0;
+
     const options = {
         chart: {
             type: "radialBar",
@@ -27,7 +31,8 @@ const RadialChart = ({ value, label, color, size }) => {
                   fontSize: "30px",
                   show: true,
                   offsetY: 0,
-                  offsetX: 0
+                  offsetX: 0,
+                  formatter: () => `${safeGrowth}%`,
                 },
               },
             },
@@ -38,7 +43,7 @@ const RadialChart = ({ value, label, color, size }) => {
           labels: [label],
     }
 
-    const series = [value];
+    const series = [safeGrowth];
 
   return (
     <div className="w-full">

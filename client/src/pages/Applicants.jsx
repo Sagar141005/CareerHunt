@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import RecruiterPannel from '../components/RecruiterPannel'
 import CurrentDate from '../components/CurrentDate'
 import RecruiterSearch from '../components/RecruiterSearch'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import api from '../api/axios'
 import { MoonLoader } from 'react-spinners'
 import { useAuth } from '../context/AuthContext'
@@ -16,6 +16,9 @@ const Applicants = () => {
     const { jobId } = useParams();
 
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const { title } = location.state || {};
 
     useEffect(() => {
         if(!loading && !user) {
@@ -60,7 +63,7 @@ const Applicants = () => {
         </div>
 
         <div className='flex items-center justify-around mb-6'>
-            <h3 className='text-md font-medium text-neutral-600'>New applicants for <span className='font-semibold'>Front End Developer</span></h3>
+            <h3 className='text-md font-medium text-neutral-600'>New applicants for <span className='font-semibold'>{title || "Job"}</span></h3>
         </div>
 
         <RecruiterSearch />
