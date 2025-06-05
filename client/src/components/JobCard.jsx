@@ -1,30 +1,22 @@
 import React, { useState } from 'react'
-import { RiMapPinLine, RiBriefcaseLine, RiCalendarEventLine, RiBookmarkLine, RiBookmarkFill } from '@remixicon/react';
+import { RiBookmarkLine, RiBookmarkFill } from '@remixicon/react';
+import { Link } from 'react-router-dom';
+import { formatDistanceToNow } from 'date-fns';
 
 
-const JobCard = () => {
+const JobCard = ({ job }) => {
   const [ saved, setSaved ] = useState(false);
 
   const handleClick = () => {
     return setSaved(!saved);
   }
 
-  function truncateTitle(title) {
-    const words = title.trim().split(/\s+/);
-    return words.length <= 2 ? title: `${words.slice(0, 2).join(' ')}...`
-  }
   return (
-    <>
-    <div className='rounded-2xl bg-white w-2xs p-4 flex justify-between shadow mb-4 hover:shadow-xl'>
-      <div>
-        <h2 className='text-xl font-bold'>{truncateTitle("Full Stack Developer")}</h2>
-        <p className='text-[#474D6A] font-semibold'>Google</p>
-        <p className='text-[#474D6A] text-sm flex gap-1 items-center'><RiMapPinLine size={15} color='#474D6A'/> Delhi</p>
-        <p className='text-[#474D6A] text-sm flex gap-1 items-center'><RiBriefcaseLine size={15} color='#474D6A' /> On-site</p>
-        <p className='text-[#474D6A] text-sm flex gap-1 items-center'><RiCalendarEventLine size={15} color='#474D6A' /> 10-11-2023</p>
-      </div>
-      <div className='flex flex-col justify-between items-end'>
-        <img className='h-12 w-fit rounded-xl' src="https://img.naukimg.com/logo_images/groups/v1/194354.gif" alt="" />
+    <div className='w-64 h-72 bg-white rounded-xl flex flex-col justify-between p-4'>
+      <div className='flex items-center justify-between'>
+        <div className='h-10 w-10 bg-white border border-neutral-300 rounded-full overflow-hidden flex items-center justify-center'>
+          <img className='w-9 h-9 rounded-full object-contain' src={job.companyLogo} alt="" />
+        </div>
         <button 
           onClick={handleClick}
           className={`text-sm flex gap-0.5 items-center cursor-pointer hover:text-[#0164FC]
@@ -33,10 +25,33 @@ const JobCard = () => {
               (<><RiBookmarkLine size={15} color='currentColor'/>Save</> ) : 
               (<><RiBookmarkFill size={15} color='currentColor'/>Saved</> )
             }
-        </button>
+        </button> 
+      </div>
+      <div className='flex flex-col gap-2'>
+          <div className='flex items-baseline gap-2'>
+            <h5 className='text-md'>{job.company}</h5>
+            <p className='text-xs text-neutral-400'>{formatDistanceToNow(new Date(job.createdAt), { addSuffix: true })}</p>
+          </div>
+        <div>
+          <h2 className='text-xl font-semibold text-black'>{job.title}</h2>
+          <div className='flex flex-wrap gap-2'>
+            <h4 className='text-xs font-light bg-neutral-200 py-2 px-3 rounded-lg w-fit'>{job.type}</h4>
+            <h4 className='text-xs font-light bg-neutral-200 py-2 px-3 rounded-lg w-fit'>{job.level}</h4>
+          </div>
+        </div>
+      </div>
+      <div className='flex flex-col gap-3'>
+        <div className='h-0.5 w-full bg-neutral-100'></div>
+        <div className='flex justify-between'>
+          <button>Details</button>
+          <Link
+            to={`/jobs/${job._id}`}
+            className='text-white font-medium bg-black py-2 px-4 rounded-lg'>
+            Apply Now
+          </Link>
+        </div>
       </div>
     </div>
-    </>
   )
 }
 

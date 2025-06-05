@@ -1,5 +1,5 @@
 import React from 'react'
-import HomeNavbar from '../components/HomeNavbar'
+import HomeNavbar from '../components/UserNavbar'
 import { RiArticleLine, RiListCheck3 } from '@remixicon/react'
 import Review from '../components/Review'
 import { reviews } from '../data/reviews'

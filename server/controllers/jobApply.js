@@ -1,4 +1,33 @@
 import Job from '../models/jobApply.js';
+import JobPost from '../models/jobPost.js';
+
+
+export const getAvailableJobs = async (req, res) => {
+    try {
+        const { type, level, department, search } = req.query;
+        
+        const filter = {
+            isActive: true,
+            deadline: { $gte: new Date() }
+        }
+
+        if (type) filter.type = type;
+        if (level) filter.level = level;
+        if (department) filter.department = department;
+
+        if(search) {
+            filter.$text = { $search: search };
+        }
+
+        const jobs = await JobPost.find(filter)
+            .sort({ createdAt: -1 })
+            .lean();
+
+        return res.status(200).json({ message: "Jobs fetched successfully", jobs });
+    } catch (error) {
+        return res.status(500).json({ message: "Error fetching jobs", error: error.message });
+    }
+}
 
 export const applyToJob = async (req, res) => {
     try {

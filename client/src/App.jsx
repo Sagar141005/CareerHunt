@@ -1,5 +1,5 @@
 import JobCard from "./components/JobCard"
-import Navbar from "./components/HomeNavbar"
+import Navbar from "./components/UserNavbar"
 import Home from "./pages/Home"
 import Review from "./components/Review"
 import Footer from "./components/Footer"
@@ -16,6 +16,7 @@ import Applications from "./pages/Applications"
 import Applicants from "./pages/Applicants"
 import Profile from "./pages/Profile"
 import Setting from "./pages/Setting"
+import FindJob from "./pages/FindJob"
 
 
 
@@ -33,6 +34,10 @@ function App() {
       <Route path="/job/posts" element={<JobPosts />} />
       <Route path="/applications" element={<Applications />} />
       <Route path="/applications/applicants/:jobId" element={<Applicants />} />
+
+      <Route path="/jobs" element={<FindJob />} />
+      <Route path="/jobs" element={<FindJob />} />
+      <Route path="/jobs" element={<FindJob />} />
     </Routes>
     
   )
