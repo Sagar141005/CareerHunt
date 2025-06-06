@@ -1,5 +1,7 @@
 import JobPost from '../models/jobPost.js';
 import Job from '../models/jobApply.js';
+import { getOrSetCache } from '../utils/cache.js';
+import redis from '../utils/redis.js';
 
 const VALID_STATUSES = ['Interview', 'Shortlist', 'On-hold', 'Rejected'];
 
@@ -40,6 +42,8 @@ export const createJobPost = async (req, res) => {
           const jobPost = new JobPost(jobPostData);
           await jobPost.save();
 
+          await redis.del(`jobPosts:${recruiterId}`);
+
         return res.status(201).json({ message: "Job post created successfully", data: { jobPost } });
     } catch (error) {
         return res.status(500).json({ message: "Error occurred while creating job post", error: error.message});
@@ -50,7 +54,11 @@ export const getJobPostById = async (req, res) => {
     try {
         const recruiterId = req.user._id;
         const { jobPostId } = req.params;
-        const jobPost = await JobPost.findOne({ _id: jobPostId, recruiter: recruiterId }).lean();
+        const cacheKey = `jobPost:${recruiterId}:${jobPostId}`;
+
+        const jobPost = await getOrSetCache(cacheKey, async () => {
+            return await JobPost.findOne({ _id: jobPostId, recruiter: recruiterId }).lean();
+        }, 120);
 
         if(!jobPost) {
             return res.status(404).json({ message: "Job not found" });
@@ -66,7 +74,11 @@ export const getJobPostById = async (req, res) => {
 export const getAllJobPosts = async (req, res) => {
     try {
         const recruiterId = req.user._id;
-        const jobPosts = await JobPost.find({ recruiter: recruiterId }).sort({ createdAt: -1 }).lean();
+        const key = `jobPosts:${recruiterId}`;
+
+        const jobPosts = await getOrSetCache(key, async () => {
+            return await JobPost.find({ recruiter: recruiterId }).sort({ createdAt: -1 }).lean();
+        }, 60);
 
         if(jobPosts.length === 0) {
             return res.status(404).json({ message: "No job posts found"});
@@ -91,6 +103,13 @@ export const updateJobPost = async (req, res) => {
             return res.status(404).json({ message: "Job post not found or unauthorized" });
         }
 
+        await redis.del(`jobPost:${recruiterId}:${jobPostId}`);
+        await redis.del(`jobPosts:${recruiterId}`);
+        await redis.del(`applications:${jobPostId._id}`);
+
+        const keys = await redis.keys(`search:${recruiterId}:*`);
+        if (keys.length) await redis.del(keys);
+
         return res.status(200).json({ message: "Job post updated successfully", updatedJobPost });
     } catch (error) {
         return res.status(500).json({ message: "An error occurred", error: error.message });
@@ -101,13 +120,17 @@ export const getApplicationsForJobPost = async (req, res) => {
     try {
         const recruiterId = req.user._id;
         const { jobPostId } = req.params;
+        const cacheKey = `applications:${jobPostId}`
 
         const jobPost = await JobPost.findOne({ _id: jobPostId, recruiter: recruiterId }).lean();
         if(!jobPost) {
             return res.status(404).json({ message: "Job post not found or unauthorized" });
         }
 
-        const applications = await Job.find({ jobPostId }).populate('userId', 'name email');
+        const applications = await getOrSetCache(cacheKey, async () => {
+            return await Job.find({ jobPostId }).populate('userId', 'name email').lean();
+        }, 60);
+
         return res.status(200).json({  applications });
     } catch (error) {
         return res.status(500).json({ message: "An error occurred", error: error.message });
@@ -160,29 +183,28 @@ export const search = async (req, res) => {
             return res.status(400).json({ message: "Query is required" });
         }
 
-        const jobPosts = await JobPost.find({ 
-            recruiter: recruiterId,
-            $or: [
-                { title: { $regex: query, $options: 'i' } },
-                { description: { $regex: query, $options: 'i' } },
-                { tags: { $in: [query.toLowerCase()] } },
-            ]
-        }).lean();
+        const result = await getOrSetCache(cacheKey, async () => {
+            const jobPosts = await JobPost.find({
+                recruiter: recruiterId,
+                $or: [
+                    { title: { $regex: query, $options: 'i' } },
+                    { description: { $regex: query, $options: 'i' } },
+                    { tags: { $in: [query.toLowerCase()] } },
+                ]
+            }).lean();
 
-        const jobIds = jobPosts.map(job => job._id);
+            const jobIds = jobPosts.map(job => job._id);
 
-        const applicants = await Job.find({
-            jobPostId: { $in: jobIds }
-        }).populate('userId').populate('jobPostId').limit(10);
+            const applicants = await Job.find({
+                jobPostId: { $in: jobIds }
+            }).populate('userId').populate('jobPostId').limit(10).lean();
 
-        const filteredApplicants = applicants.filter(app =>
-            app.userId?.name?.toLowerCase().includes(query.toLowerCase())
-        );
+            const filteredApplicants = applicants.filter(app =>
+                app.userId?.name?.toLowerCase().includes(query.toLowerCase())
+            );
 
-        return res.status(200).json({
-            jobPosts,
-            applicants: filteredApplicants,
-        });
+            return { jobPosts, applicants: filteredApplicants };
+        }, 30);
     } catch (error) {
         return res.status(500).json({ message: "An error occurred", error: error.message });
     }
@@ -228,6 +250,13 @@ export const deleteJobPost = async (req, res) => {
         }
 
         await JobPost.deleteOne({ _id: jobPostId });
+
+        await redis.del(`jobPost:${recruiterId}:${jobPostId}`);
+        await redis.del(`jobPosts:${recruiterId}`);
+        await redis.del(`applications:${jobPostId._id}`);
+
+        const keys = await redis.keys(`search:${recruiterId}:*`);
+        if (keys.length) await redis.del(keys);
 
         return res.status(200).json({ message: "Job post deleted successfully" });
     } catch (error) {
