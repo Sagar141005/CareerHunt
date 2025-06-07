@@ -1,5 +1,5 @@
 import express from "express";
-import { createJobPost, deleteJobPost, getJobApplications, getApplicationsForJobPost, getJobPostById, search, updateJobPost, updateStatus, getAllJobPosts } from "../controllers/jobPost.js";
+import { createJobPost, deleteJobPost, getJobApplications, getApplicationsForJobPost, getJobPostById, search, updateJobPost, updateStatus, getAllJobPosts, getApplicationDetails } from "../controllers/jobPost.js";
 import { protectAndVerifyRole, validateRequest } from "../middlewares/authMiddleware.js";
 import { jobPostBodyValidator, jobPostIdValidator, updateJobPostValidator, updateStatusValidator } from "../validators/jobPost.js";
 import rateLimiterMiddleware from "../middlewares/rateLimiter.js";
@@ -14,6 +14,8 @@ router.get('/applications/all', protectAndVerifyRole(['recruiter']), rateLimiter
 router.get('/all', protectAndVerifyRole(['recruiter']), rateLimiterMiddleware, getAllJobPosts);
 
 router.get('/search', protectAndVerifyRole(['recruiter']), rateLimiterMiddleware, search);
+
+router.get('/history/:jobPostId', jobPostIdValidator, validateRequest, protectAndVerifyRole(['recruiter']), getApplicationDetails);
 
 router.get('/:jobPostId', jobPostIdValidator, validateRequest, protectAndVerifyRole(['recruiter']), rateLimiterMiddleware, getJobPostById);
 

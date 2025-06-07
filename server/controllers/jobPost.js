@@ -2,8 +2,7 @@ import JobPost from '../models/jobPost.js';
 import Job from '../models/jobApply.js';
 import { getOrSetCache } from '../utils/cache.js';
 import redis from '../utils/redis.js';
-
-const VALID_STATUSES = ['Interview', 'Shortlist', 'On-hold', 'Rejected'];
+import { VALID_STATUS_TRANSITIONS } from '../constants/jobStatus.js';
 
 export const createJobPost = async (req, res) => {
     try {
@@ -174,6 +173,43 @@ export const getJobApplications = async (req, res) => {
     }
 }
 
+export const getApplicationDetails = async(req, res) => {
+    try {
+        const recruiterId = req.user._id;
+        const { jobPostId, userId } = req.params;
+
+        const jobPost = await JobPost.findOne({ _id: jobPostId, recruiter: recruiterId });
+        if(!jobPost) {
+            return res.status(403).json({ message: "Unauthorized or job post not found" });
+        }
+
+        const job = await Job.findOne({ jobPostId, userId })
+            .populate('userId', 'name email')
+            .lean();
+
+            if(!job) {
+                return res.status(404).json({ message: "Application not found" });
+            }
+
+            const filteredHistory = job.interactionHistory.filter(
+                entry => entry.action !== 'saved' && entry.action !== 'unsaved'
+            )
+
+            return res.status(200).json({ message: "Application fetched successfully", 
+                data: {
+                    applicant: job.userId,
+                    currentStatus: job.status,
+                    interactionHistory: filteredHistory.sort(
+                      (a, b) => new Date(b.timestamps) - new Date(a.timestamps)
+                    )
+                } 
+            })
+
+    } catch (error) {
+        return res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+}
+
 export const search = async (req, res) => {
     try {
         const recruiterId = req.user._id;
@@ -214,11 +250,7 @@ export const updateStatus = async (req, res) => {
     try {
         const recruiterId = req.user._id;
         const { jobPostId, userId } = req.params;
-        const { status } = req.body;
-
-        if(!VALID_STATUSES.includes(status)) {
-            return res.status(400).json({ message: "Invalid status value" });
-        }
+        const { status: newStatus } = req.body;
 
         const job  = await Job.findOne({ jobPostId, userId}).populate('jobPostId', 'recruiter');
 
@@ -230,7 +262,13 @@ export const updateStatus = async (req, res) => {
             return res.status(403).json({ message: "You are not authorized to update this" });
         }
 
-        job.status = status;
+        const currentStatus = job.status || null;
+        const validNextStatuses = VALID_STATUS_TRANSITIONS[currentStatus] || [];
+        if(!validNextStatuses.includes(newStatus)) {
+            return res.status(400).json({ message: `Invalid status transition from "${currentStatus}" to "${newStatus}". Allowed: [${validNextStatuses.join(', ')}]` })
+        }
+
+        job.status = newStatus;
         await job.save();
 
         return res.status(200).json({ message: "Job status updated successfully", job });
