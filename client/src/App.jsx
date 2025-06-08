@@ -17,7 +17,8 @@ import Applicants from "./pages/Applicants"
 import Profile from "./pages/Profile"
 import Setting from "./pages/Setting"
 import FindJob from "./pages/FindJob"
-
+import Saved from "./pages/Saved"
+import MyApplications from "./pages/MyApplications"
 
 
 function App() {
@@ -36,11 +37,12 @@ function App() {
       <Route path="/applications/applicants/:jobId" element={<Applicants />} />
 
       <Route path="/jobs" element={<FindJob />} />
-      <Route path="/jobs" element={<FindJob />} />
-      <Route path="/jobs" element={<FindJob />} />
+      <Route path="/saved" element={<Saved />} />
+      <Route path="/my-applications" element={<MyApplications />} />
     </Routes>
     
   )
 }
+
 
 export default App
