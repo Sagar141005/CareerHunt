@@ -17,7 +17,7 @@ const HorizontalBar = () => {
 
     const counts = {
       "Applications": applications.length,
-      "ShortListed": applications.filter(app => app.status === 'ShortList').length,
+      "ShortListed": applications.filter(app => app.status === 'ShortListed').length,
       "On-hold": applications.filter(app => app.status === "On-hold").length,
       "Rejected": applications.filter(app => app.status === "Rejected").length
     }

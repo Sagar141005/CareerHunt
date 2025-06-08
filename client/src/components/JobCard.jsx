@@ -1,23 +1,49 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RiBookmarkLine, RiBookmarkFill } from '@remixicon/react';
 import { Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
+import api from '../api/axios'
 
 
 const JobCard = ({ job }) => {
-  const [ saved, setSaved ] = useState(false);
+  const [ saved, setSaved ] = useState(job?.isSaved || false);
+  const [ didMount, setDidMount ] = useState(false);
+  const [ isDisabled, setIsDisabled ] = useState(false);
 
   const handleClick = () => {
-    return setSaved(!saved);
+    if(isDisabled) return;
+
+    setSaved(prev => !prev);
+    setIsDisabled(true);
+
+    setTimeout(() => setIsDisabled(false), 1000);
   }
 
+  useEffect(() => {
+    if(!didMount) {
+      setDidMount(true);
+      return;
+    }
+
+    const updateSavedStatus = async () => {
+      try {
+        const response = await api.patch(`/applications/saved/${job._id}`, { isSaved: saved });
+      } catch (error) {
+        console.error(error.response?.data || error.message);
+      }
+    }
+
+    updateSavedStatus();
+  }, [saved]);
+
   return (
-    <div className='w-64 h-72 bg-white rounded-xl flex flex-col justify-between p-4'>
+    <div className='w-64 h-72 bg-white rounded-xl flex flex-col justify-between p-4 shadow-md hover:shadow-lg'>
       <div className='flex items-center justify-between'>
         <div className='h-10 w-10 bg-white border border-neutral-300 rounded-full overflow-hidden flex items-center justify-center'>
           <img className='w-9 h-9 rounded-full object-contain' src={job.companyLogo} alt="" />
         </div>
         <button 
+        disabled={isDisabled}
           onClick={handleClick}
           className={`text-sm flex gap-0.5 items-center cursor-pointer hover:text-[#0164FC]
                     ${saved ? 'text-[#0164FC]' : 'text-[#474D6A]'}`}>
@@ -43,7 +69,7 @@ const JobCard = ({ job }) => {
       <div className='flex flex-col gap-3'>
         <div className='h-0.5 w-full bg-neutral-100'></div>
         <div className='flex justify-between'>
-          <button>Details</button>
+          <button className='cursor-pointer font-medium transition-all duration-200 hover:text-blue-600'>Details</button>
           <Link
             to={`/jobs/${job._id}`}
             className='text-white font-medium bg-black py-2 px-4 rounded-lg'>

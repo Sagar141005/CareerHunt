@@ -32,7 +32,7 @@ const JobPost = ({ job }) => {
         <button className='text-white font-medium bg-[#010101] py-2 px-4 rounded-lg'>Edit</button>
         <Link 
         to={`/applications/applicants/${job._id}`}
-        className='text-white font-medium bg-blue-700 py-2 px-4 rounded-lg'>
+        className='text-white font-medium bg-blue-600 py-2 px-4 rounded-lg'>
           View Applicants
         </Link>
       </div>

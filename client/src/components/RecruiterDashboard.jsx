@@ -21,7 +21,7 @@ const RecruiterDashboard = () => {
   const { user, loading } = useAuth();
 
   const all = useMonthlyGrowth("");
-  const shortlist = useMonthlyGrowth("Shortlist");
+  const shortlist = useMonthlyGrowth("Shortlisted");
   const onHold = useMonthlyGrowth("On-Hold");
   const hired = useMonthlyGrowth("Hired");
 

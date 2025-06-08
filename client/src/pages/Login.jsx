@@ -20,8 +20,6 @@ const Login = () => {
         email, 
         password 
       });
-
-      console.log("Login response:", response.data.user);
       setUser(response.data.user);
       setHasSubmitted(true);
 

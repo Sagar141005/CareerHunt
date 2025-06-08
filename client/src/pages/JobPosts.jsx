@@ -53,7 +53,7 @@ const JobPosts = () => {
         </div>
         <div className='flex items-center justify-between mr-8 mb-4'>
             <h2 className='text-3xl font-light'>7 Active Jobs</h2>
-            <Link to='/post/job' className='text-md p-3 px-5 bg-blue-700 rounded-xl text-white'>Add Job Post</Link>
+            <Link to='/post/job' className='text-md p-3 px-5 bg-blue-600 rounded-xl text-white'>Add Job Post</Link>
         </div>
         <div className='flex flex-wrap gap-4'>
             {jobs.map((job) => (

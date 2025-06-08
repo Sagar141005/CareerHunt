@@ -68,7 +68,7 @@ const Applications = () => {
                 ) : (
                     jobs.map((job, index) => (
                         <Link
-                        to={`/applications/applicants/${job}`}
+                        to={`/applications/applicants/${job._id}`}
                         state={{ title: job.title }}
                         key={index}
                         className='px-8 py-3 rounded-xl hover:bg-neutral-200 hover:cursor-pointer flex items-center justify-between group'>

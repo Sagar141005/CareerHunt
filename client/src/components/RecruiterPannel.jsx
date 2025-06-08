@@ -53,7 +53,7 @@ const RecruiterPannel = () => {
         <div className='bg-neutral-200 h-0.5 w-40 rounded-full'></div>
         <div className='flex gap-4 items-center p-2 px-5 hover:bg-neutral-100 hover:rounded-3xl'>
             <div>
-                <img className='h-8 w-8 object-cover content-center rounded-full ring-2 ring-neutral-300' src="./Recruiter.jpg" alt="" />
+                <img className='h-8 w-8 object-cover content-center rounded-full ring-2 ring-neutral-300' src="/Recruiter.jpg" alt="" />
             </div>
             <div>
                 <h5 className='text-sm font-medium text-neutral-600'>{user.name}</h5>

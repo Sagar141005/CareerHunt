@@ -1,6 +1,6 @@
 import express from "express";
 import { protectAndVerifyRole, validateRequest } from "../middlewares/authMiddleware.js";
-import { applyToJob, getAllJobApplications, getAvailableJobs, getInteractionHistory, getJobApplication, toggleSaveJob, withdrawApplication } from "../controllers/jobApply.js";
+import { applyToJob, getAllJobApplications, getAvailableJobs, getInteractionHistory, getJobApplication, getSavedJobApplications, toggleSaveJob, withdrawApplication } from "../controllers/jobApply.js";
 import { applyToJobValidator, jobIdValidator } from "../validators/jobApply.js";
 import rateLimiterMiddleware from "../middlewares/rateLimiter.js";
 
@@ -13,6 +13,8 @@ router.post('/:jobPostId', applyToJobValidator , validateRequest, protectAndVeri
 router.get('/applied/all', protectAndVerifyRole(['jobseeker']), rateLimiterMiddleware, getAllJobApplications);
 
 router.get('/:jobId', jobIdValidator, validateRequest, protectAndVerifyRole(['jobseeker']), getJobApplication);
+
+router.get('/saved/all', protectAndVerifyRole(['jobseeker']), rateLimiterMiddleware, getSavedJobApplications);
 
 router.patch('/saved/:jobPostId', protectAndVerifyRole(['jobseeker']), rateLimiterMiddleware, toggleSaveJob);
 

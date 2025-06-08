@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import api from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,8 +9,13 @@ export const AuthProvider = ({ children }) => {
     const [ loading, setLoading ] = useState(true);
     const navigate = useNavigate();
 
+    const fetchCalled = useRef(false);
+
     useEffect(() => {
         const fetchUser = async () => {
+            if(fetchCalled.current) return;
+            fetchCalled.current = true;
+            
             try {
                 const response = await api.get('/auth/profile');
                 setUser(response.data.user);
