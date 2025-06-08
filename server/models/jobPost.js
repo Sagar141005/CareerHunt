@@ -31,6 +31,10 @@ const JobPostSchema = new mongoose.Schema({
         enum: ['On-site', 'Remote', 'Hybrid'],
         required: true
     },
+    salary: {
+        type: Number,
+        required: true
+    },
     employmentType: {
         type: String,
         enum: ['Full-time', 'Part-time', 'Contract', 'Temporary', 'Freelance', 'Internship'],

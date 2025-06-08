@@ -3,12 +3,29 @@ import JobPost from '../models/jobPost.js';
 import { getOrSetCache } from '../utils/cache.js';
 import redis from '../utils/redis.js';
 
+const normalizeToArray = (val) => {
+    if (!val) return [];
+    if (Array.isArray(val)) return val;
+    return [val];
+};  
+
+const mergeQueryArrays = (...args) => {
+    return args.flatMap(val => {
+      if (!val) return [];
+      if (typeof val === 'string') return val.trim() ? [val] : [];
+      return Array.isArray(val) ? val : [val];
+    });
+};
+
+
 export const getAvailableJobs = async (req, res) => {
     try {
-        const { title, location, type, level, department, search } = req.query;
+        const { title, location, minSalary,  maxSalary, type, typeQuery, employmentType, level, levelQuery, department, search } = req.query;
         const userId = req.user._id;
         
-        const cacheKey = `availableJobs:${type || 'all'}:${level || 'all'}:${department || 'all'}:${search || 'none'}`;
+        const stringify = (val) => Array.isArray(val) ? val.sort().join(',') : val || 'all';
+
+        const cacheKey = `availableJobs:${stringify(title)}:${stringify(location)}:${stringify(type)}:${stringify(typeQuery)}:${stringify(employmentType)}:${stringify(level)}:${stringify(levelQuery)}:${stringify(department)}:${minSalary || 0}:${maxSalary || 'max'}:${search || 'none'}`;
 
         const jobs = await getOrSetCache(cacheKey, async () => {
             const filter = {
@@ -16,12 +33,44 @@ export const getAvailableJobs = async (req, res) => {
                 deadline: { $gte: new Date() }
             };
 
-            if (title) filter.title = title;
-            if (location) filter.location = location;
-            if (type) filter.type = type;
-            if (level) filter.level = level;
-            if (department) filter.department = department;
-            if (search) filter.$text = { $search: search };
+            if (title) filter.title = new RegExp(title, 'i');
+            if (location) filter.location = new RegExp(location, 'i');
+
+
+            const addPartialMatchFilter = (fieldName, values = []) => {
+                if (!values || values.length === 0) return;
+                const orConditions = values.map(val => ({
+                    [fieldName]: { $regex: val, $options: 'i' }
+                }));
+            
+                filter.$and = filter.$and || [];
+                filter.$and.push({ $or: orConditions });
+            };
+            
+            
+
+
+            addPartialMatchFilter('type', mergeQueryArrays(type, typeQuery));
+            addPartialMatchFilter('employmentType', normalizeToArray(employmentType));
+            addPartialMatchFilter('level', mergeQueryArrays(level, levelQuery));
+            addPartialMatchFilter('department', normalizeToArray(department));
+
+
+
+            if (search) {
+                const regex = new RegExp(search, 'i');
+                filter.$or = [
+                    { title: regex },
+                    { description: regex },
+                    { company: regex }
+                ];
+            }
+
+            if(minSalary || maxSalary) {
+                filter.salary = {};
+                if(minSalary) filter.salary.$gte = parseInt(minSalary);
+                if(maxSalary) filter.salary.$lte = parseInt(maxSalary);
+            }
 
             return await JobPost.find(filter).sort({ createdAt: -1 }).lean();
         }, 60);

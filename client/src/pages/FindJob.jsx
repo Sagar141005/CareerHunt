@@ -7,8 +7,13 @@ import api from '../api/axios'
 import JobCard from '../components/JobCard';
 
 const FindJob = () => {
-    const [range, setRange] = useState([1200, 20000]);
     const [ jobs, setJobs ] = useState([]);
+
+    const [ titleQuery, setTitleQuery ] = useState('');
+    const [ locationQuery, setLocationQuery ] = useState('');
+    const [ typeQuery, setTypeQuery ] = useState('');
+    const [ levelQuery, setLevelQuery ] = useState('');
+    const [range, setRange] = useState([1200, 20000]);
 
     const [filters, setFilters] = useState({
         employmentType: [],
@@ -43,18 +48,41 @@ const FindJob = () => {
     }
 
 
-  useEffect(() => {
-    const fetchJobs = async () => {
-        try {
-            const response = await api.get('/applications/all');
-            setJobs(response.data.jobs);
-        } catch (error) {
-            console.error(error.response?.data || error.message);
-        }
-    }
+    useEffect(() => {
+        const fetchJobs = async () => {
+            try {
+                const queryParams = new URLSearchParams();
 
-    fetchJobs();
-}, [])
+                if(filters.employmentType.length > 0) {
+                    filters.employmentType.forEach(et => queryParams.append('employmentType', et));
+                  }
+                  if(filters.type.length > 0) {
+                    filters.type.forEach(t => queryParams.append('type', t));
+                  }
+                  if(filters.level.length > 0) {
+                    filters.level.forEach(l => queryParams.append('level', l));
+                  }
+                  if(filters.department.length > 0) {
+                    filters.department.forEach(d => queryParams.append('department', d));
+                  }
+
+                if(titleQuery) queryParams.append('title', titleQuery);
+                if(locationQuery) queryParams.append('location', locationQuery);
+                if(typeQuery) queryParams.append('typeQuery', typeQuery);
+                if(levelQuery) queryParams.append('levelQuery', levelQuery);
+
+                // queryParams.append('minSalary', range[0]);
+                // queryParams.append('maxSalary', range[1]);
+
+                const response = await api.get(`/applications/all?${queryParams.toString()}`);
+                setJobs(response.data.jobs);
+            } catch (error) {
+                console.error(error.response?.data || error.message);
+            }
+        }
+
+        fetchJobs();
+    }, [filters, titleQuery, locationQuery, typeQuery, levelQuery, range])
 
   return (
     <div className='w-full min-h-screen bg-[##F9F9F9] overflow-hidden'>
@@ -64,25 +92,45 @@ const FindJob = () => {
             <div className='h-8 w-8 flex items-center justify-center border border-[#555455] rounded-full'>
                 <RiSearch2Line size={18} />
             </div>
-            <input className='text-md pt-1 focus:outline-none' type="text" placeholder='Job' />
+            <input 
+            className='text-md pt-1 focus:outline-none' 
+            type="text" 
+            placeholder='Job'
+            value={titleQuery}
+            onChange={(e) => setTitleQuery(e.target.value)} />
         </div>
         <div className='flex items-center justify-center gap-4 border-r-[1px] border-r-[#555455]'>
             <div className='h-8 w-8 flex items-center justify-center border border-[#555455] rounded-full'>
                 <RiMapPin2Line size={18} />
             </div>
-            <input className='text-md pt-1 focus:outline-none' type="text" placeholder='Location' />
+            <input 
+            className='text-md pt-1 focus:outline-none' 
+            type="text" 
+            placeholder='Location' 
+            value={locationQuery}
+            onChange={(e) => setLocationQuery(e.target.value)}/>
         </div>
         <div className='flex items-center justify-center gap-4 border-r-[1px] border-r-[#555455]'>
             <div className='h-8 w-8 flex items-center justify-center border border-[#555455] rounded-full'>
                 <RiBriefcaseLine size={18} />
             </div>
-            <input className='text-md pt-1 focus:outline-none' type="text" placeholder='Type' />
+            <input 
+            className='text-md pt-1 focus:outline-none' 
+            type="text" 
+            placeholder='Type' 
+            value={typeQuery}
+            onChange={(e) => setTypeQuery(e.target.value)} />
         </div>
         <div className='flex items-center justify-center gap-4 border-r-[1px] border-r-[#555455]'>
             <div className='h-8 w-8 flex items-center justify-center border border-[#555455] rounded-full'>
                 <RiMedalLine size={18} />
             </div>
-            <input className='text-md pt-1 focus:outline-none' type="text" placeholder='Level' />
+            <input 
+            className='text-md pt-1 focus:outline-none' 
+            type="text" 
+            placeholder='Level' 
+            value={levelQuery}
+            onChange={(e) => setLevelQuery(e.target.value)}/>
         </div>
         <div className='flex flex-col text-white gap-2 min-w-[300px]'>
             <div className='w-20 flex items-center'>
@@ -133,8 +181,22 @@ const FindJob = () => {
         </div>
       </div>
       <div className='w-full h-screen flex items-center justify-center gap-12 px-8 py-10'>
-            <div className='w-72 h-full flex flex-col gap-4 p-4 overflow-y-auto border-r-[2px] border-r-neutral-300'>
-                <h3 className='text-xl font-medium'>Filters</h3>
+            <div className='w-72 h-full flex flex-col gap-4 p-4 border-r-[2px] border-r-neutral-300'>
+                <div className='flex items-center justify-between py-2'>
+                    <h3 className='text-xl font-medium'>Filters</h3>
+                    <button
+                    onClick={() =>
+                        setFilters({
+                        employmentType: [],
+                        type: [],
+                        level: [],
+                        department: [],
+                        })
+                    }
+                    className="text-sm text-blue-600 rounded-lg cursor-pointer">
+                        Clear All
+                    </button>
+                </div>
                 <CheckboxGroup
                 label="Employment Type"
                 options={employmentTypes}
@@ -165,7 +227,10 @@ const FindJob = () => {
                 />
             </div>
             <div className='w-full h-full flex flex-col gap-6 overflow-y-auto'>
-                <h2 className='text-4xl font-bold'>Recommended Jobs</h2>
+                <div className='flex justify-between items-baseline'>
+                    <h2 className='text-4xl font-bold'>Recommended Jobs</h2>
+                    <p className='text-sm text-neutral-500'>Sort by: <span className='text-black'>Most recent</span></p>
+                </div>
                 <div className='w-full flex items-center gap-4 flex-wrap'>
                     {jobs.length > 0 ? (
                         jobs.map((job) => <JobCard key={job._id} job={job} />)
