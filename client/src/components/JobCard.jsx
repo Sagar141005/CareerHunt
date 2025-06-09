@@ -68,12 +68,16 @@ const JobCard = ({ job }) => {
       </div>
       <div className='flex flex-col gap-3'>
         <div className='h-0.5 w-full bg-neutral-100'></div>
-        <div className='flex justify-between'>
-          <button className='cursor-pointer font-medium transition-all duration-200 hover:text-blue-600'>Details</button>
+        <div className='flex justify-between items-center'>
+          <Link 
+          to={`/jobs/${job._id}`}
+          className='cursor-pointer font-medium transition-all duration-200 hover:text-blue-600'>
+            Details
+          </Link>
           <Link
-            to={`/jobs/${job._id}`}
+            to={`/apply/${job._id}`}
             className='text-white font-medium bg-black py-2 px-4 rounded-lg'>
-            Apply Now
+            Apply with AI
           </Link>
         </div>
       </div>
