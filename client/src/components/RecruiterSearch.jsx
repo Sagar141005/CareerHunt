@@ -31,8 +31,8 @@ const RecruiterSearch = () => {
             try {
                 const response = await api.get(`/job-posts/search?q=${input}`);
                 setResults([
-                    ...(response.data.jobPosts || []),
-                    ...(response.data.applicants || [])
+                    ...(response.data.result.jobPosts || []),
+                    ...(response.data.result.applicants || [])
                 ]);
             } catch (error) {
                 console.error(error.response?.data || error.message);

@@ -20,6 +20,7 @@ import FindJob from "./pages/FindJob"
 import Saved from "./pages/Saved"
 import MyApplications from "./pages/MyApplications"
 import JobDetails from "./pages/JobDetails"
+import EditProfile from './pages/EditProfile'
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
       <Route path="/saved" element={<Saved />} />
       <Route path="/my-applications" element={<MyApplications />} />
       <Route path="/jobs/:jobId" element={<JobDetails />} />
+      <Route path="/edit" element={<EditProfile />} />
     </Routes>
     
   )

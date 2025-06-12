@@ -71,6 +71,7 @@ const JobCard = ({ job }) => {
         <div className='flex justify-between items-center'>
           <Link 
           to={`/jobs/${job._id}`}
+          state={{ job }}
           className='cursor-pointer font-medium transition-all duration-200 hover:text-blue-600'>
             Details
           </Link>
