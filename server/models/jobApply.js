@@ -50,10 +50,6 @@ const JobSchema = new mongoose.Schema({
             default: Date.now
         }
     }],
-    notes: {
-        type: String,
-        maxlength: 500
-    },
     dateApplied: {
         type: Date,
         default: Date.now

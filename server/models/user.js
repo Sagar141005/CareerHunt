@@ -6,10 +6,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        lowercase: true
     }, 
     profilePic: {
-        type: String
+        type: String,
+        trim: true,
     },
     bio: {
         type: String
@@ -30,6 +30,17 @@ const UserSchema = new mongoose.Schema({
         required: true,
         select: false,
         minlength: 8
+    },
+    designation: {
+        type: String,
+        trim: true,
+        default: '',
+    },
+    company: {
+        name: { type: String, trim: true, default: '' },
+        logoUrl: { type: String, trim: true, default: '' },
+        website: { type: String, trim: true, lowercase: true, default: '' },
+        location: { type: String, trim: true, default: '' },
     },
     role: {
         type: String,

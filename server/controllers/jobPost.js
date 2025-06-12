@@ -13,6 +13,9 @@ export const createJobPost = async (req, res) => {
             title,
             description,
             location,
+            salary,
+            openings,
+            employmentType,
             type,
             deadline,
             level,        
@@ -21,7 +24,7 @@ export const createJobPost = async (req, res) => {
         } = req.body;
 
 
-        if (!company || !title || !description || !type || !location) {
+        if (!company || !title || !description || !type || !location || !salary || !employmentType) {
             return res.status(400).json({ message: "Missing required fields." });
         }      
 
@@ -104,7 +107,7 @@ export const updateJobPost = async (req, res) => {
 
         await redis.del(`jobPost:${recruiterId}:${jobPostId}`);
         await redis.del(`jobPosts:${recruiterId}`);
-        await redis.del(`applications:${jobPostId._id}`);
+        await redis.del(`applications:${jobPostId}`);
 
         const keys = await redis.keys(`search:${recruiterId}:*`);
         if (keys.length) await redis.del(keys);
@@ -219,6 +222,8 @@ export const search = async (req, res) => {
             return res.status(400).json({ message: "Query is required" });
         }
 
+        const cacheKey = `search:${recruiterId}:${query.toLowerCase()}`;
+
         const result = await getOrSetCache(cacheKey, async () => {
             const jobPosts = await JobPost.find({
                 recruiter: recruiterId,
@@ -241,6 +246,8 @@ export const search = async (req, res) => {
 
             return { jobPosts, applicants: filteredApplicants };
         }, 30);
+
+        return res.status(200).json({ message: "Search results found", result });
     } catch (error) {
         return res.status(500).json({ message: "An error occurred", error: error.message });
     }
@@ -291,7 +298,7 @@ export const deleteJobPost = async (req, res) => {
 
         await redis.del(`jobPost:${recruiterId}:${jobPostId}`);
         await redis.del(`jobPosts:${recruiterId}`);
-        await redis.del(`applications:${jobPostId._id}`);
+        await redis.del(`applications:${jobPostId}`);
 
         const keys = await redis.keys(`search:${recruiterId}:*`);
         if (keys.length) await redis.del(keys);

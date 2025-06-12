@@ -1,9 +1,26 @@
 import { RiMapPinLine, RiSettings2Line, RiSparkling2Fill } from '@remixicon/react'
-import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext';
 
 const UserNavbar = () => {
   const location = useLocation();
+
+  const { user, loading } = useAuth();
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(!loading && !user) {
+            navigate('/login');
+        }
+    }, [ user, loading, navigate ]);
+
+
+
+    if(loading) {
+        return <p>Loading...</p>
+    }
 
   const navLinks = [
     { name: 'Home', path: '/dashboard' },
@@ -41,7 +58,7 @@ const UserNavbar = () => {
           <div className="flex items-center gap-1">
             <RiMapPinLine size={15} />
             <h3 className="text-sm text-neutral-100 font-light pt-1">
-              New York, NY
+              {user.location}
             </h3>
           </div>
           <div className="flex items-center gap-4">
@@ -49,9 +66,9 @@ const UserNavbar = () => {
             to='/profile'
             className="h-9 w-9 rounded-full overflow-hidden flex items-center justify-center">
               <img
-                className="w-full h-full rounded-full object-contain"
-                src="./Recruiter.jpg"
-                alt=""
+                className="w-full h-full rounded-full object-cover"
+                src={user.profilePic}
+                alt=''
               />
             </Link>
 

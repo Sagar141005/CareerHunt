@@ -3,6 +3,7 @@ import UserNavbar from '../components/UserNavbar'
 import api from '../api/axios'
 import JobCard from '../components/JobCard';
 import { Link } from 'react-router-dom';
+import ApplicationStagePanel from '../components/ApplicationStagePanel'
 
 const MyApplications = () => {
   const [ applications, setApplications ] = useState([]);
@@ -29,7 +30,8 @@ const MyApplications = () => {
   };
 
   applications.forEach(app => {
-    grouped[app.status]?.push(app);
+    const statusKey = app.status?.toLowerCase();
+    grouped[statusKey]?.push(app);
   });
 
   const stages = [
@@ -61,7 +63,7 @@ const MyApplications = () => {
             grouped[key]?.length > 0 ? (
               <ApplicationStagePanel key={key} title={label} jobs={grouped[key]}>
                 {grouped[key].map(job => (
-                  <JobCard job={job} key={job._id} />
+                  <JobCard job={{...job ,...job.jobPostId}} key={job._id} />
                 ))}
               </ApplicationStagePanel>
             ) : null

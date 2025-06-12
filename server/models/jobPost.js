@@ -35,6 +35,11 @@ const JobPostSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    openings: {
+        type: Number,
+        default: 1,
+        min: [1, 'At least one opening is required.']
+    },
     employmentType: {
         type: String,
         enum: ['Full-time', 'Part-time', 'Contract', 'Temporary', 'Freelance', 'Internship'],

@@ -65,6 +65,43 @@ export const profile = async (req, res) => {
     }
 }
 
+
+export const updateProfile = async (req, res) => {
+    try {
+        const id = req.user._id;
+        const { name, profilePic, bio, location, designation, company  } = req.body;
+
+        const updatedFields = {};
+
+        if (name !== undefined) updatedFields.name = name;
+        if (profilePic !== undefined) updatedFields.profilePic = profilePic;
+        if (bio !== undefined) updatedFields.bio = bio;
+        if (location !== undefined) updatedFields.location = location;
+        if (designation !== undefined) updatedFields.designation = designation;
+
+        if (company) {
+            updatedFields.company = {};
+            if (company.name !== undefined) updatedFields.company.name = company.name;
+            if (company.logoUrl !== undefined) updatedFields.company.logoUrl = company.logoUrl;
+            if (company.website !== undefined) updatedFields.company.website = company.website;
+            if (company.location !== undefined) updatedFields.company.location = company.location;
+        }
+
+        if(updatedFields.company && Object.keys(updatedFields.company).length === 0) {
+            delete updatedFields.company;
+        }
+
+        const updatedUser = await User.findByIdAndUpdate( id, updatedFields, {
+            new: true,
+            runValidators: true
+        });
+
+        return res.status(200).json({ message: "User updated successfully" });
+    } catch (error) {
+        return res.status(500).json({ message: "Error updating profile", error: error.message });
+    }
+}
+
 export const logoutUser = async (req, res) => {
     try {
         res.clearCookie('token', {
