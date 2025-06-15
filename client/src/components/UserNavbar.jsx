@@ -58,7 +58,7 @@ const UserNavbar = () => {
           <div className="flex items-center gap-1">
             <RiMapPinLine size={15} />
             <h3 className="text-sm text-neutral-100 font-light pt-1">
-              {user.location}
+              {user.location || 'Earth'}
             </h3>
           </div>
           <div className="flex items-center gap-4">
@@ -67,7 +67,7 @@ const UserNavbar = () => {
             className="h-9 w-9 rounded-full overflow-hidden flex items-center justify-center">
               <img
                 className="w-full h-full rounded-full object-cover"
-                src={user.profilePic}
+                src={user.profilePic || '/Recruiter.jpg'}
                 alt=''
               />
             </Link>

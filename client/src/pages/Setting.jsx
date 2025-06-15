@@ -33,7 +33,7 @@ const Settings = () => {
 
   const handleDeleteAccount = async () => {
     try {
-      await api.delete('/auth/delete-account');
+      await api.delete('/auth/delete');
       await logout();
       navigate('/signup');
     } catch (error) {
@@ -43,7 +43,9 @@ const Settings = () => {
 
   return (
     <div className="w-full h-screen bg-[#F2F2F2] flex">
-      <RecruiterPannel />
+      {user.role === 'recruiter' && (
+          <RecruiterPannel />
+      )}
       <div className="w-full p-8 space-y-12">
         <div>
           <h2 className="text-2xl font-extrabold">Settings</h2>

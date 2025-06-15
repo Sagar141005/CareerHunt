@@ -9,6 +9,9 @@ import jobPostRoutes from './routes/jobPost.js'
 import morgan from 'morgan';
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import session from 'express-session';
+import './config/passport.js';
+import passport from "passport";
 
 dotenv.config();
 connectDB();
@@ -29,6 +32,20 @@ app.use(cors({
 app.use(cookieParser());
 app.use(helmet());
 app.use(limiter);
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+      httpOnly: true
+    }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
@@ -42,7 +59,7 @@ app.get('/', (req, res) => {
     res.send("Hello World!");
 });
 
-app.use((err, req, res, nect) => {
+app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ message: "Internal server error" });
 })

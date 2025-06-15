@@ -113,8 +113,8 @@ const RecruiterDashboard = () => {
                 <img className='h-30 w-30 object-cover content-center rounded-full' src={user.profilePic || '/Recruiter.png'} alt="" />
                 <div className='flex flex-col items-center'>
                   <h3 className='text-lg font-bold text-neutral-950 max-w-[120px] truncate capitalize'>{user.name}</h3>
-                  <h3  className='text-md font-semibold text-neutral-700'>{user.company.name}</h3>
-                  <h4 className='text-xs font-medium text-neutral-500'>{user.role}</h4>
+                  <h3  className='text-md font-semibold text-neutral-700'>{user.company?.name}</h3>
+                  <h4 className='text-xs font-medium text-neutral-500 capitalize'>{user.role}</h4>
                 </div>
               </div>
             </div>

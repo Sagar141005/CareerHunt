@@ -57,7 +57,7 @@ import {
         <Link
           to="/profile"
           className="flex items-center gap-3 px-4 py-4 select-none border-t border-gray-200">
-            <div className='flex gap-4 items-center p-2 px-5 hover:bg-neutral-100 transition hover:rounded-3xl'>
+            <div className='flex gap-4 items-center p-2 w-70 px-5 hover:bg-neutral-100 transition rounded-3xl'>
                 <img
                 className="h-9 w-9 object-cover rounded-full ring-2 ring-gray-300"
                 src={user?.profilePic || '/Recruiter.png'}

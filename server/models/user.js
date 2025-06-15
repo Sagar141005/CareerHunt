@@ -27,9 +27,13 @@ const UserSchema = new mongoose.Schema({
     }, 
     password: {
         type: String,
-        required: true,
         select: false,
         minlength: 8
+    },
+    provider: {
+        type: String,
+        enum: ['local', 'google', 'github', 'linkedin'],
+        default: 'local'
     },
     designation: {
         type: String,
@@ -37,10 +41,10 @@ const UserSchema = new mongoose.Schema({
         default: '',
     },
     company: {
-        name: { type: String, trim: true, default: '' },
-        logoUrl: { type: String, trim: true, default: '' },
-        website: { type: String, trim: true, lowercase: true, default: '' },
-        location: { type: String, trim: true, default: '' },
+        name: { type: String, trim: true },
+        logoUrl: { type: String, trim: true },
+        website: { type: String, trim: true, lowercase: true },
+        location: { type: String, trim: true },
     },
     role: {
         type: String,
@@ -49,9 +53,10 @@ const UserSchema = new mongoose.Schema({
     }
 }, { timestamps: true, strict: true });
 
-UserSchema.pre("save", async function(next) {
-    if(!this.isModified('password')) return next();
-    this.password = await bcrypt.hash(this.password, 10);
+UserSchema.pre("save", async function (next) {
+    if (this.password && this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
     next();
 });
 

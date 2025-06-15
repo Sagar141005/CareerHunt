@@ -27,9 +27,15 @@ export const loginUser = async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email }).select('+password');
+
         if(!user) {
             return res.status(401).json({ message: "Invalid credentials"});
         }
+
+        if (user.provider !== 'local') {
+            return res.status(403).json({ message: `Please login using ${user.provider}` });
+        }
+
         const isMatch = await user.comparePassword(password);
         if(!isMatch) {
             return res.status(401).json({ message: "Invalid credentials"});
@@ -50,6 +56,55 @@ export const loginUser = async (req, res) => {
     }
 }
 
+export const storeRoleInSession = (req, res) => {
+    const { role } = req.body;
+    req.session.role = role;
+    res.status(200).json({ message: 'Role stored in session' });
+};
+
+export const socialLogin = async (req, res) => {
+    try {
+        const passportUser = req.user;
+
+        if(!passportUser || !passportUser.emails || !passportUser.emails.length) {
+            return res.status(400).json({ message: 'No email received from provider' });
+        } 
+
+        const email = passportUser.emails[0].value;
+        const name = passportUser.displayName || `${passportUser.name?.givenName || ''} ${passportUser.name?.familyName || ''}`.trim() || 'User';
+
+        let user = await User.findOne({ email });
+
+        if(!user) {
+            const role = req.session.role || 'jobseeker';
+            delete req.session.role;
+            user = new User({
+                name,
+                email,
+                role,
+                provider: passportUser.provider || 'google',
+                profilePic: passportUser.photos?.[0]?.value || ''
+            });
+
+            await user.save()
+        }
+
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+            expiresIn: '24h',
+        });
+      
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+            maxAge: 24 * 60 * 60 * 1000,
+        });
+
+        return res.redirect(`${process.env.VITE_URL}/dashboard`);
+    } catch (error) {
+        return res.status(500).json({ message: 'Social auth error', error: error.message });
+    }
+}
 
 export const profile = async (req, res) => {
     try {
@@ -113,5 +168,22 @@ export const logoutUser = async (req, res) => {
         return res.status(200).json({ message: "User logged out successfully" });
     } catch (error) {
         return res.status(500).json({ message: "Logout failed", error: error.message });
+    }
+}
+
+export const deleteUser = async (req, res) => {
+    try {
+        const id = req.user._id;
+
+        const user = await User.findById(id);
+        if(!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        await user.deleteOne();
+
+        return res.status(200).json({ message: "User deleted successfully" });
+    } catch (error) {
+        return res.status(500).json({ message: "Error deleting user", error: error.message });
     }
 }
