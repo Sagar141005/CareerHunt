@@ -17,7 +17,7 @@ const CurrentDate = () => {
 
   return (
     <div>
-      <h3 className='text-md text-neutral-600 font-medium mr-8'>{getCurrentDate()}</h3>
+      <h3 className='text-md text-neutral-600 font-medium'>{getCurrentDate()}</h3>
     </div>
   )
 }

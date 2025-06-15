@@ -6,7 +6,7 @@ const Applicant = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get('/job-posts/all');
+        const response = await api.get('/job-posts/applications/all');
         setUsers(response.data.applications || []);
         
       } catch (error) {
@@ -29,7 +29,7 @@ const Applicant = () => {
           <div>
             <img
               className='h-10 w-10 object-cover content-center rounded-full'
-              src={user.userId?.profileImage || 'https://via.placeholder.com/40'}
+              src={user.userId?.profilePic || 'https://via.placeholder.com/40'}
               alt={user.userId?.name || 'User'}
             />
           </div>

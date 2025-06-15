@@ -2,6 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios'
+import MDEditor from '@uiw/react-md-editor';
+
+
+
+const modules = {
+    toolbar: [
+      ['bold', 'italic', 'underline'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['link'],
+      ['clean']
+    ]
+  };
+  
 
 const EditProfile = () => {
 
@@ -123,113 +136,152 @@ const EditProfile = () => {
     }
 
   return (
-    <div className='w-full min-h-screen bg-[#F9F9F9] overflow-y-hidden'>
-      <div className='w-full h-full px-12 py-8 flex flex-col gap-6 items-center'>
-        <h2 className='text-4xl font-bold'>Edit Profile</h2>
-            <div className='w-2xl h-full px-12 py-8 bg-neutral-200 rounded-lg flex justify-center'>
-                <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-                    <label className='flex flex-col gap-1'>
-                        <span className='text-xl font-medium'>Name</span>
-                        <input 
-                        name='name'
-                        className='w-xl h-10 p-4 bg-white rounded-lg shadow-md' 
-                        type="text" 
-                        value={formData.name}
-                        onChange={handleChange} />
+    <div className="min-h-screen bg-gradient-to-tr from-[#F0F4FF] to-[#E6ECFF] py-12 px-6 sm:px-10">
+        <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-10 border border-neutral-200">
+            <h1 className="text-4xl font-bold text-gray-800 mb-10 text-center">Edit Your Profile</h1>
+
+            <form onSubmit={handleSubmit} className="space-y-12">
+            <div>
+                <h2 className="text-xl font-semibold text-blue-600 border-b border-gray-200 pb-2 mb-6">👤 Personal Info</h2>
+
+                <div className="grid sm:grid-cols-2 gap-6">
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Full Name</label>
+                    <input
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    type="text"
+                    className="w-full px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 bg-white capitalize"
+                    placeholder="e.g. John Doe"/>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Location</label>
+                    <input
+                    name="location"
+                    value={formData.location}
+                    onChange={handleChange}
+                    type="text"
+                    className="w-full px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 bg-white"
+                    placeholder="e.g. New York"/>
+                </div>
+
+                <div className="sm:col-span-2">
+                    <label className="flex flex-col gap-1">
+                            <span className="text-xl font-medium">Bio</span>
+                            <div className="bg-white rounded-lg shadow-md p-2">
+                                <MDEditor
+                                value={formData.bio}
+                                onChange={(value) => setFormData((prev) => ({ ...prev, bio: value || '' }))}
+                                preview="edit"          
+                                visibleDragbar={false} 
+                                height={400}            
+                                enableScroll={false}    
+                                fullscreen={false} />
+                            </div>
                     </label>
-                    <label className='flex flex-col gap-1'>
-                        <span className='text-xl font-medium'>Profile Picture</span>
-                        <input 
-                        name='profilePic'
-                        className='w-xl h-10 p-2 bg-white rounded-lg shadow-md' 
-                        type="file" 
-                        accept='image/*'
-                        onChange={handleImage}
-                         />
-                        {formData.profilePic && <img src={formData.profilePic} alt="Profile" className="h-16 w-16 mt-2 object-contain" />}
-                    </label>
-                    <label className='flex flex-col gap-1'>
-                        <span className='text-xl font-medium'>Bio</span>
-                        <input 
-                        name='bio'
-                        className='w-xl h-10 p-4 bg-white rounded-lg shadow-md' 
-                        type="text"
-                        value={formData.bio}
-                        onChange={handleChange}
-                         />
-                    </label>
-                    <label className='flex flex-col gap-1'>
-                        <span className='text-xl font-medium'>Location</span>
-                        <input 
-                        name='location'
-                        className='w-xl h-10 p-4 bg-white rounded-lg shadow-md' 
-                        type="text"
-                        value={formData.location}
-                        onChange={handleChange} />
-                    </label>
-                    {user.role === 'recruiter' && (
-                        <div>
-                            <label className='flex flex-col gap-1'>
-                                <span className='text-xl font-medium'>Designation</span>
-                                <input 
-                                name='designation'
-                                className='w-xl h-10 p-4 bg-white rounded-lg shadow-md' 
-                                type="text"
-                                value={formData.designation}
-                                onChange={handleChange} />
-                            </label>
-                            <div className='flex flex-col gap-4'>
-                            <h2 className='text-2xl font-medium my-6'>Company Details</h2>
-                            <label className='flex flex-col gap-1'>
-                                <span className='text-xl font-medium'>Company Name</span>
-                                <input 
-                                name='company.name'
-                                className='w-xl h-10 p-4 bg-white rounded-lg shadow-md' 
-                                type="text"
-                                value={formData.company.name}
-                                onChange={handleChange} />
-                            </label>
-                            <label className='flex flex-col gap-1'>
-                                <span className='text-xl font-medium'>Company Logo</span>
-                                <input 
-                                name='company.logoUrl'
-                                className='w-xl h-10 p-2 bg-white rounded-lg shadow-md' 
-                                type="file" 
-                                accept='image/*'
-                                onChange={handleImage} />
-                                {formData.company.logoUrl && <img src={formData.company.logoUrl} alt="Logo" className="h-16 w-16 mt-2 object-contain" />}
-                            </label>
-                            <label className='flex flex-col gap-1'>
-                                <span className='text-xl font-medium'>Website Link</span>
-                                <input 
-                                name='company.website'
-                                className='w-xl h-10 p-4 bg-white rounded-lg shadow-md' 
-                                type="text"
-                                value={formData.company.website}
-                                onChange={handleChange} />
-                            </label>
-                            <label className='flex flex-col gap-1'>
-                                <span className='text-xl font-medium'>Location</span>
-                                <input 
-                                name='company.location'
-                                className='w-xl h-10 p-4 bg-white rounded-lg shadow-md' 
-                                type="text"
-                                value={formData.company.location}
-                                onChange={handleChange} />
-                            </label>
-                        </div>
-                        </div>
-                        
-                    )}
-                    <div className='flex items-center gap-8 mt-6'>
-                        <Link to='/profile' className='text-lg border-[2px] border-black px-7 py-3 rounded-full'>Cancel</Link>
-                        <button type='submit' className='text-lg bg-blue-600 text-white px-7 py-3 rounded-full'>Update</button>
                     </div>
-                    
-                </form>
+
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Profile Picture</label>
+                    <input
+                    type="file"
+                    name="profilePic"
+                    accept="image/*"
+                    onChange={handleImage}
+                    className="block w-full text-sm file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"/>
+                    {formData.profilePic && (
+                    <img src={formData.profilePic} alt="Profile" className="mt-3 h-16 w-16 rounded-md border object-cover" />
+                    )}
+                </div>
+                </div>
             </div>
+
+            {user.role === 'recruiter' && (
+                <div>
+                <h2 className="text-xl font-semibold text-blue-600 border-b border-gray-200 pb-2 mb-6">🏢 Company Info</h2>
+
+                <div className="grid sm:grid-cols-2 gap-6">
+                    <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Designation</label>
+                    <input
+                        name="designation"
+                        value={formData.designation}
+                        onChange={handleChange}
+                        type="text"
+                        className="w-full px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 bg-white"
+                        placeholder="e.g. HR Manager"/>
+                    </div>
+
+                    <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Company Name</label>
+                    <input
+                        name="company.name"
+                        value={formData.company.name}
+                        onChange={handleChange}
+                        type="text"
+                        className="w-full px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 bg-white"
+                        placeholder="e.g. Google"/>
+                    </div>
+
+                    <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Company Website</label>
+                    <input
+                        name="company.website"
+                        value={formData.company.website}
+                        onChange={handleChange}
+                        type="text"
+                        className="w-full px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 bg-white"
+                        placeholder="https://example.com"/>
+                    </div>
+
+                    <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Company Location</label>
+                    <input
+                        name="company.location"
+                        value={formData.company.location}
+                        onChange={handleChange}
+                        type="text"
+                        className="w-full px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 bg-white"
+                        placeholder="e.g. San Francisco"/>
+                    </div>
+
+                    <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Company Logo</label>
+                    <input
+                        type="file"
+                        name="company.logoUrl"
+                        accept="image/*"
+                        onChange={handleImage}
+                        className="block w-full text-sm file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"/>
+                    {formData.company.logoUrl && (
+                        <img src={formData.company.logoUrl} alt="Company Logo" className="mt-3 h-16 w-16 rounded-md border object-contain" />
+                    )}
+                    </div>
+                </div>
+                </div>
+            )}
+
+            <div className="flex justify-end items-center gap-6 pt-6 border-t border-neutral-300">
+                <Link
+                to="/profile"
+                className="relative inline-flex items-center justify-center px-5 py-2.5 border border-gray-300 text-gray-700 font-medium bg-white rounded-lg shadow-sm hover:bg-gray-100 hover:shadow-md active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-all duration-200"
+>
+                Cancel
+                </Link>
+                <button
+                type="submit"
+                className="relative inline-flex items-center justify-center px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:bg-blue-700 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 transition-all duration-200 ease-in-out"
+>
+                Save Changes
+                </button>
+            </div>
+            </form>
         </div>
     </div>
+
+
   )
 }
 

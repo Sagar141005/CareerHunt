@@ -51,8 +51,8 @@ const RecruiterDashboard = () => {
     <div className='bg-[#F2F2F2] flex gap-6'>
       <RecruiterPannel />
       <div>
-        <div className='flex items-center justify-between'>
-          <h2 className='text-xl font-bold py-8'>Dashboard</h2>
+        <div className='flex items-center justify-between pr-8 py-6'>
+          <h2 className='text-2xl font-bold'>Dashboard</h2>
           <CurrentDate />
         </div>
         <div className='flex gap-4'>
@@ -110,10 +110,10 @@ const RecruiterDashboard = () => {
             <div className='bg-white w-42 h-70 mr-6 rounded-xl shadow-lg shadow-neutral-300 p-4'>
               <h3 className='text-xl font-bold mb-4'>Profile</h3>
               <div className='flex flex-col items-center gap-4'>
-                <img className='h-30 w-30 object-cover content-center rounded-full' src="./Recruiter.jpg" alt="" />
+                <img className='h-30 w-30 object-cover content-center rounded-full' src={user.profilePic || '/Recruiter.png'} alt="" />
                 <div className='flex flex-col items-center'>
-                  <h3 className='text-lg font-bold text-neutral-950'>{user.name}</h3>
-                  <h3  className='text-md font-semibold text-neutral-700'>Google</h3>
+                  <h3 className='text-lg font-bold text-neutral-950 max-w-[120px] truncate capitalize'>{user.name}</h3>
+                  <h3  className='text-md font-semibold text-neutral-700'>{user.company.name}</h3>
                   <h4 className='text-xs font-medium text-neutral-500'>{user.role}</h4>
                 </div>
               </div>

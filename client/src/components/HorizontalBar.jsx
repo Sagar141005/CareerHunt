@@ -5,7 +5,7 @@ const acquisitionStats = [
     { label: "Applications", value: 64, color: "#3B82F6" },
     { label: "Shortlisted", value: 18, color: "#22C55E" },
     { label: "On-hold", value: 10, color: "#FACC15" },
-    { label: "Rejected", value: 8, color: "#EF4444" },
+    { label: "Rejected", value: 8, color: "#FF6B6B" },
 ];
 
 const HorizontalBar = () => {
@@ -17,7 +17,7 @@ const HorizontalBar = () => {
 
     const counts = {
       "Applications": applications.length,
-      "ShortListed": applications.filter(app => app.status === 'ShortListed').length,
+      "Shortlisted": applications.filter(app => app.status === 'Shortlisted').length,
       "On-hold": applications.filter(app => app.status === "On-hold").length,
       "Rejected": applications.filter(app => app.status === "Rejected").length
     }

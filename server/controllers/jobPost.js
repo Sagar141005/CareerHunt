@@ -35,11 +35,14 @@ export const createJobPost = async (req, res) => {
             title,
             description,
             location,
+            salary,
+            openings,
+            employmentType,
             type,
             deadline,
-            level,
-            department,
-            tags
+            level,        
+            department,   
+            tags   
           };
           const jobPost = new JobPost(jobPostData);
           await jobPost.save();
@@ -86,7 +89,12 @@ export const getAllJobPosts = async (req, res) => {
             return res.status(404).json({ message: "No job posts found"});
         }
 
-        return res.status(200).json({ message: "Job posts found successfully", jobPosts });
+        const enrichedJobPosts = jobPosts.map(job => ({
+            ...job,
+            isOpen: job.isActive && job.deadline && new Date(job.deadline) > new Date()
+        }));
+
+        return res.status(200).json({ message: "Job posts found successfully", jobPosts: enrichedJobPosts });
     } catch (error) {
         return res.status(500).json({ message: "An error occurred", error: error.message });
     }
@@ -130,7 +138,12 @@ export const getApplicationsForJobPost = async (req, res) => {
         }
 
         const applications = await getOrSetCache(cacheKey, async () => {
-            return await Job.find({ jobPostId }).populate('userId', 'name email').lean();
+            return await Job.find({
+                jobPostId,
+                status: { $ne: null } 
+            })
+                .populate('userId', 'name email profilePic')
+                .lean();
         }, 60);
 
         return res.status(200).json({  applications });
@@ -139,42 +152,118 @@ export const getApplicationsForJobPost = async (req, res) => {
     }
 }
 
+export const getJobPostsWithApplications = async (req, res) => {
+    try {
+        const recruiterId = req.user._id;
+        const { since } = req.query;
+    
+        const sinceDate = since ? new Date(since) : null;
+        if (since && isNaN(sinceDate)) {
+            return res.status(400).json({ message: "Invalid 'since' date format." });
+        }
+
+        const jobPosts = await JobPost.find({ recruiter: recruiterId })
+            .select('_id title')
+            .lean();
+    
+        if (!jobPosts.length) {
+            return res.status(200).json({ jobPosts: [] });
+        }
+    
+        const jobPostIds = jobPosts.map(j => j._id);
+    
+        const filter = {
+            jobPostId: { $in: jobPostIds },
+            status: { $ne: null },  
+            };
+        if (sinceDate) {
+            filter.createdAt = { $gte: sinceDate };
+        }
+    
+        const applications = await Job.find(filter)
+            .select('createdAt status jobPostId')
+            .lean();
+    
+        const grouped = {};
+        for (const app of applications) {
+            const jobId = app.jobPostId.toString();
+            if (!grouped[jobId]) grouped[jobId] = [];
+            grouped[jobId].push(app);
+        }
+    
+        const result = jobPosts.map(post => ({
+            ...post,
+            applications: grouped[post._id.toString()] || []
+        }));
+    
+        return res.status(200).json({ jobPosts: result });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Failed to fetch job posts with applications",
+            error: error.message,
+        });
+    }
+  };
+  
+
 export const getJobApplications = async (req, res) => {
     try {
         const recruiterId = req.user._id;
-        const { statusQuery, since } = req.query;
-        const statusArray = statusQuery ? statusQuery.split(',') : [];
-        
-        const jobPosts = await JobPost.find({ recruiter: recruiterId }).lean();
-        if(jobPosts.length === 0) {
-            return res.status(404).json({ message: "No job posts found for this recruiter." });
-        }
-        const jobPostIds = jobPosts.map(job => job._id);
+        const { statusQuery, since, page = 1, limit = 20 } = req.query;
 
+        const jobPosts = await JobPost.find({ recruiter: recruiterId }).lean();
+        if (jobPosts.length === 0) {
+            return res.status(200).json({ applications: [] });
+        }
+
+        const jobPostIds = jobPosts.map(job => job._id);
         const filter = {
             jobPostId: { $in: jobPostIds }
         };
 
-        if(statusArray.length) {
-            filter.status = { $in: statusArray}
-        };
-        if(since) {
+        if (statusQuery) {
+            const normalizedStatuses = statusQuery.split(',').map(s =>
+                s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()
+            );
+            filter.status = { $in: normalizedStatuses };
+        } else {
+            filter.status = { $ne: null };
+        }
+
+        if (since) {
             const sinceDate = new Date(since);
-            if(isNaN(sinceDate)) {
+            if (isNaN(sinceDate)) {
                 return res.status(400).json({ message: "Invalid 'since' date format." });
             }
-            filter.createdAt = { $gte: sinceDate }
-        };
+            filter.createdAt = { $gte: sinceDate };
+        }
+
+        const skip = (parseInt(page) - 1) * parseInt(limit);
 
         const applications = await Job.find(filter)
-        .populate('userId', 'name email')
-        .populate('jobPostId', 'title company');
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(parseInt(limit))
+            .populate('userId', 'name email profilePic')
+            .populate('jobPostId', 'title company')
+            .lean();
 
-        return res.status(200).json({ applications });
+        return res.status(200).json({
+            applications,
+            meta: {
+                total: applications.length,
+                page: parseInt(page),
+                limit: parseInt(limit),
+            }
+        });
+
     } catch (error) {
-        return res.status(500).json({ message: "An error occurred while retrieving job applications", error: error.message });
+        return res.status(500).json({
+            message: "An error occurred while retrieving job applications",
+            error: error.message
+        });
     }
-}
+};
 
 export const getApplicationDetails = async(req, res) => {
     try {
@@ -225,6 +314,9 @@ export const search = async (req, res) => {
         const cacheKey = `search:${recruiterId}:${query.toLowerCase()}`;
 
         const result = await getOrSetCache(cacheKey, async () => {
+            const allJobPosts = await JobPost.find({ recruiter: recruiterId }).select('_id').lean();
+            const allJobPostIds = allJobPosts.map((job) => job._id);
+
             const jobPosts = await JobPost.find({
                 recruiter: recruiterId,
                 $or: [
@@ -234,17 +326,23 @@ export const search = async (req, res) => {
                 ]
             }).lean();
 
-            const jobIds = jobPosts.map(job => job._id);
+            let applicants = [];
 
-            const applicants = await Job.find({
-                jobPostId: { $in: jobIds }
-            }).populate('userId').populate('jobPostId').limit(10).lean();
+            if (allJobPostIds.length > 0) {
+                applicants = await Job.find({
+                  jobPostId: { $in: allJobPostIds },
+                  status: { $ne: null },
+                }).populate({
+                    path: 'userId',
+                    match: { name: { $regex: query, $options: 'i' } },
+                }).populate('jobPostId')
+                  .limit(10)
+                  .lean();
 
-            const filteredApplicants = applicants.filter(app =>
-                app.userId?.name?.toLowerCase().includes(query.toLowerCase())
-            );
+                applicants = applicants.filter(app => app.userId);
+            }
 
-            return { jobPosts, applicants: filteredApplicants };
+            return { jobPosts, applicants };
         }, 30);
 
         return res.status(200).json({ message: "Search results found", result });

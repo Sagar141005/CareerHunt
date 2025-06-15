@@ -22,3 +22,27 @@ html, body {
     animation: scroll-horizontal 30s linear infinite;
     width: max-content;
 }
+
+.w-md-editor {
+    background-color: white !important;
+    color: black !important;
+}
+
+@keyframes gradientBG {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  .animated-gradient-bg {
+    animation: gradientBG 8s ease-in-out infinite;
+    background: linear-gradient(-45deg, #6b73ff, #4a00e0, #000dff, #00ffea, #6b73ff);
+    background-size: 400% 400%;
+  }
+  

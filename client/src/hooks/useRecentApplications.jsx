@@ -1,33 +1,41 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import api from '../api/axios';
 
 const useRecentApplications = ({ days, status }) => {
-    const [ applications, setApplications ] = useState([]);
+    const [applications, setApplications] = useState([]);
 
     useEffect(() => {
+        let isMounted = true;
+
         const fetchApplications = async () => {
             try {
                 const sinceDate = new Date();
-                sinceDate.setDate(sinceDate.getDate() - days);
+                sinceDate.setDate(sinceDate.getDate() - Number(days));
                 const since = sinceDate.toISOString();
 
                 const params = new URLSearchParams();
-                if(status) {
+                if (status) {
                     const statuses = Array.isArray(status) ? status : [status];
-                    params.append('statusQuery', statuses.join(','));
+                    params.set('statusQuery', statuses.join(','));
                 }
-                params.append('since', since);
+                params.set('since', since);
 
                 const response = await api.get(`/job-posts/applications/all?${params.toString()}`);
-                setApplications(response.data.applications || []);
+                if (isMounted) {
+                    setApplications(response.data.applications || []);
+                }
             } catch (error) {
-                console.error("Error fetching job applications:", error);
+                if (isMounted) {
+                    console.error("Error fetching job applications:", error);
+                }
             }
-        }
+        };
 
         fetchApplications();
-    }, [days, status]);
-  return { applications };
-}
+        return () => { isMounted = false; };
+    }, [days, JSON.stringify(status)]);
 
-export default useRecentApplications
+    return { applications };
+};
+
+export default useRecentApplications;

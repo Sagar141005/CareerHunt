@@ -75,21 +75,41 @@ const Applicants = () => {
                         <MoonLoader color='#63b3ed' size={35} />
                     </div>
                 ) : (
-                    applicants.map((applicant, index) => {
+                    applicants.map((applicant, index) => (
                         <Link 
-                        to={`/applications/applicant/${applicant._id}`}
+                        to={`/applications/applicant/${applicant.userId._id}`}
                         key={index}
-                        className='flex items-center gap-4 px-6 py-4 hover:bg-neutral-100 transition-colors duration-200'>
-                            <img 
-                            className='h-10 w-10 object-cover rounded-full ring-1 ring-gray-400' 
-                            src='https://plus.unsplash.com/premium_photo-1664536392896-cd1743f9c02c?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' 
-                            alt='Applicant' />
-                            <div className='flex flex-col'>
-                                <h4 className='text-gray-800 font-medium text-base'>{applicant.name}</h4>
-                                <h5 className='text-sm text-gray-500'>View all applicant profiles</h5>
+                        className='flex justify-between items-center px-6 py-4 hover:bg-neutral-100 transition-colors duration-200 rounded-lg'>
+                            <div className='flex items-center gap-4'>
+                                <img 
+                                className='h-10 w-10 object-cover rounded-full ring-1 ring-gray-400' 
+                                src={applicant.userId.profilePic || '/Recruiter.png'} 
+                                alt='Applicant' />
+                                <div className='flex flex-col'>
+                                    <h4 className='text-gray-800 font-medium text-base'>
+                                        {applicant.userId.name}
+                                    </h4>
+                                    <h5 className='text-sm text-gray-500 cursor-pointer hover:underline'>
+                                        View full profile
+                                    </h5>
+                                </div>
                             </div>
+                            {applicant.status && (
+                                <span className={`text-xs px-3 py-1 rounded-full font-semibold 
+                                ${applicant.status === 'Applied' ? 'bg-blue-100 text-[#3B82F6]' :
+                                    applicant.status === 'Shortlisted' ? 'bg-green-100 text-[#22C55E]' :
+                                    applicant.status === 'On-hold' ? 'bg-yellow-100 text-[#FACC15]' :
+                                    applicant.status === 'Interview' ? 'bg-purple-100 text-[#8B5CF6]' :
+                                    applicant.status === 'Hired' ? 'bg-orange-100 text-[#FB923C]' :
+                                    applicant.status === 'Rejected' ? 'bg-red-100 text-[#FF6B6B]' :
+                                    'bg-gray-100 text-gray-600'
+                                }`}>
+                                {applicant.status}
+                                </span>
+                            )}
                         </Link>
-                    })
+
+                    ))
                 )}
             </div>
         </div>

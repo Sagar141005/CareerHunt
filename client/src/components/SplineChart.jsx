@@ -28,7 +28,7 @@ const AreaChartWithFilter = () => {
         const sinceDate = new Date();
         sinceDate.setDate(sinceDate.getDate() - timeRange);
         const since = sinceDate.toISOString();
-        const res = await api.get(`/job-posts/all?since=${since}`);
+        const res = await api.get(`/job-posts/applications/chart?since=${since}`);
         setJobPosts(res.data.jobPosts || []);
       } catch (err) {
         console.error("Error fetching job posts:", err);
@@ -61,7 +61,7 @@ const AreaChartWithFilter = () => {
 
         if (!labelSet.has(dateLabel)) continue;
 
-        const status = app.status.toLowerCase();
+        const status = app.status?.toLowerCase();
         const data = grouped[jobId].chartData;
 
         switch (status) {
