@@ -1,202 +1,351 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../api/axios'
-import { useAuth } from '../context/AuthContext';
+import MDEditor from '@uiw/react-md-editor';
+import api from '../api/axios';
 
 const PostJob = () => {
-    const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-    const [ company, setCompany ] = useState('');
-    const [ companyLogo, setCompanyLogo ] = useState(null);
-    const [ title, setTitle ] = useState('');
-    const [ description, setDescription ] = useState('');
-    const [ location, setLocation ] = useState('');
-    const [ type, setType ] = useState('');
-    const [ deadline, setDeadline ] = useState('');
+  const [formData, setFormData] = useState({
+    jobTitle: '',
+    jobDescription: '',
+    location: '',
+    jobType: 'full-time',
+    salaryRange: '',
+    numberOfOpenings: 1,
+    employmentType: 'full-time',
+    jobLevel: 'Mid',
+    department: 'Other',
+    applicationDeadline: '',
+    tags: '',
+    companyName: '',
+    companyWebsite: '',
+    companyLogo: '',
+  });
 
-    const navigate = useNavigate();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-    useEffect(() => {
-        if(!loading && !user) {
-            navigate('/login');
-        }
-    }, [ user, loading, navigate ]);
+  const handleLogoUpload = async (e) => {
+    if (!e.target.files?.[0]) return;
+    const file = e.target.files[0];
+    const formDataUpload = new FormData();
+    formDataUpload.append('file', file);
+    formDataUpload.append('upload_preset', import.meta.env.VITE_UPLOAD_PRESET);
 
-    useEffect(() => {
-        if (user && user.role !== 'recruiter') {
-          navigate('/dashboard');
-          console.error("Not Authenticated");
-        }
-      }, [user, navigate]);
-
-    async function handleSubmit(e) {
-        e.preventDefault();
-
-        let uploadedImageURL = '';
-
-        if(companyLogo) {
-            const imageFormData = new FormData();
-            imageFormData.append('file', companyLogo);
-            imageFormData.append('upload_preset', import.meta.env.VITE_UPLOAD_PRESET);
-
-            const cloudinaryRes = await fetch(
-                import.meta.env.VITE_CLOUDINARY_URL,
-                {
-                    method: 'POST',
-                    body: imageFormData
-                }
-            );
-
-            const cloudinaryData = await cloudinaryRes.json();
-            uploadedImageURL = cloudinaryData.secure_url;
-        }
-
-
-        try {
-            const response = await api.post('/job-posts/create', {
-                company,
-                companyLogo: uploadedImageURL,
-                title,
-                description,
-                location,
-                type,
-                deadline
-            });
-
-            navigate('/dashboard');
-            
-        } catch (error) {
-            console.error(error.response?.data || error.message);
-        }
-
+    try {
+      setLoading(true);
+      const res = await fetch(import.meta.env.VITE_CLOUDINARY_URL, {
+        method: 'POST',
+        body: formDataUpload,
+      });
+      const data = await res.json();
+      setFormData((prev) => ({ ...prev, companyLogo: data.secure_url }));
+    } catch (error) {
+      console.error('Upload failed', error);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    if(loading) {
-        return <p>Loading...</p>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await api.post('/jobs', formData);
+      navigate('/jobs');
+    } catch (error) {
+      console.error('Post job error:', error.response?.data || error.message);
+    } finally {
+      setLoading(false);
     }
-
+  };
 
   return (
-    <div className='w-full min-h-screen flex flex-col items-center justify-center gap-10'>
-        <h1 className='text-4xl font-extrabold text-[#1A1C1F]'>Job Details</h1>
-      <form onSubmit={handleSubmit} className='flex flex-col items-start gap-2'>
-        <div className='flex flex-col items-start gap-1'>
-            <label 
-                className='text-md font-medium text-neutral-900' 
-                htmlFor="company">
-                    Company Name<span className='text-red-600'>*</span>
-            </label>
-            <input 
-                className='bg-white rounded-lg text-black text-sm w-3xl py-2 px-4 border-1 border-neutral-300' 
-                type="text"
-                placeholder='ABC company'
-                name='company'
-                id='company'
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                required />
-        </div>
-        <div className='flex flex-col items-start gap-1'>
-            <label 
-                className='text-md font-medium text-neutral-900' 
-                htmlFor="companyLogo">
-                    Company Logo<span className='text-red-600'>*</span>
-            </label>
-            <input 
-                className='bg-white rounded-lg text-black text-sm  w-3xl py-2 px-4 border-1 border-neutral-300' 
-                type="file"
-                accept='image/*'
-                name='companyLogo'
-                id='companyLogo'
-                onChange={(e) => setCompanyLogo(e.target.files[0])}
-                required />
-        </div>
-        <div className='flex flex-col items-start gap-1'>
-            <label 
-                className='text-md font-medium text-neutral-900' 
-                htmlFor="title">
-                    Title<span className='text-red-600'>*</span>
-            </label>
-            <input 
-                className='bg-white rounded-lg text-black text-sm  w-3xl py-2 px-4 border-1 border-neutral-300' 
-                type="text"
-                name='title'
-                id='title'
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required />
-        </div>
-        <div className='flex flex-col items-start gap-1'>
-            <label 
-                className='text-md font-medium text-neutral-900' 
-                    htmlFor="description">
-                        Description<span className='text-red-600'>*</span>
-                </label>
-            <textarea 
-                className='bg-white rounded-lg text-black text-sm  w-3xl py-2 px-4 border-1 border-neutral-300 resize-none' 
-                rows={6}
-                name='description'
-                id='description'
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required />
-        </div>
-        <div className='flex flex-col items-start gap-1'>
-            <label 
-                className='text-md font-medium text-neutral-900' 
-                htmlFor="location">
-                    Location
-            </label>
-            <input 
-                className='bg-white rounded-lg text-black text-sm  w-3xl py-2 px-4 border-1 border-neutral-300' 
-                type="text"
-                name='location'
-                id='location'
-                value={location}
-                onChange={(e) => setLocation(e.target.value)} />
-        </div>
-        <div className='flex flex-col items-start gap-1'>
-            <label 
-                className='text-md font-medium text-neutral-900' 
-                htmlFor="jobType">
-                    Job Type<span className='text-red-600'>*</span>
-            </label>
-            <select 
-                className='bg-white rounded-lg text-black w-3xl py-2 px-4 border-1 border-neutral-300' 
-                name="type" 
-                id="type"
-                value={type}
-                onChange={(e) => setType(e.target.value)}>
-                    <option value="">Please choose an option</option>
-                    <option value="On-site">On-site</option>
-                    <option value="Remote">Remote</option>
-                    <option value="Hybrid">Hybrid</option>
-            </select>
-        </div>
-        <div className='flex flex-col items-start gap-1'>
-            <label 
-                className='text-md font-medium text-neutral-900' 
-                htmlFor="deadline">
-                    Deadline<span className='text-red-600'>*</span>
-            </label>
-            <input 
-                className='bg-white rounded-lg text-black w-60 py-1 px-4 border-1 border-neutral-300' 
-                type="date" 
-                name='deadline'
-                id='deadline'
-                value={deadline}
-                onChange={(e) => setDeadline(e.target.value)}/>
-        </div>
-        <div className=''>
-            <button 
-                type='submit' 
-                className='mt-4 bg-black text-white px-8 py-3 rounded-lg'>
-                    Post
-            </button>
-        </div>
-      </form>
-    </div>
-  )
-}
+    <div className="min-h-screen bg-gradient-to-tr from-[#F0F4FF] to-[#E6ECFF] py-12 px-6 sm:px-10">
+      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-10 border border-neutral-200">
+        <h1 className="text-4xl font-bold text-gray-800 mb-10 text-center">Post a New Job</h1>
 
-export default PostJob
+        <form onSubmit={handleSubmit} className="space-y-10" data-color-mode="light">
+          <div>
+            <label className="mb-2 font-semibold text-gray-700" htmlFor="jobTitle">
+              Job Title <span className="text-red-600">*</span>
+            </label>
+            <div>
+                <input
+                    type="text"
+                    id="jobTitle"
+                    name="jobTitle"
+                    value={formData.jobTitle}
+                    onChange={handleChange}
+                    placeholder="e.g. Senior Frontend Developer"
+                    className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 pr-10"
+                    required />
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-2 font-semibold text-gray-700" htmlFor="jobDescription">
+              Job Description <span className="text-red-600">*</span>
+            </label>
+            <div className="bg-white rounded-lg border border-gray-300">
+              <MDEditor
+                value={formData.jobDescription}
+                onChange={(value) =>
+                  setFormData((prev) => ({ ...prev, jobDescription: value || '' }))
+                }
+                height={280}
+                preview="edit"
+                visibleDragbar={false}
+                fullscreen={false}
+                data-color-mode="light" />
+            </div>
+          </div>
+
+          <div className="flex gap-6">
+            <div className="w-1/2">
+              <label className="mb-2 font-semibold text-gray-700" htmlFor="location">
+                Location <span className="text-red-600">*</span>
+              </label>
+              <div>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  placeholder="e.g. Remote or New York"
+                  className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 pr-10"
+                  required />
+              </div>
+            </div>
+
+            <div className="w-1/2">
+              <label className="mb-2 font-semibold text-gray-700" htmlFor="jobType">
+                Job Type <span className="text-red-600">*</span>
+              </label>
+              <select
+                id="jobType"
+                name="jobType"
+                value={formData.jobType}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
+                required>
+                <option value="full-time">Full-time</option>
+                <option value="part-time">Part-time</option>
+                <option value="contract">Contract</option>
+                <option value="internship">Internship</option>
+                <option value="temporary">Temporary</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex gap-6">
+            <div className="w-1/2">
+              <label className="mb-2 font-semibold text-gray-700" htmlFor="salaryRange">
+                Salary (annual) (Optional)
+              </label>
+              <input
+                type="number"
+                min="0"
+                id="salaryRange"
+                name="salaryRange"
+                value={formData.salaryRange}
+                onChange={handleChange}
+                placeholder="e.g. 70000"
+                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500" />
+            </div>
+
+            <div className="w-1/2">
+              <label className="mb-2 font-semibold text-gray-700" htmlFor="numberOfOpenings">
+                Number of Openings <span className="text-red-600">*</span>
+              </label>
+              <input
+                type="number"
+                min="1"
+                id="numberOfOpenings"
+                name="numberOfOpenings"
+                value={formData.numberOfOpenings}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
+                required />
+            </div>
+          </div>
+
+
+          <div className="flex gap-6">
+            <div className="w-1/2">
+              <label className="mb-2 font-semibold text-gray-700" htmlFor="employmentType">
+                Employment Type <span className="text-red-600">*</span>
+              </label>
+              <select
+                id="employmentType"
+                name="employmentType"
+                value={formData.employmentType}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
+                required>
+                <option value="full-time">Full-time</option>
+                <option value="part-time">Part-time</option>
+                <option value="contract">Contract</option>
+                <option value="internship">Internship</option>
+                <option value="temporary">Temporary</option>
+              </select>
+            </div>
+
+            <div className="w-1/2">
+              <label className="mb-2 font-semibold text-gray-700" htmlFor="jobLevel">
+                Job Level <span className="text-red-600">*</span>
+              </label>
+              <select
+                id="jobLevel"
+                name="jobLevel"
+                value={formData.jobLevel}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
+                required>
+                <option>Entry</option>
+                <option>Mid</option>
+                <option>Senior</option>
+                <option>Lead</option>
+                <option>Director</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-2 font-semibold text-gray-700" htmlFor="department">
+              Department <span className="text-red-600">*</span>
+            </label>
+            <select
+              id="department"
+              name="department"
+              value={formData.department}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
+              required>
+              <option>Engineering</option>
+              <option>Design</option>
+              <option>Marketing</option>
+              <option>Sales</option>
+              <option>Human Resources</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="mb-2 font-semibold text-gray-700" htmlFor="applicationDeadline">
+              Application Deadline <span className="text-red-600">*</span>
+            </label>
+            <input
+              type="date"
+              id="applicationDeadline"
+              name="applicationDeadline"
+              value={formData.applicationDeadline}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 font-semibold text-gray-700" htmlFor="tags">
+              Tags (comma separated)
+            </label>
+            <input
+              type="text"
+              id="tags"
+              name="tags"
+              value={formData.tags}
+              onChange={handleChange}
+              placeholder="e.g. React, JavaScript, Remote"
+              className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"/>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-semibold text-blue-600 mb-6 border-b border-gray-200 pb-2">
+              Company Information
+            </h2>
+
+            <div className="space-y-6">
+              <div className="w-full">
+                <label className="mb-2 font-semibold text-gray-700" htmlFor="companyName">
+                  Company Name <span className="text-red-600">*</span>
+                </label>
+                <div>
+                  <input
+                    type="text"
+                    id="companyName"
+                    name="companyName"
+                    value={formData.companyName}
+                    onChange={handleChange}
+                    placeholder="e.g. Acme Corp"
+                    className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 pr-10"
+                    required />
+                </div>
+              </div>
+
+              <div className="">
+                <label className="mb-2 font-semibold text-gray-700" htmlFor="companyWebsite">
+                  Company Website
+                </label>
+                <div>
+                  <input
+                    type="url"
+                    id="companyWebsite"
+                    name="companyWebsite"
+                    value={formData.companyWebsite}
+                    onChange={handleChange}
+                    placeholder="https://example.com"
+                    className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 pr-10" />
+                </div>
+              </div>
+
+              {formData.companyLogo && (
+                <div className="w-1/2">
+                  <img
+                    src={formData.companyLogo}
+                    alt="Company Logo Preview"
+                    className="h-24 w-24 rounded-md border object-cover" />
+                </div>
+              )}
+
+              <div className="w-full flex items-center gap-6 mt-4">
+                <label
+                  htmlFor="companyLogo"
+                  className="flex items-center gap-2 cursor-pointer px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow hover:bg-blue-700 transition">
+                  <span>{formData.companyLogo ? 'Change Logo' : 'Upload Company Logo'}</span>
+                </label>
+                <input
+                  id="companyLogo"
+                  name="companyLogo"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLogoUpload}
+                  className="hidden" />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-10 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3">
+              {loading ? (
+                    <h3>Posting...</h3>
+              ) : (
+                <h3>Post Job</h3>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default PostJob;

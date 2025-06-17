@@ -28,6 +28,6 @@ passport.use(new LinkedinStrategy({
     clientID: process.env.LINKEDIN_CLIENT_ID,
     clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
     callbackURL: `${BASE_URL}/auth/linkedin/callback`,
-    scope: [ 'r_emailaddress', 'r_liteprofile' ],
+    scope: ['r_liteprofile', 'r_emailaddress'],
     state: true
 }, (accessToken, refreshToken, profile, done) => done(null, profile)));
