@@ -1,5 +1,5 @@
 import express from "express";
-import { deleteUser, loginUser, logoutUser, profile, signupUser, socialLogin, storeRoleInSession, updateProfile } from '../controllers/user.js';
+import { changePassword, deleteUser, loginUser, logoutUser, profile, signupUser, socialLogin, storeRoleInSession, updateProfile } from '../controllers/user.js';
 import { protectAndVerifyRole, validateRequest } from "../middlewares/authMiddleware.js";
 import { loginValidator, signupValidator } from "../validators/user.js";
 import passport from "passport";
@@ -26,6 +26,8 @@ router.get('/profile', protectAndVerifyRole(['jobseeker', 'recruiter']), profile
 router.put('/profile', protectAndVerifyRole(['jobseeker', 'recruiter']), updateProfile);
 
 router.post('/logout', logoutUser);
+
+router.patch('/change-password', protectAndVerifyRole(['jobseeker', 'recruiter']), changePassword);
 
 router.delete('/delete', protectAndVerifyRole(['jobseeker', 'recruiter']), deleteUser)
 

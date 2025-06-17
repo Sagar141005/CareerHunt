@@ -10,6 +10,7 @@ export const createJobPost = async (req, res) => {
         const {
             company,
             companyLogo,
+            companyWebsite,
             title,
             description,
             location,
@@ -32,6 +33,7 @@ export const createJobPost = async (req, res) => {
             recruiter: recruiterId,
             company,
             companyLogo,
+            companyWebsite,
             title,
             description,
             location,
@@ -105,7 +107,7 @@ export const updateJobPost = async (req, res) => {
         const recruiterId = req.user._id;
         const { jobPostId } = req.params;
 
-        const allowedUpdates = ['title', 'description', 'company', 'companyLogo', 'location', 'type', 'deadline', 'tags', 'level', 'department', 'isActive'];
+        const allowedUpdates = ['title', 'description', 'company', 'companyLogo', 'companyWebsite','location', 'type', 'deadline', 'tags', 'level', 'department', 'isActive'];
         const filteredData = Object.fromEntries(Object.entries(req.body).filter(([key]) => allowedUpdates.includes(key)));
 
         const updatedJobPost = await JobPost.findOneAndUpdate({ _id: jobPostId, recruiter: recruiterId }, filteredData, { new: true });

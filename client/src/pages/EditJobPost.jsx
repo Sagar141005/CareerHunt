@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
 import api from '../api/axios';
-import { useAuth } from '../context/AuthContext'
 
-const PostJob = () => {
-    const { user } = useAuth();
-
+const EditJobPost = () => {
+  const { jobId } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -22,10 +19,40 @@ const PostJob = () => {
     department: 'Other',
     deadline: '',
     tags: '',
-    companyName: '',
+    company: '',
     companyWebsite: '',
     companyLogo: '',
   });
+
+  useEffect(() => {
+    const fetchJobData = async () => {
+      try {
+        const response = await api.get(`/job-posts/${jobId}`);
+        const job = response.data.jobPost;
+
+        setFormData({
+          title: job.title || '',
+          description: job.description || '',
+          location: job.location || '',
+          type: job.type || 'full-time',
+          salary: job.salary || '',
+          openings: job.openings || 1,
+          employmentType: job.employmentType || 'full-time',
+          level: job.level || 'Mid',
+          department: job.department || 'Other',
+          deadline: job.deadline?.split('T')[0] || '',
+          tags: job.tags?.join(', ') || '',
+          company: job.company || '',
+          companyWebsite: job.companyWebsite || '',
+          companyLogo: job.companyLogo || '',
+        });
+      } catch (error) {
+        console.error('Error fetching job data:', error);
+      }
+    };
+
+    fetchJobData();
+  }, [jobId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,8 +60,9 @@ const PostJob = () => {
   };
 
   const handleLogoUpload = async (e) => {
-    if (!e.target.files?.[0]) return;
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
+    if (!file) return;
+
     const formDataUpload = new FormData();
     formDataUpload.append('file', file);
     formDataUpload.append('upload_preset', import.meta.env.VITE_UPLOAD_PRESET);
@@ -48,7 +76,7 @@ const PostJob = () => {
       const data = await res.json();
       setFormData((prev) => ({ ...prev, companyLogo: data.secure_url }));
     } catch (error) {
-      console.error('Upload failed', error);
+      console.error('Logo upload failed:', error);
     } finally {
       setLoading(false);
     }
@@ -57,34 +85,28 @@ const PostJob = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      await api.post('/jobs', formData);
-      navigate('/jobs');
+      await api.put(`/job-posts/${jobId}`, {
+        ...formData,
+        tags: formData.tags.split(',').map(tag => tag.trim()),
+      });
+      navigate('/job/posts');
     } catch (error) {
-      console.error('Post job error:', error.response?.data || error.message);
+      console.error('Update job error:', error.response?.data || error.message);
     } finally {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (user?.role === 'recruiter' && user.company) {
-        setFormData((prev) => ({
-          ...prev,
-          companyName: user.company.name || '',
-          companyWebsite: user.company.website || '',
-          companyLogo: user.company.logoUrl || '',
-        }));
-    }
-  }, [user])
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-tr from-[#F0F4FF] to-[#E6ECFF] py-12 px-6 sm:px-10">
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-10 border border-neutral-200">
-        <h1 className="text-4xl font-bold text-gray-800 mb-10 text-center">Post a New Job</h1>
+        <h1 className="text-4xl font-bold text-gray-800 mb-10 text-center">Edit Job Post</h1>
 
         <form onSubmit={handleSubmit} className="space-y-10" data-color-mode="light">
-          <div>
+        <div>
             <label className="mb-2 font-semibold text-gray-700" htmlFor="title">
               Job Title <span className="text-red-600">*</span>
             </label>
@@ -286,15 +308,15 @@ const PostJob = () => {
 
             <div className="space-y-6">
               <div className="w-full">
-                <label className="mb-2 font-semibold text-gray-700" htmlFor="companyName">
+                <label className="mb-2 font-semibold text-gray-700" htmlFor="company">
                   Company Name <span className="text-red-600">*</span>
                 </label>
                 <div>
                   <input
                     type="text"
-                    id="companyName"
-                    name="companyName"
-                    value={formData.companyName}
+                    id="company"
+                    name="company"
+                    value={formData.company}
                     onChange={handleChange}
                     placeholder="e.g. Acme Corp"
                     className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 pr-10"
@@ -349,11 +371,7 @@ const PostJob = () => {
               type="submit"
               disabled={loading}
               className="px-10 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3">
-              {loading ? (
-                    <h3>Posting...</h3>
-              ) : (
-                <h3>Post Job</h3>
-              )}
+              {loading ? <h3>Updating...</h3> : <h3>Update Job</h3>}
             </button>
           </div>
         </form>
@@ -362,4 +380,4 @@ const PostJob = () => {
   );
 };
 
-export default PostJob;
+export default EditJobPost;

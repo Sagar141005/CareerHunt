@@ -17,6 +17,9 @@ const JobPostSchema = new mongoose.Schema({
     companyLogo: { 
         type: String 
     },
+    companyWebsite: { 
+        type: String 
+    },
     description: {
         type: String,
         required: true,

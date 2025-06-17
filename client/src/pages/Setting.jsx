@@ -23,7 +23,7 @@ const Settings = () => {
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     try {
-      await api.put('/auth/change-password', passwords);
+      await api.patch('/auth/change-password', passwords);
       alert('Password updated successfully.');
       setPasswords({ oldPassword: '', newPassword: '' });
     } catch (error) {

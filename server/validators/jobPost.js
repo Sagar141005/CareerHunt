@@ -45,7 +45,7 @@ export const updateJobPostValidator = [
       .optional().isString().withMessage("Title must be a string"),
 
     body('description')
-      .optional().isString().isLength({ min: 10, max: 500 })
+      .optional().isString().isLength({ min: 10 })
       .withMessage("Description must be between 10 and 500 characters"),
 
     body('location')
