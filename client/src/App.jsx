@@ -21,6 +21,10 @@ import Saved from "./pages/Saved"
 import MyApplications from "./pages/MyApplications"
 import JobDetails from "./pages/JobDetails"
 import EditProfile from './pages/EditProfile'
+import EditJobPost from "./pages/EditJobPost"
+import Apply from "./pages/Apply"
+import Resumes from "./pages/Resumes"
+import ErrorBoundary from "./components/ErrorBoundary"
 
 
 function App() {
@@ -34,6 +38,7 @@ function App() {
       <Route path="/dashboard" element={<Dashboard/>} />
       <Route path="/setting" element={<Setting/>} />
       <Route path="/post/job" element={<PostJob />} />
+      <Route path="/post/job/edit/:jobId" element={<EditJobPost />} />
       <Route path="/job/posts" element={<JobPosts />} />
       <Route path="/applications" element={<Applications />} />
       <Route path="/applications/applicants/:jobId" element={<Applicants />} />
@@ -43,6 +48,12 @@ function App() {
       <Route path="/my-applications" element={<MyApplications />} />
       <Route path="/jobs/:jobId" element={<JobDetails />} />
       <Route path="/edit" element={<EditProfile />} />
+      <Route path="/apply/:jobId" element={<Apply />} />
+      <Route path="/resume" element={
+        <ErrorBoundary>
+          <Resumes />
+        </ErrorBoundary>
+      } />
     </Routes>
     
   )

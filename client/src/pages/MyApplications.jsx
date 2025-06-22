@@ -13,7 +13,7 @@ const MyApplications = () => {
           try {
               const response = await api.get('/applications/applied/all');
               setApplications(response.data.jobs);
-          } catch (error) {
+          } catch (error) { 
               console.error(error.response?.data || error.message);
           }
       }
@@ -45,7 +45,7 @@ const MyApplications = () => {
   const hasApplications = stages.some(({ key }) => grouped[key]?.length > 0);
 
   return (
-    <div className='w-full min-h-screen relative bg-[##F9F9F9] overflow-y-hidden'>
+    <div className='w-full min-h-screen relative bg-[#F9F9F9] overflow-y-hidden'>
       <UserNavbar />
       <div className='w-full h-full px-12 py-8 flex flex-col gap-6'>
         <div className='flex justify-between items-baseline'>

@@ -71,8 +71,8 @@ const FindJob = () => {
                 if(typeQuery) queryParams.append('typeQuery', typeQuery);
                 if(levelQuery) queryParams.append('levelQuery', levelQuery);
 
-                // queryParams.append('minSalary', range[0]);
-                // queryParams.append('maxSalary', range[1]);
+                queryParams.append('minSalary', range[0]);
+                queryParams.append('maxSalary', range[1]);
 
                 const response = await api.get(`/applications/all?${queryParams.toString()}`);
                 setJobs(response.data.jobs);

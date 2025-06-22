@@ -27,6 +27,7 @@ const UserNavbar = () => {
     { name: 'Find Job', path: '/jobs' },
     { name: 'Saved', path: '/saved' },
     { name: 'Applications', path: '/my-applications' },
+    { name: 'Resume', path: '/resume' },
   ];
 
   return (

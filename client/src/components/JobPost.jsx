@@ -46,14 +46,14 @@ const JobPost = ({ job }) => {
       <div className="h-px bg-neutral-100 mb-4"></div>
 
       <div className="flex justify-between items-center">
-        <button
-          onClick={() => navigate(`/edit/job/${job._id}`)}
-          className="text-sm font-medium bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition-colors">
+        <Link
+          to={`/post/job/edit/${job._id}`}
+          className="text-sm font-medium bg-black text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black border border-black transition-colors">
           Edit
-        </button>
+        </Link>
         <Link
           to={`/applications/applicants/${job._id}`}
-          className="text-sm font-medium bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+          className="text-sm font-medium bg-blue-600 text-white py-2 px-4 rounded-lg border border-blue-600 hover:border-blue-700 hover:bg-blue-700 transition-colors">
           View Applicants
         </Link>
       </div>

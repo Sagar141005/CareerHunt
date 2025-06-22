@@ -16,21 +16,58 @@ const ResumeSchema = new mongoose.Schema({
         required: true
     },
     content: {
-        type: String 
+        type: String,
+        required: true
     },
-    score: {
-        type: Number
-    },
-    insights: {
-        keywords: [String],
-        matchedSkills: [String],
-        suggestions: String
-    },
-    version: {
-        type: Number,
-        default: 1
-    }
+    versions: [
+        {
+            versionNumber: {
+                type: Number,
+                required: true,
+            },
+            content: {
+                type: String,
+                required: true
+            },
+            type: {
+                type: String,
+                enum: ['generalImproved', 'jobSpecific'],
+                required: true
+            },
+            job: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'JobPost',
+                required: false
+            }, 
+            createdAt : {
+                type: Date,
+                default: Date.now
+            }
+        }
+    ],
+    coverLetters: [
+        {
+            versionNumber: {
+                type: Number,
+                required: true
+            }, 
+            content: {
+                type: String, 
+                required: true
+            },
+            job: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'JobPost',
+                required: false
+            }, 
+            createdAt : {
+                type: Date,
+                default: Date.now
+            }
+        }
+    ]
 }, { timestamps: true });
 
 
-export const Resume = mongoose.model('Resume', ResumeSchema);
+const Resume = mongoose.model('Resume', ResumeSchema);
+export default Resume;

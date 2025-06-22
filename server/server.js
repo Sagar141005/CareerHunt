@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import userRoutes from './routes/user.js'
 import jobApplyRoutes from './routes/jobApply.js'
 import jobPostRoutes from './routes/jobPost.js'
+import resumeRoutes from './routes/resume.js'
 import morgan from 'morgan';
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
@@ -54,6 +55,7 @@ if(process.env.NODE_ENV === 'development') {
 app.use('/auth', userRoutes);
 app.use('/applications', jobApplyRoutes);
 app.use('/job-posts', jobPostRoutes);
+app.use('/ai', resumeRoutes);
 
 app.get('/', (req, res) => {
     res.send("Hello World!");

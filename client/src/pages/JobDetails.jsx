@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import UserNavbar from '../components/UserNavbar';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 import api from '../api/axios';
 import { RiBriefcase2Line, RiBuildingLine, RiMapPinLine } from '@remixicon/react';

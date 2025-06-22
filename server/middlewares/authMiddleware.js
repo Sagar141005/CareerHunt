@@ -18,7 +18,6 @@ export const protectAndVerifyRole = (roles) => {
                 return res.status(401).json({ message: "User not found" });
             }
             req.user = user;
-    
             if(!roles.includes(user.role)) {
                 return res.status(403).json({ message: "Access denied. You do not have the required role"});
             }
