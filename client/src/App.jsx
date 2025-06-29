@@ -25,6 +25,7 @@ import EditJobPost from "./pages/EditJobPost"
 import Apply from "./pages/Apply"
 import Resumes from "./pages/Resumes"
 import ErrorBoundary from "./components/ErrorBoundary"
+import ApplicantDetail from "./pages/ApplicantDetail"
 
 
 function App() {
@@ -42,11 +43,13 @@ function App() {
       <Route path="/job/posts" element={<JobPosts />} />
       <Route path="/applications" element={<Applications />} />
       <Route path="/applications/applicants/:jobId" element={<Applicants />} />
+      <Route path="/applications/applicant/:jobPostId/:userId" element={<ApplicantDetail />} />
+
 
       <Route path="/jobs" element={<FindJob />} />
       <Route path="/saved" element={<Saved />} />
       <Route path="/my-applications" element={<MyApplications />} />
-      <Route path="/jobs/:jobId" element={<JobDetails />} />
+      <Route path="/jobs/:id" element={<JobDetails />} />
       <Route path="/edit" element={<EditProfile />} />
       <Route path="/apply/:jobId" element={<Apply />} />
       <Route path="/resume" element={

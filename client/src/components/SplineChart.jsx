@@ -54,7 +54,7 @@ const AreaChartWithFilter = () => {
       };
 
       for (const app of job.applications || []) {
-        const dateLabel = new Date(app.createdAt).toLocaleDateString("en-GB", {
+        const dateLabel = new Date(app.dateApplied).toLocaleDateString("en-GB", {
           day: "2-digit",
           month: "short",
         });

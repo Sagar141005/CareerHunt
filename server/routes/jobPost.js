@@ -9,6 +9,8 @@ const router = express.Router();
 
 router.post('/create', jobPostBodyValidator, validateRequest, protectAndVerifyRole(['recruiter']), createJobPost);
 
+router.get('/applicant/:jobPostId/:userId', protectAndVerifyRole(['recruiter']), getApplicationDetails);
+
 router.get('/applications/chart', protectAndVerifyRole(['recruiter']), getJobPostsWithApplications);
 
 router.get('/applications/all', protectAndVerifyRole(['recruiter']), rateLimiterMiddleware, getJobApplications);
@@ -17,15 +19,13 @@ router.get('/all', protectAndVerifyRole(['recruiter']), rateLimiterMiddleware, g
 
 router.get('/search', protectAndVerifyRole(['recruiter']), rateLimiterMiddleware, search);
 
-router.get('/history/:jobPostId', jobPostIdValidator, validateRequest, protectAndVerifyRole(['recruiter']), getApplicationDetails);
-
 router.get('/:jobPostId', jobPostIdValidator, validateRequest, protectAndVerifyRole(['recruiter']), rateLimiterMiddleware, getJobPostById);
 
 router.put('/:jobPostId', updateJobPostValidator, validateRequest, protectAndVerifyRole(['recruiter']), updateJobPost);
 
 router.get('/applications/:jobPostId', jobPostIdValidator, validateRequest, protectAndVerifyRole(['recruiter']), rateLimiterMiddleware, getApplicationsForJobPost);
 
-router.put('/:jobPostId/:userId', updateStatusValidator, validateRequest, protectAndVerifyRole(['recruiter']), updateStatus);
+router.put('/update-status/:jobPostId/:userId', updateStatusValidator, validateRequest, protectAndVerifyRole(['recruiter']), updateStatus);
 
 router.delete('/:jobPostId', jobPostIdValidator, validateRequest, protectAndVerifyRole(['recruiter']), deleteJobPost);
 

@@ -1,13 +1,6 @@
 import React, { useMemo, useState } from "react";
 import useRecentApplications from "../hooks/useRecentApplications";
 
-const acquisitionStats = [
-    { label: "Applications", value: 64, color: "#3B82F6" },
-    { label: "Shortlisted", value: 18, color: "#22C55E" },
-    { label: "On-hold", value: 10, color: "#FACC15" },
-    { label: "Rejected", value: 8, color: "#FF6B6B" },
-];
-
 const HorizontalBar = () => {
     const [ timeRange, setTimeRange ] = useState(7);
 

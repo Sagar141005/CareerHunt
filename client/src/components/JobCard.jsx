@@ -10,6 +10,8 @@ const JobCard = ({ job }) => {
   const [ didMount, setDidMount ] = useState(false);
   const [ isDisabled, setIsDisabled ] = useState(false);
 
+  const applicationStatus = job?.status; 
+
   const handleClick = () => {
     if(isDisabled) return;
 
@@ -35,6 +37,26 @@ const JobCard = ({ job }) => {
 
     updateSavedStatus();
   }, [saved]);
+
+  const getStatusButtonStyle = (status) => {
+    const base = 'text-sm font-medium py-2 px-4 rounded-lg cursor-pointer';
+    switch (status) {
+      case 'Applied':
+        return `${base} bg-blue-100 text-blue-600`;
+      case 'Interview':
+        return `${base} bg-purple-100 text-purple-600`;
+      case 'Shortlisted':
+        return `${base} bg-green-100 text-green-600`;
+      case 'On-hold':
+        return `${base} bg-yellow-100 text-yellow-600`;
+      case 'Rejected':
+        return `${base} bg-red-100 text-red-600`;
+      case 'Hired':
+        return `${base} bg-orange-100 text-orange-600`;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className='w-64 h-72 bg-white rounded-xl flex flex-col justify-between p-4 shadow-md hover:shadow-lg'>
@@ -75,11 +97,17 @@ const JobCard = ({ job }) => {
           className='cursor-pointer font-medium transition-all duration-200 hover:text-blue-600'>
             Details
           </Link>
-          <Link
-            to={`/apply/${job._id}`}
-            className='text-white font-medium bg-black py-2 px-4 rounded-lg'>
-            Apply with AI
-          </Link>
+          {getStatusButtonStyle(applicationStatus) ? (
+              <button disabled className={getStatusButtonStyle(applicationStatus)}>
+                {applicationStatus}
+              </button>
+            ) : (
+              <Link
+                to={`/apply/${job._id}`}
+                className="text-white font-medium bg-black py-2 px-4 rounded-lg hover:bg-neutral-900 transition-all duration-200 text-sm">
+                Apply with AI
+              </Link>
+            )}
         </div>
       </div>
     </div>

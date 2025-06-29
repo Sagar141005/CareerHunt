@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
 import api from '../api/axios';
+import { RiArrowLeftLine } from '@remixicon/react';
 
 const EditJobPost = () => {
   const { jobId } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -98,10 +100,29 @@ const EditJobPost = () => {
       setLoading(false);
     }
   };
+
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+      await api.delete(`/job-posts/${jobId}`);
+      navigate('/job/posts');
+    } catch (error) {
+      console.error('Delete job error:', error.response?.data || error.message);
+    } finally {
+      setLoading(false);
+      setShowDeleteConfirm(false);
+    }
+  };
+  
   
 
   return (
     <div className="min-h-screen bg-gradient-to-tr from-[#F0F4FF] to-[#E6ECFF] py-12 px-6 sm:px-10">
+      <Link 
+      to='/job/posts'
+      className='absolute flex items-center justify-center h-12 w-12 rounded-full bg-white top-4 left-4 shadow-lg cursor-pointer text-[#ccc] hover:text-black  transition-all duration-200'>
+        <RiArrowLeftLine size={30} color='currentColor' />
+      </Link>
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-10 border border-neutral-200">
         <h1 className="text-4xl font-bold text-gray-800 mb-10 text-center">Edit Job Post</h1>
 
@@ -366,15 +387,46 @@ const EditJobPost = () => {
             </div>
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-between items-center mt-10">
+          <button
+            type="button"
+            onClick={() => setShowDeleteConfirm(true)}
+            className="px-6 py-3 bg-red-100 text-red-600 font-semibold rounded-lg border border-red-300 shadow-sm hover:bg-red-200 transition cursor-pointer">
+              Delete Job
+            </button>
+
             <button
               type="submit"
               disabled={loading}
-              className="px-10 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3">
-              {loading ? <h3>Updating...</h3> : <h3>Update Job</h3>}
+              className="px-6 py-3 bg-blue-600 text-white font-semibold border border-blue-600 rounded-lg shadow hover:bg-blue-700 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3">
+                {loading ? <h3>Updating...</h3> : <h3>Update Job</h3>}
             </button>
           </div>
         </form>
+
+          {showDeleteConfirm && (
+          <div className="fixed inset-0 bg-transparent backdrop-blur-md flex items-center justify-center z-50">
+            <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 space-y-4">
+              <h3 className="text-lg font-semibold text-red-600">Confirm Deletion</h3>
+              <p className="text-gray-600 text-sm">
+                Are you sure you want to delete this job post? This action is irreversible.
+              </p>
+              <div className="flex justify-end gap-4 mt-6">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="px-4 py-2 rounded-md text-gray-600 border border-gray-300 hover:bg-gray-100 cursor-pointer">
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 cursor-pointer">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+          )}
+
       </div>
     </div>
   );

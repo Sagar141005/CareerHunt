@@ -21,6 +21,16 @@ const JobSchema = new mongoose.Schema({
         enum: ['Applied', 'Withdrawn' , 'Shortlisted', 'On-hold', 'Interview', 'Rejected', 'Hired'],
         default: null,
     },
+    resume: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Resume'
+    },
+    resumeVersionNumber: {
+        type: Number,
+    },
+    coverLetterVersionNumber: {
+        type: Number,
+    },
     interactionHistory: [{
         action: {
             type: String,

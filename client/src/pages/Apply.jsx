@@ -4,10 +4,6 @@ import api from '../api/axios'; // your axios instance
 import { formatDistanceToNow } from 'date-fns';
 import UserNavbar from '../components/UserNavbar';
 
-// Remix icons can be imported individually or use CDN
-// npm: import { RiMapPin2Line, RiBriefcaseLine, RiTimeLine, RiFilePaper2Line, RiRestartLine } from 'react-icons/ri';
-// Here I'll use them as SVG components from react-icons for simplicity
-
 import {
   RiMapPin2Line,
   RiBriefcaseLine,
@@ -15,7 +11,6 @@ import {
   RiFilePaper2Line,
   RiRestartLine,
   RiBuildingLine,
-  RiSendPlaneLine,
   RiSendPlaneFill
 } from '@remixicon/react';
 
@@ -43,7 +38,8 @@ const Apply = () => {
     const fetchJob = async () => {
       try {
         const res = await api.get(`/applications/details/${jobId}`);
-        setJob(res.data.jobPost);
+        const app = res.data.job
+        setJob(app.jobPostId);
       } catch (err) {
         console.error(err);
       } finally {
@@ -109,11 +105,21 @@ const Apply = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const selectedResume = userResumes.find(resume => resume.fileUrl === form.resume);
+    const resumeId = selectedResume?.id;
+
+    const tailoredResumeVersion = selectedResume?.versions?.find(version => version.job === job._id);
+    const coverLetterVersion = selectedResume?.coverLetters?.find(coverLetter => coverLetter.job === job._id);
+
     try {
+      if (!form.resume || !form.coverLetter) {
+        return alert("Please complete all fields before applying.");
+      }      
+
       await api.post(`/applications/${jobId}`, {
-        resume: form.resume,
-        coverLetter: form.coverLetter,
-        tailoredResume,
+        resumeId,
+        resumeVersionNumber: tailoredResumeVersion?.versionNumber,
+        coverLetterVersionNumber: coverLetterVersion?.versionNumber
       });
       navigate('/my-applications');
     } catch (err) {

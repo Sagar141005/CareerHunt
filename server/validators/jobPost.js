@@ -79,6 +79,11 @@ export const updateStatusValidator = [
 
     body('status')
       .notEmpty().withMessage("Status is required")
-      .isIn(['Interview', 'Offer', 'Shortlist', 'On-hold', 'Rejected', 'Withdrawn', 'Hired'])
+      .isIn(['Shortlisted',
+      'Interview',
+      'Offer',
+      'On-hold',
+      'Rejected',
+      'Hired'])
       .withMessage("Enter a valid status")
 ]

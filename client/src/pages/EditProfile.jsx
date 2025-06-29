@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios'
 import MDEditor from '@uiw/react-md-editor';
+import { RiArrowLeftLine } from '@remixicon/react';
 
 const EditProfile = () => {
 
@@ -124,6 +125,11 @@ const EditProfile = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-tr from-[#F0F4FF] to-[#E6ECFF] py-12 px-6">
+      <Link 
+      to='/profile'
+      className='absolute flex items-center justify-center h-12 w-12 rounded-full bg-white top-4 left-4 shadow-lg cursor-pointer text-[#ccc] hover:text-black  transition-all duration-200'>
+        <RiArrowLeftLine size={30} color='currentColor' />
+      </Link>
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-10 border border-neutral-200">
         <h1 className="text-4xl font-bold text-gray-800 mb-10 text-center">Edit Your Profile</h1>
 

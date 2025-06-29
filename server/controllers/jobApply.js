@@ -67,9 +67,17 @@ export const getAvailableJobs = async (req, res) => {
             }
 
             if(minSalary || maxSalary) {
-                filter.salary = {};
-                if(minSalary) filter.salary.$gte = parseInt(minSalary);
-                if(maxSalary) filter.salary.$lte = parseInt(maxSalary);
+                const salaryFilter = [];
+
+                const rangeFilter = {};
+                if (minSalary) rangeFilter.$gte = parseInt(minSalary);
+                if (maxSalary) rangeFilter.$lte = parseInt(maxSalary);
+
+                salaryFilter.push({ salary: rangeFilter });
+                salaryFilter.push({ salary: { $exists: false } });
+
+                filter.$and = filter.$and || [];
+                filter.$and.push({ $or: salaryFilter });
             }
 
             return await JobPost.find(filter).sort({ createdAt: -1 }).lean();
@@ -99,14 +107,25 @@ export const getAvailableJobs = async (req, res) => {
 
 export const getPublicJobPostById = async (req, res) => {
     try {
-        const { jobPostId } = req.params;
+        const { id } = req.params;
 
-        const jobPost = await JobPost.findById(jobPostId).lean();
-        if (!jobPost) {
-            return res.status(404).json({ message: "Job not found" });
+        const job = await Job.findOne({ jobPostId: id }).populate('jobPostId');
+        if (!job) {
+            const jobPost = await JobPost.findById(id);
+            if(!jobPost) {
+                return res.status(404).json({ message: "Job post not found" });
+            }
+
+            return res.status(200).json({
+                job: {
+                    jobPostId: jobPost,
+                    status: null,
+                    isSaved: false
+                }
+            });
         }
 
-        return res.status(200).json({ jobPost });
+        return res.status(200).json({ job });
     } catch (error) {
         return res.status(500).json({ message: "Error fetching job post", error: error.message });
     }
@@ -117,8 +136,13 @@ export const applyToJob = async (req, res) => {
     try {
         const userId = req.user._id;
         const { jobPostId } = req.params;
+        const { resumeId, resumeVersionNumber, coverLetterVersionNumber } = req.body;
 
-        const job = await Job.findOne({ userId, jobPostId });
+        if(!resumeId) {
+            return res.status(400).json({ message: 'Resume ID is required' });
+        }
+        
+        let job = await Job.findOne({ userId, jobPostId });
         if(job) {
             const currentStatus = job.status;
 
@@ -130,14 +154,33 @@ export const applyToJob = async (req, res) => {
 
             if(currentStatus === 'Withdrawn' || currentStatus === null) {
                 job.status = 'Applied';
+                job.interactionHistory.push({
+                    action: 'applied',
+                    fromStatus: currentStatus,
+                    toStatus: 'Applied',
+                    timestamps: new Date()
+                });
             }
         } else {
-            job = new({
+            job = new Job({
                 userId,
                 jobPostId,
                 status: 'Applied',
+                resume: resumeId,
+                resumeVersionNumber,
+                coverLetterVersionNumber,
+                interactionHistory: [{
+                    action: 'applied',
+                    fromStatus: null,
+                    toStatus: 'Applied',
+                    timestamps: new Date()
+                }]
             });
         }
+
+        job.resume = resumeId;
+        job.resumeVersionNumber = resumeVersionNumber;
+        job.coverLetterVersionNumber = coverLetterVersionNumber;
 
         await job.save();
         await JobPost.findByIdAndUpdate(jobPostId, { $inc: { applicationCount: 1 } });
@@ -287,8 +330,20 @@ export const withdrawApplication = async (req, res) => {
 
         job.status = 'Withdrawn';
 
+        job.interactionHistory.push({
+            action: 'withdrawn',
+            fromStatus: job.status,
+            toStatus: 'Withdrawn',
+            timestamps: new Date()
+        });
+
         await job.save();
+
+       const jobPostId = job.jobPostId;
+
+        if (jobPostId) {
         await JobPost.findByIdAndUpdate(jobPostId, { $inc: { applicationCount: -1 } });
+        }
 
         await redis.del(`userApplications:${userId}`);
         await redis.del(`jobApplication:${userId}:${jobId}`);

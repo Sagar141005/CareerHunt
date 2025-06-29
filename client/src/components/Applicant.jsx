@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import api from '../api/axios'
+import { Link } from 'react-router-dom';
 
 const Applicant = () => {
   const [ users, setUsers ] = useState([]);
@@ -22,16 +23,15 @@ const Applicant = () => {
   return (
     <div>
       {users.slice(0, 10).map((user, index) => (
-        <div
+        <Link
+        to={`/applications/applicant/${user.jobPostId}/${user.userId._id}`}
           key={index}
-          className='flex items-center gap-2 px-3 py-2 rounded-2xl hover:bg-gray-100'
-        >
+          className='flex items-center gap-2 px-3 py-2 rounded-2xl hover:bg-gray-100 cursor-pointer'>
           <div>
             <img
               className='h-10 w-10 object-cover content-center rounded-full'
               src={user.userId?.profilePic || 'https://via.placeholder.com/40'}
-              alt={user.userId?.name || 'User'}
-            />
+              alt={user.userId?.name || 'User'} />
           </div>
           <div>
             <h4 className='text-md font-medium text-gray-800'>{user.userId?.name}</h4>
@@ -40,7 +40,7 @@ const Applicant = () => {
               <span className='text-neutral-600'>{user.jobPostId?.title || 'Unknown Role'}</span>
             </p>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   )

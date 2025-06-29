@@ -77,7 +77,7 @@ const Applicants = () => {
                 ) : (
                     applicants.map((applicant, index) => (
                         <Link 
-                        to={`/applications/applicant/${applicant.userId._id}`}
+                        to={`/applications/applicant/${jobId}/${applicant.userId._id}`}
                         key={index}
                         className='flex justify-between items-center px-6 py-4 hover:bg-neutral-100 transition-colors duration-200 rounded-lg'>
                             <div className='flex items-center gap-4'>

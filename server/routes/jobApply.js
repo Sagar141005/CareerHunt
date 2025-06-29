@@ -10,7 +10,7 @@ router.get('/all', protectAndVerifyRole(['jobseeker']), rateLimiterMiddleware, g
 
 router.post('/:jobPostId', applyToJobValidator , validateRequest, protectAndVerifyRole(['jobseeker']), applyToJob);
 
-router.get('/details/:jobPostId', validateRequest, protectAndVerifyRole(['jobseeker']), getPublicJobPostById);
+router.get('/details/:id', validateRequest, protectAndVerifyRole(['jobseeker']), getPublicJobPostById);
 
 router.get('/applied/all', protectAndVerifyRole(['jobseeker']), rateLimiterMiddleware, getAllJobApplications);
 

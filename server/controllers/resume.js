@@ -182,6 +182,12 @@ export const getUserResumes = async (req, res) => {
                 contentPreview: version.content?.slice(0, 200) + '...' || '',
                 createdAt: version.createdAt
             })),
+            coverLetters: (resume.coverLetters || []).map(cl => ({
+              versionNumber: cl.versionNumber,
+              job: cl.job,
+              content: cl.content,
+              createdAt: cl.createdAt,
+            })),
             createdAt: resume.createdAt,
             updatedAt: resume.updatedAt
         }))
@@ -222,11 +228,10 @@ export const generateCoverLetterForJob = async (req, res) => {
 
 export const downloadResumeVersion = async (req, res) => {
     try {
-      const user = req.user._id;
       const { resumeId, versionNumber } = req.query;
       const format = req.query.format || 'pdf';
   
-      const resume = await Resume.findOne({ _id: resumeId, user });
+      const resume = await Resume.findOne({ _id: resumeId });
       if (!resume) return res.status(404).json({ message: "Resume not found" });
   
       let content;
@@ -315,11 +320,10 @@ export const downloadResumeVersion = async (req, res) => {
 
 export const downloadCoverLetter = async (req, res) => {
     try {
-        const user = req.user._id;
-        const{ resumeId, versionNumber } = req.params;
+        const{ resumeId, versionNumber } = req.query;
         const format = req.query.format || 'pdf';
 
-        const resume = await Resume.findOne({ _id: resumeId, user });
+        const resume = await Resume.findOne({ _id: resumeId });
         if (!resume) return res.status(404).json({ message: "Resume not found" });
 
         let content;
@@ -332,11 +336,43 @@ export const downloadCoverLetter = async (req, res) => {
         }
 
         if(format === 'pdf') {
-            const htmlContent = `<html><body><pre style="font-family: monospace; white-space: pre-wrap;">${content}</pre></body></html>`;
-            const browser = await puppeteer.launch();
+          const htmlContent = `
+          <html>
+            <head>
+              <style>
+                body {
+                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                  margin: 40px;
+                  line-height: 1.4;
+                  color: #222;
+                }
+                h2 {
+                  color: #333;
+                  border-bottom: 1px solid #ccc;
+                  padding-bottom: 6px;
+                  margin-top: 24px;
+                  margin-bottom: 12px;
+                }
+                ul {
+                  margin-top: 0;
+                  padding-left: 20px;
+                  margin-bottom: 20px;
+                }
+                p, li {
+                  font-size: 12pt;
+                  margin: 4px 0;
+                }
+              </style>
+            </head>
+            <body>
+              ${formatPlainTextToHTML(content)}
+            </body>
+          </html>
+        `;
+            const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
             const page = await browser.newPage();
             await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
-            const pdfBuffer = await page.pdf({ format: 'A4' });
+            const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true, margin: { top: '20mm', bottom: '20mm', left: '15mm', right: '15mm' } });
             await browser.close();
 
             res.set({
@@ -346,23 +382,22 @@ export const downloadCoverLetter = async (req, res) => {
             });
             return res.send(pdfBuffer);
         } else if (format === 'docx') {
-            const doc = new Document({
-                sections: [{
-                    properties: {},
-                    children: [
-                        new Paragraph({
-                            children: [new TextRun(content)]
-                        })
-                    ]
-                }]
-            });
-            const buffer = await Packer.toBuffer(doc);
-
-            res.set({
-                'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                'Content-Disposition': `attachment; filename="resume_v${versionNumber || 'original'}.docx"`,
-                'Content-Length': buffer.length,
-            });
+          const children = parseResumeToDocxParagraphs(content);
+  
+          const doc = new Document({
+            sections: [{
+              children,
+              properties: {}
+            }],
+          });
+    
+          const buffer = await Packer.toBuffer(doc);
+    
+          res.set({
+            'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'Content-Disposition': `attachment; filename="resume_v${versionNumber || 'original'}.docx"`,
+            'Content-Length': buffer.length,
+          });
 
             return res.send(buffer); 
         }

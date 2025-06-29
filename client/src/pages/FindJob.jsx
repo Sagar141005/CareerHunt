@@ -13,7 +13,7 @@ const FindJob = () => {
     const [ locationQuery, setLocationQuery ] = useState('');
     const [ typeQuery, setTypeQuery ] = useState('');
     const [ levelQuery, setLevelQuery ] = useState('');
-    const [range, setRange] = useState([1200, 20000]);
+    const [range, setRange] = useState([0, 20000]);
 
     const [filters, setFilters] = useState({
         employmentType: [],
@@ -85,7 +85,7 @@ const FindJob = () => {
     }, [filters, titleQuery, locationQuery, typeQuery, levelQuery, range])
 
   return (
-    <div className='w-full min-h-screen bg-[##F9F9F9] overflow-hidden'>
+    <div className='w-full min-h-screen bg-[#F9F9F9] overflow-hidden'>
       <UserNavbar />
       <div className='w-full h-24 bg-[#141414] text-white flex items-center justify-center gap-8'>
         <div className='flex items-center justify-center gap-4 border-r-[1px] border-r-[#555455]'>

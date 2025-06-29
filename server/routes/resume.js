@@ -15,8 +15,8 @@ router.get('/resume/all', protectAndVerifyRole(['jobseeker']), getUserResumes);
 
 router.post('/cover-letter/:resumeId/:jobId', protectAndVerifyRole(['jobseeker']), generateCoverLetterForJob);
 
-router.get('/resume/download', protectAndVerifyRole(['jobseeker']), downloadResumeVersion);
+router.get('/resume/download', protectAndVerifyRole(['jobseeker', 'recruiter']), downloadResumeVersion);
 
-router.get('/cover-letter/download', protectAndVerifyRole(['jobseeker']), downloadCoverLetter);
+router.get('/cover-letter/download', protectAndVerifyRole(['jobseeker', 'recruiter']), downloadCoverLetter);
 
 export default router;

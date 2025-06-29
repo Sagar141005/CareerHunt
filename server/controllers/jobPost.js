@@ -183,7 +183,7 @@ export const getJobPostsWithApplications = async (req, res) => {
         }
     
         const applications = await Job.find(filter)
-            .select('createdAt status jobPostId')
+            .select('createdAt status jobPostId dateApplied')
             .lean();
     
         const grouped = {};
@@ -205,7 +205,7 @@ export const getJobPostsWithApplications = async (req, res) => {
             error: error.message,
         });
     }
-  };
+};
   
 
 export const getJobApplications = async (req, res) => {
@@ -229,7 +229,7 @@ export const getJobApplications = async (req, res) => {
             );
             filter.status = { $in: normalizedStatuses };
         } else {
-            filter.status = { $ne: null };
+            filter.status = { $nin: [null, 'Withdrawn'] };
         }
 
         if (since) {
@@ -237,7 +237,7 @@ export const getJobApplications = async (req, res) => {
             if (isNaN(sinceDate)) {
                 return res.status(400).json({ message: "Invalid 'since' date format." });
             }
-            filter.createdAt = { $gte: sinceDate };
+            filter.dateApplied = { $gte: sinceDate };
         }
 
         const skip = (parseInt(page) - 1) * parseInt(limit);
@@ -278,26 +278,38 @@ export const getApplicationDetails = async(req, res) => {
         }
 
         const job = await Job.findOne({ jobPostId, userId })
-            .populate('userId', 'name email')
-            .lean();
+        .populate('userId', 'name email profilePic')
+        .populate('resume');
 
-            if(!job) {
-                return res.status(404).json({ message: "Application not found" });
+        if (!job) {
+        return res.status(404).json({ message: "Application not found" });
+        }
+
+        const coverLetter = job.resume?.coverLetters?.find(
+        cl => cl.versionNumber === job.coverLetterVersionNumber
+        );
+
+        return res.status(200).json({
+        message: "Application fetched successfully",
+        applicant: job.userId,
+        currentStatus: job.status,
+        interactionHistory: job.interactionHistory
+            .filter(entry => entry.action !== 'saved' && entry.action !== 'unsaved')
+            .sort((a, b) => new Date(b.timestamps) - new Date(a.timestamps)),
+        appliedResume: job.resume
+            ? {
+                resumeId: job.resume._id,
+                versionNumber: job.resumeVersionNumber
             }
-
-            const filteredHistory = job.interactionHistory.filter(
-                entry => entry.action !== 'saved' && entry.action !== 'unsaved'
-            )
-
-            return res.status(200).json({ message: "Application fetched successfully", 
-                data: {
-                    applicant: job.userId,
-                    currentStatus: job.status,
-                    interactionHistory: filteredHistory.sort(
-                      (a, b) => new Date(b.timestamps) - new Date(a.timestamps)
-                    )
-                } 
-            })
+            : null,
+        appliedCoverLetter: coverLetter
+            ? {
+                resumeId: job.resume._id,
+                versionNumber: coverLetter.versionNumber,
+                content: coverLetter.content
+            }
+            : null
+        });
 
     } catch (error) {
         return res.status(500).json({ message: "An error occurred", error: error.message });
@@ -376,6 +388,14 @@ export const updateStatus = async (req, res) => {
         }
 
         job.status = newStatus;
+
+        job.interactionHistory.push({
+            action: newStatus.toLowerCase().replace(/ /g, '_'),
+            fromStatus: currentStatus,
+            toStatus: newStatus,
+            timestamps: new Date()
+        });
+
         await job.save();
 
         return res.status(200).json({ message: "Job status updated successfully", job });

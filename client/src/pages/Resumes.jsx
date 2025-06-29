@@ -82,7 +82,7 @@ const Resumes = () => {
 
 
   const downloadResume = (resumeId, versionNumber, format) => {
-    const url = `http://localhost:8080/ai/resume/download?resumeId=${resumeId}&versionNumber=${versionNumber}&format=${format}`;
+    const url = `${import.meta.env.VITE_API_URL}/ai/resume/download?resumeId=${resumeId}&versionNumber=${versionNumber}&format=${format}`;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
