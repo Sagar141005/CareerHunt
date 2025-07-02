@@ -25,8 +25,8 @@ import {
         
         <div className="px-6 pt-6 pb-4 border-b border-gray-200">
           <Link to="/dashboard" className="flex items-center gap-2 select-none">
-            <RiSparkling2Fill size={26} className="text-blue-600" />
-            <h1 className="text-xl font-semibold text-gray-900 pt-1">CareerHunt</h1>
+            <RiSparkling2Fill size={26} />
+            <h1 className="text-2xl font-semibold  tracking-wide pt-1 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent animate-gradient-x">CareerHunt</h1>
           </Link>
         </div>
   

@@ -44,7 +44,7 @@ const Profile = () => {
                     <h3 className='text-xl text-neutral-500'>{user.location ? user.location : ''}</h3>
                     <h4 className='text-lg'>{user.bio ? user.bio : ''}</h4>
                     <div className='flex items-center gap-6 mt-4'>
-                        <Link to='/edit' className='bg-black text-white py-3 px-8 rounded-full text-lg font-medium border-2 border-black cursor-pointer hover:text-black hover:bg-transparent transition-all duration-200'>Edit Profile</Link>
+                        <Link to='/profile/edit' className='bg-black text-white py-3 px-8 rounded-full text-lg font-medium border-2 border-black cursor-pointer hover:text-black hover:bg-transparent transition-all duration-200'>Edit Profile</Link>
                         <Link to='/setting' className='py-3 px-8 rounded-full text-lg font-medium border-2 border-black cursor-pointer hover:text-white hover:bg-black transition-all duration-200'>Settings</Link>
                     </div>
                 </div>
@@ -75,7 +75,9 @@ const Profile = () => {
 
         {user.role === 'recruiter' ? (
             <div className='mx-8 mt-8 pb-4 flex items-center gap-6'>
-                <div className='w-1/3 h-44 bg-blue-100 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200'>
+                <Link 
+                to={'/post/job'}
+                className='w-1/3 h-44 bg-blue-100 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200'>
                     <div>
                         <h4 className='text-2xl font-[600] pb-4'>Post a Job</h4>
                         <p>Create and publish new job listings to find the right talent quickly for your open roles.</p>
@@ -83,8 +85,10 @@ const Profile = () => {
                     <div className='w-1/3 flex flex-col justify-center items-end pr-6'>
                         <RiArrowRightLine className=' text-blue-600 border-2 p-2 rounded-full border-blue-600 group-hover:text-white group-hover:bg-blue-600  transition-all duration-300 shadow-sm' size={40} color='currentColor'  />
                     </div>
-                </div>
-                <div className='w-1/3 h-44 bg-blue-100 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200'>
+                </Link>
+                <Link
+                to={'/applications'} 
+                className='w-1/3 h-44 bg-blue-100 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200'>
                     <div>
                         <h4 className='text-2xl font-[600] pb-4'>View Applicants</h4>
                         <p>Review applications, filter top candidates, and manage your hiring pipeline with ease.</p>
@@ -92,8 +96,10 @@ const Profile = () => {
                     <div className='w-1/3 flex flex-col justify-center items-end'>
                         <RiArrowRightLine className=' text-blue-600 border-2 p-2 rounded-full border-blue-600 group-hover:text-white group-hover:bg-blue-600  transition-all duration-300 shadow-sm' size={40} color='currentColor'  />
                     </div>
-                </div>
-                <div className='w-1/3 h-44 bg-blue-100 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200'>
+                </Link>
+                <Link 
+                to={'/profile/edit'}
+                className='w-1/3 h-44 bg-blue-100 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200'>
                     <div>
                         <h4 className='text-2xl font-[600] pb-4'>Update</h4>
                         <p>Edit your company details, and recruiter info to keep your profile up to date and relevant.</p>
@@ -101,11 +107,13 @@ const Profile = () => {
                     <div className='w-1/3 flex flex-col justify-center items-end'>
                         <RiArrowRightLine className=' text-blue-600 border-2 p-2 rounded-full border-blue-600 group-hover:text-white group-hover:bg-blue-600  transition-all duration-300 shadow-sm' size={40} color='currentColor'  />
                     </div>
-                </div>
+                </Link>
             </div>
         ) : (
             <div className='mx-8 mt-8 pb-4 flex items-center gap-6'>
-                <div className='w-1/3 h-44 bg-blue-100 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200'>
+                <Link 
+                to={'/jobs'}
+                className='w-1/3 h-44 bg-blue-100 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200'>
                     <div>
                         <h4 className='text-2xl font-[600] pb-4'>Find Your Dream Job</h4>
                         <p>Browse and apply to top job opportunities that match your skills and goals.</p>
@@ -113,8 +121,10 @@ const Profile = () => {
                     <div className='w-1/3 flex flex-col justify-center items-end pr-6'>
                         <RiArrowRightLine className=' text-blue-600 border-2 p-2 rounded-full border-blue-600 group-hover:text-white group-hover:bg-blue-600  transition-all duration-300 shadow-sm' size={40} color='currentColor'  />
                     </div>
-                </div>
-                <div className='w-1/3 h-44 bg-blue-100 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200'>
+                </Link>
+                <Link
+                to={'/resume'}
+                className='w-1/3 h-44 bg-blue-100 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200'>
                     <div>
                         <h4 className='text-2xl font-[600] pb-4'>Get hired with AI</h4>
                         <p>Let AI help optimize your resume and stand out to potential employers.</p>
@@ -122,8 +132,10 @@ const Profile = () => {
                     <div className='w-1/3 flex flex-col justify-center items-end'>
                         <RiArrowRightLine className=' text-blue-600 border-2 p-2 rounded-full border-blue-600 group-hover:text-white group-hover:bg-blue-600  transition-all duration-300 shadow-sm' size={40} color='currentColor'  />
                     </div>
-                </div>
-                <div className='w-1/3 h-44 bg-blue-100 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200'>
+                </Link>
+                <Link 
+                to={'/profile/edit'}
+                className='w-1/3 h-44 bg-blue-100 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200'>
                     <div>
                         <h4 className='text-2xl font-[600] pb-4'>Update</h4>
                         <p>Keep your profile updated so that recruiters know you better.</p>
@@ -131,7 +143,7 @@ const Profile = () => {
                     <div className='w-1/3 flex flex-col justify-center items-end'>
                         <RiArrowRightLine className=' text-blue-600 border-2 p-2 rounded-full border-blue-600 group-hover:text-white group-hover:bg-blue-600  transition-all duration-300 shadow-sm' size={40} color='currentColor'  />
                     </div>
-                </div>
+                </Link>
             </div>
         )}  
     </div>

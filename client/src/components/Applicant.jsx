@@ -24,7 +24,7 @@ const Applicant = () => {
     <div>
       {users.slice(0, 10).map((user, index) => (
         <Link
-        to={`/applications/applicant/${user.jobPostId}/${user.userId._id}`}
+        to={`/applications/applicant/${user.jobPostId._id}/${user.userId._id}`}
           key={index}
           className='flex items-center gap-2 px-3 py-2 rounded-2xl hover:bg-gray-100 cursor-pointer'>
           <div>

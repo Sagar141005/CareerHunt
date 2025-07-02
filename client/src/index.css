@@ -1,26 +1,54 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Orkney';
+  src: url('/fonts/Orkney-Light.woff2') format('woff2'),
+       url('/fonts/Orkney-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Orkney';
+  src: url('/fonts/Orkney-Regular.woff2') format('woff2'),
+       url('/fonts/Orkney-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Orkney';
+  src: url('/fonts/Orkney-Bold.woff2') format('woff2'),
+       url('/fonts/Orkney-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 @keyframes scroll-horizontal {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
+  0% {
+      transform: translateX(0);
+  }
+  100% {
+      transform: translateX(-50%);
+  }
 }
 
 html, body {
-    padding: 0;
-    margin: 0;
-    height: 100%;
-    font-family: Orkney;
-    background-color: #F8F9FA;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  font-family: Orkney;
+  background-color: #F8F9FA;
 }
 
 .scroll-horizontal {
-    display: flex;
-    animation: scroll-horizontal 30s linear infinite;
-    width: max-content;
+  display: flex;
+  animation: scroll-horizontal 30s linear infinite;
+  width: max-content;
 }
 
 .w-md-editor {
@@ -29,20 +57,34 @@ html, body {
 }
 
 @keyframes gradientBG {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
+  0% {
+    background-position: 0% 50%;
   }
-  
-  .animated-gradient-bg {
-    animation: gradientBG 8s ease-in-out infinite;
-    background: linear-gradient(-45deg, #6b73ff, #4a00e0, #000dff, #00ffea, #6b73ff);
-    background-size: 400% 400%;
+  50% {
+    background-position: 100% 50%;
   }
+  100% {
+    background-position: 0% 50%;
+  }
+}
   
+.animated-gradient-bg {
+  animation: gradientBG 8s ease-in-out infinite;
+  background: linear-gradient(-45deg, #6b73ff, #4a00e0, #000dff, #00ffea, #6b73ff);
+  background-size: 400% 400%;
+}
+  
+
+
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+}
+.animate-gradient-x {
+  background-size: 200% auto;
+  animation: gradient-x 3s ease infinite;
+}

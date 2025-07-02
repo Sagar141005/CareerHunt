@@ -131,56 +131,53 @@ const AreaChartWithFilter = () => {
   };
 
   return (
-    <div className="bg-transparent rounded-lg p-4 relative">
-      <div className="flex justify-between items-center mb-2">
-        <h3 className="text-xl font-semibold">Top Active Jobs</h3>
-        <select
-          className="text-blue-400 appearance-none p-1 text-sm font-medium"
-          value={timeRange}
-          onChange={(e) => setTimeRange(Number(e.target.value))}
-        >
-          <option value="7">Last 7 Days</option>
-          <option value="30">Last 30 Days</option>
-          <option value="90">Last 90 Days</option>
-        </select>
-      </div>
-
+    <div className="bg-transparent rounded-lg p-4 relative flex flex-col h-[500px]">
+    <div className="flex justify-between items-center mb-2 py-4">
+      <h3 className="text-xl font-semibold">Top Active Jobs</h3>
+      <select
+        className="text-blue-400 appearance-none p-1 text-sm font-medium"
+        value={timeRange}
+        onChange={(e) => setTimeRange(Number(e.target.value))}>
+        <option value="7">Last 7 Days</option>
+        <option value="30">Last 30 Days</option>
+        <option value="90">Last 90 Days</option>
+      </select>
+    </div>
+  
+    <div className="flex-shrink-0">
       <ReactApexChart
         options={chartOptions}
         series={series}
         type="area"
-        height={250}
-      />
-
-      <div className="mt-6 flex flex-col max-h-60 overflow-y-auto pr-4">
-        {jobMap.map((job) => (
-          <div
-            key={job.id}
-            onClick={() => setSelectedJobID(job.id)}
-            className={`flex justify-between items-center py-3 px-2 transition-all cursor-pointer ${
-              selectedJobID === job.id ? "bg-gray-100 rounded-lg" : ""
-            }`}
-          >
-            <div>
-              <div className="font-medium text-sm">{job.title}</div>
-              <div className="text-xs text-gray-500">
-                {Object.values(job.chartData.applications).reduce((a, b) => a + b, 0)}{" "}
-                Applications
-              </div>
-            </div>
-            <button
-              className={`w-8 h-8 flex items-center justify-center p-1 border border-blue-300 rounded-lg transition-colors ${
-                selectedJobID === job.id
-                  ? "bg-blue-400 text-white"
-                  : "bg-transparent text-blue-500"
-              }`}
-            >
-              <RiLineChartLine size={16} />
-            </button>
-          </div>
-        ))}
-      </div>
+        height={250} />
     </div>
+  
+    <div className="flex-grow overflow-y-auto pr-4 mt-6 min-h-0">
+      {jobMap.map((job) => (
+        <div
+          key={job.id}
+          onClick={() => setSelectedJobID(job.id)}
+          className={`flex justify-between items-center py-3 px-2 transition-all cursor-pointer ${
+            selectedJobID === job.id ? "bg-gray-100 rounded-lg" : ""
+          }`}>
+          <div>
+            <div className="font-medium text-sm">{job.title}</div>
+            <div className="text-xs text-gray-500">
+              {Object.values(job.chartData.applications).reduce((a, b) => a + b, 0)} Applications
+            </div>
+          </div>
+          <button
+            className={`w-8 h-8 flex items-center justify-center p-1 border border-blue-300 rounded-lg transition-colors ${
+              selectedJobID === job.id
+                ? "bg-blue-400 text-white"
+                : "bg-transparent text-blue-500"
+            }`}>
+            <RiLineChartLine size={16} />
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
   );
 };
 

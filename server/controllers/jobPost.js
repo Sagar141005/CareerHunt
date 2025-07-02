@@ -176,7 +176,7 @@ export const getJobPostsWithApplications = async (req, res) => {
     
         const filter = {
             jobPostId: { $in: jobPostIds },
-            status: { $ne: null },  
+            status: { $nin: [null, 'Withdrawn'] },  
             };
         if (sinceDate) {
             filter.createdAt = { $gte: sinceDate };

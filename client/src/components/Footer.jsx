@@ -18,16 +18,16 @@ const Footer = () => {
           </p>
           
           <div className="flex space-x-6 mt-4">
-            <a href="https://www.twitter.com/" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="hover:text-blue-500 transition">
+            <a href="https://www.twitter.com/" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="hover:text-black transition">
               <RiTwitterXFill size={28} />
             </a>
             <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-pink-500 transition">
               <RiInstagramFill size={28} />
             </a>
-            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-blue-700 transition">
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-[#0765FF] transition">
               <RiFacebookBoxFill size={28} />
             </a>
-            <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-blue-600 transition">
+            <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-[#0B65C2] transition">
               <RiLinkedinBoxFill size={28} />
             </a>
           </div>
@@ -55,21 +55,6 @@ const Footer = () => {
         </div>
         <p>© 2025 CareerHunt Inc • All Rights Reserved</p>
       </div>
-
-      <style>{`
-        @keyframes gradient-x {
-          0%, 100% {
-            background-position: 0% center;
-          }
-          50% {
-            background-position: 100% center;
-          }
-        }
-        .animate-gradient-x {
-          background-size: 200% auto;
-          animation: gradient-x 3s ease infinite;
-        }
-      `}</style>
     </footer>
   );
 };

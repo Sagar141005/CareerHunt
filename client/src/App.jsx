@@ -50,7 +50,7 @@ function App() {
       <Route path="/saved" element={<Saved />} />
       <Route path="/my-applications" element={<MyApplications />} />
       <Route path="/jobs/:id" element={<JobDetails />} />
-      <Route path="/edit" element={<EditProfile />} />
+      <Route path="/profile/edit" element={<EditProfile />} />
       <Route path="/apply/:jobId" element={<Apply />} />
       <Route path="/resume" element={
         <ErrorBoundary>
