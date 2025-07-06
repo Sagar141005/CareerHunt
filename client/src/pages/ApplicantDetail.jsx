@@ -102,6 +102,7 @@ const ApplicantDetail = () => {
               src={applicant.profilePic || '/Recruiter.png'}
               alt={applicant.name}
               className="w-20 h-20 rounded-full object-cover ring-2 ring-gray-300 dark:ring-gray-600"
+              loading='lazy'
             />
             <div>
               <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">{applicant.name}</h3>

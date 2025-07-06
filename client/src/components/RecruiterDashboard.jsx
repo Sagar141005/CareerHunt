@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, lazy, Suspense } from 'react';
 import { useAuth } from '../context/AuthContext'
 import RecruiterPannel from './RecruiterPannel'
-import RadialChart from './RadialChart'
-import SplineChart from './SplineChart'
-import HorizontalBar from './HorizontalBar'
-import Applicant from './Applicant'
 import CurrentDate from './CurrentDate'
 import { useNavigate } from 'react-router-dom'
 import useMonthlyGrowth from "../hooks/useMonthlyGrowth";
+import Loader from './Loader';
+
+const RadialChart = lazy(() => import('./RadialChart'));
+const SplineChart = lazy(() => import('./SplineChart'));
+const HorizontalBar = lazy(() => import('./HorizontalBar'));
+const Applicant = lazy(() => import('./Applicant'));
 
 const formatCount = (count) => {
   if (!count) return 0;
@@ -60,7 +62,9 @@ const RecruiterDashboard = () => {
                 </div>
                 <div className="flex-grow"></div>
                 <div className="w-1/2 -mr-6">
-                  <RadialChart growth={all.growth} label="" size="52%" color="#3B82F6" />
+                  <Suspense fallback={<Loader />}>
+                    <RadialChart growth={all.growth} label="" size="52%" color="#3B82F6" />
+                  </Suspense>
                 </div>
               </div>
 
@@ -71,18 +75,22 @@ const RecruiterDashboard = () => {
                 </div>
                 <div className="flex-grow"></div>
                 <div className="w-1/2 -mr-6">
-                  <RadialChart growth={shortlist.growth} label="" size="52%" color="#22C55E" />
+                  <Suspense fallback={<Loader />}>
+                    <RadialChart growth={shortlist.growth} label="" size="52%" color="#22C55E" />
+                  </Suspense>
                 </div>
               </div>
             </div>
 
             {/* Spline Chart – takes remaining height */}
             <div className="flex-grow overflow-hidden bg-white dark:bg-gray-800 rounded-xl shadow-lg shadow-neutral-300 dark:shadow-black min-h-[500px] mt-4 sm:mt-0">
-              <SplineChart
+              <Suspense fallback={<Loader />}>
+                <SplineChart
                 data={[10, 30, 45, 25, 60, 80, 55]}
                 categories={["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
                 color="#22C55E"
-              />
+                />
+              </Suspense>
             </div>
           </div>
 
@@ -94,18 +102,30 @@ const RecruiterDashboard = () => {
               </div>
               <div className="flex-grow"></div>
               <div className="w-1/2 -mr-6">
-                <RadialChart growth={onHold.growth} label="" size="52%" color="#FACC15" />
+                <Suspense fallback={
+                  <div className="flex justify-center items-center py-6">
+                    <MoonLoader color="#3B82F6" size={12} />
+                  </div>}>
+                  <RadialChart growth={onHold.growth} label="" size="52%" color="#FACC15" />
+                </Suspense>
               </div>
             </div>
 
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg shadow-neutral-300 dark:shadow-black min-h-[200px] overflow-hidden">
-              <HorizontalBar />
+              <Suspense fallback={<Loader />}>
+                <HorizontalBar />
+              </Suspense> 
             </div>
 
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg shadow-neutral-300 dark:shadow-black flex flex-col flex-grow min-h-0 p-4 overflow-hidden">
               <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-1">New Applicants</h3>
               <div className="flex-grow overflow-y-auto min-h-0 pr-1">
-                <Applicant />
+                <Suspense fallback={
+                  <div className="flex justify-center items-center py-6">
+                    <MoonLoader color="#3B82F6" size={12} />
+                  </div>}>
+                  <Applicant />
+                </Suspense>
               </div>
             </div>
           </div>
@@ -130,7 +150,9 @@ const RecruiterDashboard = () => {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg shadow-neutral-300 dark:shadow-black p-4 flex-1 min-h-[260px] flex flex-col justify-between items-center">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white">Hired</h3>
               <img className="h-32 -mt-2" src="./image.png" alt="" />
-              <RadialChart growth={hired.growth} label="" size="52%" color="#FB923C" />
+              <Suspense fallback={<Loader />}>
+                <RadialChart growth={hired.growth} label="" size="52%" color="#FB923C" />
+              </Suspense>
             </div>
           </div>
         </div>

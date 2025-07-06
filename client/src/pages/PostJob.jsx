@@ -307,6 +307,7 @@ const PostJob = () => {
                     src={formData.companyLogo}
                     alt="Company Logo"
                     className="h-24 w-24 rounded-md border object-cover"
+                    loading='lazy'
                   />
                 </div>
               )}

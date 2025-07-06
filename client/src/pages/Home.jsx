@@ -1,5 +1,4 @@
 import React from 'react'
-import HomeNavbar from '../components/UserNavbar'
 import { RiArticleLine, RiListCheck3 } from '@remixicon/react'
 import Review from '../components/Review'
 import { reviews } from '../data/reviews'
@@ -69,7 +68,8 @@ const Home = () => {
               "https://images.unsplash.com/photo-1629425733761-caae3b5f2e50",
               "https://plus.unsplash.com/premium_photo-1670884442927-e647436e12ff",
             ].map((src, i) => (
-              <img
+              <img 
+                loading='lazy'
                 key={i}
                 src={`${src}?w=80&q=80`}
                 className="w-10 h-10 rounded-full border-2 border-white object-cover"
@@ -90,28 +90,28 @@ const Home = () => {
         <div className='overflow-hidden w-full mt-8'>
           <div className='scroll-horizontal'>
             <div className='flex items-center gap-12 pr-12'>
-              <img src="/Google.svg" alt="" />
-              <img src="Adobe.svg" alt="" />
-              <img src="Airbnb.svg" alt="" />
-              <img src="Amazon.svg" alt="" />
-              <img src="Meta.svg" alt="" />
-              <img src="Microsoft.svg" alt="" />
-              <img src="Bloomberg.svg" alt="" />
-              <img src="Netflix.svg" alt="" />
-              <img src="Spotify.svg" alt="" />
-              <img src="Tesla.svg" alt="" />
+              <img loading='lazy' src="/Google.svg" alt="" />
+              <img loading='lazy' src="Adobe.svg" alt="" />
+              <img loading='lazy' src="Airbnb.svg" alt="" />
+              <img loading='lazy' src="Amazon.svg" alt="" />
+              <img loading='lazy' src="Meta.svg" alt="" />
+              <img loading='lazy' src="Microsoft.svg" alt="" />
+              <img loading='lazy' src="Bloomberg.svg" alt="" />
+              <img loading='lazy' src="Netflix.svg" alt="" />
+              <img loading='lazy' src="Spotify.svg" alt="" />
+              <img loading='lazy' src="Tesla.svg" alt="" />
             </div>
             <div className='flex items-center gap-12 pr-12'>
-              <img src="/Google.svg" alt="" />
-              <img src="Adobe.svg" alt="" />
-              <img src="Airbnb.svg" alt="" />
-              <img src="Amazon.svg" alt="" />
-              <img src="Meta.svg" alt="" />
-              <img src="Microsoft.svg" alt="" />
-              <img src="Bloomberg.svg" alt="" />
-              <img src="Netflix.svg" alt="" />
-              <img src="Spotify.svg" alt="" />
-              <img src="Tesla.svg" alt="" />
+              <img loading='lazy' src="/Google.svg" alt="" />
+              <img loading='lazy' src="Adobe.svg" alt="" />
+              <img loading='lazy' src="Airbnb.svg" alt="" />
+              <img loading='lazy' src="Amazon.svg" alt="" />
+              <img loading='lazy' src="Meta.svg" alt="" />
+              <img loading='lazy' src="Microsoft.svg" alt="" />
+              <img loading='lazy' src="Bloomberg.svg" alt="" />
+              <img loading='lazy' src="Netflix.svg" alt="" />
+              <img loading='lazy' src="Spotify.svg" alt="" />
+              <img loading='lazy' src="Tesla.svg" alt="" />
             </div>
             
             </div>
@@ -131,7 +131,7 @@ const Home = () => {
               </p>
             </div>
             <div className='w-full lg:w-1/3'>
-              <img className='w-full rounded-2xl' src="/AI_Resume.png" alt="" />
+              <img loading='lazy' className='w-full rounded-2xl' src="/AI_Resume.png" alt="" />
             </div>
           </div>
           <div className='flex flex-col lg:flex-row items-center justify-between px-6 lg:px-40 gap-10 mb-10 text-center lg:text-left'>
@@ -145,7 +145,7 @@ const Home = () => {
               </p>
             </div>
             <div className='w-full lg:w-1/3'>
-              <img className='w-full rounded-2xl' src="/AI_Resume.png" alt="" />
+              <img loading='lazy' className='w-full rounded-2xl' src="/AI_Resume.png" alt="" />
             </div>
           </div>
       </div>

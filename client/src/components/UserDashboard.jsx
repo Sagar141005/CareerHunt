@@ -7,8 +7,6 @@ import { Link } from 'react-router-dom';
 
 const UserDashboard = () => {
   const { user } = useAuth();
-  const firstName = user?.name?.split(' ')[0] || 'User';
-  const capitalisedName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
 
   const [jobs, setJobs] = useState([]);
 
@@ -32,7 +30,7 @@ const UserDashboard = () => {
       <section className="w-full flex flex-col md:flex-row items-center justify-between px-8 md:px-20 py-24 transition-colors duration-300">
         <div className="flex flex-col max-w-2xl">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-            Welcome back, {capitalisedName} 👋
+            Welcome back, <span className='capitalise'>{user.name}</span> 👋
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-6 transition-colors duration-300">
             Let’s get closer to your career goals. Update your resume, apply to jobs,
@@ -59,6 +57,7 @@ const UserDashboard = () => {
             src="/user-home.svg"
             alt="Dashboard illustration"
             className="w-[400px] max-w-full h-auto"
+            loading="lazy"
           />
         </div>
       </section>

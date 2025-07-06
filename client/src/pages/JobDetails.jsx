@@ -109,6 +109,7 @@ const JobDetails = () => {
                 alt="Company Logo"
                 className="w-full h-full object-contain"
                 onError={(e) => (e.target.src = '/Recruiter.jpg')}
+                loading='lazy'
               />
             </div>
           </div>

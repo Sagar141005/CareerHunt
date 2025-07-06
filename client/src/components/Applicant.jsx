@@ -33,6 +33,7 @@ const Applicant = () => {
               className="h-10 w-10 object-cover content-center rounded-full"
               src={user.userId?.profilePic || 'https://via.placeholder.com/40'}
               alt={user.userId?.name || 'User'}
+              loading="lazy"
             />
           </div>
           <div>

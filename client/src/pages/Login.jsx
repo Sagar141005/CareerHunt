@@ -84,7 +84,7 @@ const Login = () => {
                 key={alt}
                 className="p-3 rounded-full border border-gray-300 bg-white/80 hover:shadow-lg hover:scale-110 active:scale-95
                 transition-transform cursor-pointer">
-                <img src={src} alt={alt} className="w-6 h-6" />
+                <img src={src} alt={alt} className="w-6 h-6" loading='lazy' />
               </button>
             ))}
           </div>

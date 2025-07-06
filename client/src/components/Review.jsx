@@ -13,7 +13,7 @@ const Review = ({ rating, text, name, role, image }) => {
       </div>
       <p className='lg:text-base text-sm'>{text}</p>
       <div className='flex items-center gap-3 mb-4'>
-        <img className='h-10 w-10 rounded-full size-fit' src={image} alt="" />
+        <img className='h-10 w-10 rounded-full size-fit' src={image} alt="" loading="lazy" />
         <div>
             <h3 className='text-[#1A1C1F] font-bold lg:text-lg text-md'>{name}</h3>
             <h3 className='text-[#1A1C1F] font-light lg:text-md text-sm'>{role}</h3>

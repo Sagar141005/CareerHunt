@@ -25,6 +25,7 @@ const Profile = () => {
             className="h-64 w-full object-cover"
             src="/Bg-graadient.png"
             alt="background gradient"
+            loading='lazy'
           />
           <Link
             to="/dashboard"
@@ -37,6 +38,7 @@ const Profile = () => {
               className="h-full w-full object-cover"
               src={user.profilePic || '/Recruiter.jpg'}
               alt={user.name}
+              loading='lazy'
             />
           </div>
         </div>
@@ -71,6 +73,7 @@ const Profile = () => {
                       className="w-20 h-20 rounded-lg object-cover"
                       src={user.company.logoUrl}
                       alt="Company Logo"
+                      loading='lazy'
                     />
                   )}
                   <div>

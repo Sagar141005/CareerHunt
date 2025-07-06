@@ -15,6 +15,7 @@ const JobPost = ({ job }) => {
               src={job.companyLogo}
               alt={job.company}
               className="w-9 h-9 object-contain rounded-full"
+              loading="lazy"
             />
           ) : (
             <span className="text-xs text-gray-400 dark:text-gray-500">Logo</span>

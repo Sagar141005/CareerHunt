@@ -86,6 +86,7 @@ const Applicants = () => {
                       className="h-10 w-10 object-cover rounded-full ring-1 ring-gray-300 dark:ring-gray-600"
                       src={applicant.userId.profilePic || '/Recruiter.png'}
                       alt="Applicant"
+                      loading='lazy'
                     />
                     <div className="flex flex-col">
                       <h4 className="text-gray-800 dark:text-gray-100 font-medium text-base">

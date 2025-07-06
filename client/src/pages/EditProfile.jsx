@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import api from '../api/axios'
 import MDEditor from '@uiw/react-md-editor';
 import { RiArrowLeftLine } from '@remixicon/react';
+import Loader from '../components/Loader';
 
 const EditProfile = () => {
   const { user, loading } = useAuth();
@@ -143,18 +144,20 @@ const EditProfile = () => {
 
             <div className="mt-6">
               <label className="block mb-2 text-lg font-semibold">Bio</label>
-              <MDEditor
-                value={formData.bio}
-                onChange={(value) => setFormData(prev => ({ ...prev, bio: value || '' }))}
-                preview="edit"
-                height={300}
-                className="!bg-white dark:!bg-neutral-900 dark:!text-white" />
+              <Suspense fallback={<Loader />}>
+                <MDEditor
+                  value={formData.bio}
+                  onChange={(value) => setFormData(prev => ({ ...prev, bio: value || '' }))}
+                  preview="edit"
+                  height={300}
+                  className="!bg-white dark:!bg-neutral-900 dark:!text-white" />
+              </Suspense>
             </div>
 
             <div className="mt-6">
               <label className="block mb-2 font-semibold">Profile Picture</label>
               {formData.profilePic && (
-                <img src={formData.profilePic} alt="Preview" className="w-24 h-24 object-cover rounded-md mb-3" />
+                <img src={formData.profilePic} alt="Preview" className="w-24 h-24 object-cover rounded-md mb-3" loading='lazy' />
               )}
               <label
                 htmlFor="profilePic"
@@ -209,7 +212,7 @@ const EditProfile = () => {
                 <div className="w-full">
                   <label className="block mb-2 font-semibold">Company Logo</label>
                   {formData.company.logoUrl && (
-                    <img src={formData.company.logoUrl} alt="Company Logo" className="w-24 h-24 object-cover rounded-md mb-3" />
+                    <img src={formData.company.logoUrl} alt="Company Logo" className="w-24 h-24 object-cover rounded-md mb-3" loading='lazy' />
                   )}
                   <label
                     htmlFor="companyLogo"

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import MDEditor from '@uiw/react-md-editor';
+const MDEditor = lazy(() => import('@uiw/react-md-editor'));
 import api from '../api/axios';
 import { RiArrowLeftLine } from '@remixicon/react';
+import Loader from '../components/Loader';
 
 const EditJobPost = () => {
   const { jobId } = useParams();
@@ -154,16 +155,17 @@ const EditJobPost = () => {
               Job Description <span className="text-red-600">*</span>
             </label>
             <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-700">
+              <Suspense fallback={<Loader />}>
               <MDEditor
                 value={formData.description}
-                onChange={(value) =>
-                  setFormData((prev) => ({ ...prev, description: value || "" }))
-                }
+                onChange={(value) => setFormData((prev) => ({ ...prev, description: value || "" }))}
                 height={280}
                 preview="edit"
                 visibleDragbar={false}
                 fullscreen={false}
-                className="!bg-white dark:!bg-neutral-900 dark:!text-white" />
+                className="!bg-white dark:!bg-neutral-900 dark:!text-white"
+              />
+            </Suspense>
             </div>
           </div>
   

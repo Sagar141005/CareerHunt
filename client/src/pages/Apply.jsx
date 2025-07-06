@@ -149,7 +149,7 @@ const Apply = () => {
         <div className="lg:w-1/3 bg-white dark:bg-neutral-900 rounded-3xl p-8 shadow-lg border border-gray-200 dark:border-neutral-700 flex flex-col">
           <div className="mb-6 flex justify-center">
             {job.companyLogo ? (
-              <img src={job.companyLogo} alt={`${job.company} logo`} className="w-20 h-20 rounded-full bg-white object-contain shadow-md" />
+              <img src={job.companyLogo} alt={`${job.company} logo`} className="w-20 h-20 rounded-full bg-white object-contain shadow-md" loading='lazy' />
             ) : (
               <div className="w-20 h-20 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-3xl font-bold shadow-md">
                 {job.company?.charAt(0) || 'C'}
