@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Loader from "./components/Loader";
 
-// Lazy load pages/components
+// Lazy load pages
 const Home = lazy(() => import("./pages/Home"));
 const Signup = lazy(() => import("./pages/signup"));
 const Login = lazy(() => import("./pages/Login"));
