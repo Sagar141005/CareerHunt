@@ -6,8 +6,7 @@ import { useAuth } from '../context/AuthContext'
 import { RiArrowLeftLine } from '@remixicon/react';
 
 const PostJob = () => {
-    const { user } = useAuth();
-
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -70,90 +69,88 @@ const PostJob = () => {
 
   useEffect(() => {
     if (user?.role === 'recruiter' && user.company) {
-        setFormData((prev) => ({
-          ...prev,
-          companyName: user.company.name || '',
-          companyWebsite: user.company.website || '',
-          companyLogo: user.company.logoUrl || '',
-        }));
+      setFormData((prev) => ({
+        ...prev,
+        companyName: user.company.name || '',
+        companyWebsite: user.company.website || '',
+        companyLogo: user.company.logoUrl || '',
+      }));
     }
-  }, [user])
+  }, [user]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-[#F0F4FF] to-[#E6ECFF] py-12 px-6 sm:px-10">
-      <Link 
-      to='/job/posts'
-      className='absolute flex items-center justify-center h-12 w-12 rounded-full bg-white top-4 left-4 shadow-lg cursor-pointer text-[#ccc] hover:text-black  transition-all duration-200'>
-        <RiArrowLeftLine size={30} color='currentColor' />
+    <div className="min-h-screen bg-gradient-to-tr from-[#F0F4FF] to-[#E6ECFF] dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-10 transition-colors duration-300">
+      <Link
+        to="/job/posts"
+        className="hidden sm:flex items-center justify-center h-12 w-12 rounded-full bg-white dark:bg-gray-800 top-4 left-4 shadow-lg cursor-pointer text-gray-400 hover:text-black dark:hover:text-white transition absolute">
+        <RiArrowLeftLine size={28} />
       </Link>
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-10 border border-neutral-200">
-        <h1 className="text-4xl font-bold text-gray-800 mb-10 text-center">Post a New Job</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-10" data-color-mode="light">
+
+      <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 rounded-xl shadow-2xl p-6 sm:p-10 border border-neutral-200 dark:border-gray-700">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-10 text-center">Post a New Job</h1>
+
+        <form onSubmit={handleSubmit} className="space-y-10">
+          {/* Job Title */}
           <div>
-            <label className="mb-2 font-semibold text-gray-700" htmlFor="title">
+            <label className="block font-semibold mb-2" htmlFor="title">
               Job Title <span className="text-red-600">*</span>
             </label>
-            <div>
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                    placeholder="e.g. Senior Frontend Developer"
-                    className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 pr-10"
-                    required />
-            </div>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border rounded-md shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 focus:ring-blue-500"
+              placeholder="e.g. Senior Frontend Developer"
+              required
+            />
           </div>
 
+          {/* Job Description */}
           <div>
-            <label className="mb-2 font-semibold text-gray-700" htmlFor="description">
+            <label className="block font-semibold mb-2" htmlFor="description">
               Job Description <span className="text-red-600">*</span>
             </label>
-            <div className="bg-white rounded-lg border border-gray-300">
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-700">
               <MDEditor
                 value={formData.description}
                 onChange={(value) =>
                   setFormData((prev) => ({ ...prev, description: value || '' }))
                 }
                 height={280}
+                className='!bg-white dark:!bg-neutral-900 dark:!text-white'
                 preview="edit"
                 visibleDragbar={false}
                 fullscreen={false}
-                data-color-mode="light" />
+              />
             </div>
           </div>
 
-          <div className="flex gap-6">
-            <div className="w-1/2">
-              <label className="mb-2 font-semibold text-gray-700" htmlFor="location">
-                Location <span className="text-red-600">*</span>
-              </label>
-              <div>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleChange}
-                  placeholder="e.g. Remote or New York"
-                  className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 pr-10"
-                  required />
-              </div>
+          {/* Row 1: Location + Type */}
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div>
+              <label className="block font-semibold mb-2" htmlFor="location">Location</label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+                placeholder="e.g. Remote or NYC"
+                required
+              />
             </div>
-
-            <div className="w-1/2">
-              <label className="mb-2 font-semibold text-gray-700" htmlFor="type">
-                Job Type <span className="text-red-600">*</span>
-              </label>
+            <div>
+              <label className="block font-semibold mb-2" htmlFor="type">Job Type</label>
               <select
                 id="type"
                 name="type"
                 value={formData.type}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
-                required>
+                className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 appearance-none">
                 <option value="full-time">Full-time</option>
                 <option value="part-time">Part-time</option>
                 <option value="contract">Contract</option>
@@ -163,51 +160,45 @@ const PostJob = () => {
             </div>
           </div>
 
-          <div className="flex gap-6">
-            <div className="w-1/2">
-              <label className="mb-2 font-semibold text-gray-700" htmlFor="salary">
-                Salary (annual) (Optional)
-              </label>
+          {/* Row 2: Salary + Openings */}
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div>
+              <label className="block font-semibold mb-2" htmlFor="salary">Salary (optional)</label>
               <input
                 type="number"
-                min="0"
                 id="salary"
                 name="salary"
+                min="0"
                 value={formData.salary}
                 onChange={handleChange}
-                placeholder="e.g. 70000"
-                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500" />
+                className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+              />
             </div>
-
-            <div className="w-1/2">
-              <label className="mb-2 font-semibold text-gray-700" htmlFor="openings">
-                Number of Openings <span className="text-red-600">*</span>
-              </label>
+            <div>
+              <label className="block font-semibold mb-2" htmlFor="openings">Number of Openings</label>
               <input
                 type="number"
-                min="1"
                 id="openings"
                 name="openings"
+                min="1"
                 value={formData.openings}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
-                required />
+                required
+                className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+              />
             </div>
           </div>
 
-
-          <div className="flex gap-6">
-            <div className="w-1/2">
-              <label className="mb-2 font-semibold text-gray-700" htmlFor="employmentType">
-                Employment Type <span className="text-red-600">*</span>
-              </label>
+          {/* Row 3: Employment Type + Level */}
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div>
+              <label className="block font-semibold mb-2" htmlFor="employmentType">Employment Type</label>
               <select
                 id="employmentType"
                 name="employmentType"
                 value={formData.employmentType}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
-                required>
+                className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 appearance-none">
                 <option value="full-time">Full-time</option>
                 <option value="part-time">Part-time</option>
                 <option value="contract">Contract</option>
@@ -215,18 +206,14 @@ const PostJob = () => {
                 <option value="temporary">Temporary</option>
               </select>
             </div>
-
-            <div className="w-1/2">
-              <label className="mb-2 font-semibold text-gray-700" htmlFor="level">
-                Job Level <span className="text-red-600">*</span>
-              </label>
+            <div>
+              <label className="block font-semibold mb-2" htmlFor="level">Job Level</label>
               <select
                 id="level"
                 name="level"
                 value={formData.level}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
-                required>
+                className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-10 appearance-none">
                 <option>Entry</option>
                 <option>Mid</option>
                 <option>Senior</option>
@@ -236,17 +223,15 @@ const PostJob = () => {
             </div>
           </div>
 
+          {/* Department */}
           <div>
-            <label className="mb-2 font-semibold text-gray-700" htmlFor="department">
-              Department <span className="text-red-600">*</span>
-            </label>
+            <label className="block font-semibold mb-2" htmlFor="department">Department</label>
             <select
               id="department"
               name="department"
               value={formData.department}
               onChange={handleChange}
-              className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
-              required>
+              className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 appearance-none">
               <option>Engineering</option>
               <option>Design</option>
               <option>Marketing</option>
@@ -256,88 +241,81 @@ const PostJob = () => {
             </select>
           </div>
 
+          {/* Deadline */}
           <div>
-            <label className="mb-2 font-semibold text-gray-700" htmlFor="deadline">
-              Application Deadline <span className="text-red-600">*</span>
-            </label>
+            <label className="block font-semibold mb-2" htmlFor="deadline">Application Deadline</label>
             <input
               type="date"
               id="deadline"
               name="deadline"
               value={formData.deadline}
               onChange={handleChange}
-              className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
               required
+              className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
             />
           </div>
 
+          {/* Tags */}
           <div>
-            <label className="mb-2 font-semibold text-gray-700" htmlFor="tags">
-              Tags (comma separated)
-            </label>
+            <label className="block font-semibold mb-2" htmlFor="tags">Tags (comma separated)</label>
             <input
               type="text"
               id="tags"
               name="tags"
               value={formData.tags}
               onChange={handleChange}
-              placeholder="e.g. React, JavaScript, Remote"
-              className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"/>
+              placeholder="e.g. React, Remote, UI"
+              className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+            />
           </div>
 
+          {/* Company Info */}
           <div>
-            <h2 className="text-2xl font-semibold text-blue-600 mb-6 border-b border-gray-200 pb-2">
+            <h2 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-6 border-b border-gray-200 dark:border-gray-700 pb-2">
               Company Information
             </h2>
 
             <div className="space-y-6">
-              <div className="w-full">
-                <label className="mb-2 font-semibold text-gray-700" htmlFor="companyName">
-                  Company Name <span className="text-red-600">*</span>
-                </label>
-                <div>
-                  <input
-                    type="text"
-                    id="companyName"
-                    name="companyName"
-                    value={formData.companyName}
-                    onChange={handleChange}
-                    placeholder="e.g. Acme Corp"
-                    className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 pr-10"
-                    required />
-                </div>
+              <div>
+                <label className="block font-semibold mb-2" htmlFor="companyName">Company Name</label>
+                <input
+                  type="text"
+                  id="companyName"
+                  name="companyName"
+                  value={formData.companyName}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+                />
               </div>
 
-              <div className="">
-                <label className="mb-2 font-semibold text-gray-700" htmlFor="companyWebsite">
-                  Company Website
-                </label>
-                <div>
-                  <input
-                    type="url"
-                    id="companyWebsite"
-                    name="companyWebsite"
-                    value={formData.companyWebsite}
-                    onChange={handleChange}
-                    placeholder="https://example.com"
-                    className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 pr-10" />
-                </div>
+              <div>
+                <label className="block font-semibold mb-2" htmlFor="companyWebsite">Company Website</label>
+                <input
+                  type="url"
+                  id="companyWebsite"
+                  name="companyWebsite"
+                  value={formData.companyWebsite}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+                />
               </div>
 
               {formData.companyLogo && (
-                <div className="w-1/2">
+                <div>
                   <img
                     src={formData.companyLogo}
-                    alt="Company Logo Preview"
-                    className="h-24 w-24 rounded-md border object-cover" />
+                    alt="Company Logo"
+                    className="h-24 w-24 rounded-md border object-cover"
+                  />
                 </div>
               )}
 
-              <div className="w-full flex items-center gap-6 mt-4">
+              <div className="flex flex-wrap gap-4 mt-4">
                 <label
                   htmlFor="companyLogo"
-                  className="flex items-center gap-2 cursor-pointer px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow hover:bg-blue-700 transition">
-                  <span>{formData.companyLogo ? 'Change Logo' : 'Upload Company Logo'}</span>
+                  className="cursor-pointer px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow hover:bg-blue-700 transition">
+                  {formData.companyLogo ? 'Change Logo' : 'Upload Company Logo'}
                 </label>
                 <input
                   id="companyLogo"
@@ -345,21 +323,24 @@ const PostJob = () => {
                   type="file"
                   accept="image/*"
                   onChange={handleLogoUpload}
-                  className="hidden" />
+                  className="hidden"
+                />
               </div>
             </div>
           </div>
 
-          <div className="flex justify-end">
+          {/* Submit */}
+          <div className="flex justify-end gap-6">
+          <Link
+              to="/job/posts"
+              className="px-5 py-2.5 border border-gray-400 dark:border-neutral-500 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 transition">
+              Cancel
+            </Link>
             <button
               type="submit"
               disabled={loading}
-              className="px-10 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3">
-              {loading ? (
-                    <h3>Posting...</h3>
-              ) : (
-                <h3>Post Job</h3>
-              )}
+              className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+              {loading ? 'Posting...' : 'Post Job'}
             </button>
           </div>
         </form>

@@ -14,15 +14,12 @@ const JobPosts = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && !user) {
-      navigate('/login');
-    }
+    if (!loading && !user) navigate('/login');
   }, [user, loading, navigate]);
 
   useEffect(() => {
     if (user && user.role !== 'recruiter') {
       navigate('/dashboard');
-      console.error('Not Authenticated');
     }
   }, [user, navigate]);
 
@@ -37,57 +34,69 @@ const JobPosts = () => {
         setFetching(false);
       }
     };
-
     fetchJobs();
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <p className="p-6 text-center text-gray-500 dark:text-gray-400">Loading...</p>;
   }
 
   return (
-      <div className="w-full h-screen bg-[#F2F2F2] flex gap-6 overflow-hidden">
-        <RecruiterPannel />
-        <div className="flex-1 flex flex-col">
-          <div className="flex items-baseline justify-between pr-8 py-6">
-            <div>
-              <h2 className="text-2xl font-extrabold text-gray-900">Job Posts</h2>
-              <p className="text-sm text-gray-500 mt-1"> Manage and track your posted job openings</p>
-            </div> 
-            <CurrentDate />
+    <div className="h-screen flex flex-col sm:flex-row min-h-screen bg-gradient-to-b from-gray-50 to-[#F2F2F2] dark:from-gray-900 dark:to-gray-800">
+      <RecruiterPannel />
+
+      <main className="flex-1 flex flex-col p-6 space-y-6 lg:mr-4 overflow-auto">
+        {/* Header */}
+        <div className="flex flex-col gap-1 sm:gap-2">
+          {/* Heading + Date (always side by side) */}
+          <div className="flex items-center justify-between w-full flex-wrap">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Job Posts</h2>
+            <div className="shrink-0 mt-1 sm:mt-0">
+              <CurrentDate />
+            </div>
           </div>
 
-          <div className="px-8 flex items-center justify-between py-4">
-            <h2 className="text-lg font-semibold text-gray-700">
-              {jobs.filter((job) => job.isOpen).length || '0'} Active Jobs
-            </h2>
-            <Link
-              to="/post/job"
-              className="text-md p-2 px-5 bg-blue-600 hover:bg-blue-700 rounded-lg text-white transition duration-200">
-              + Add Job Post
-            </Link>
-          </div>
+          {/* Subtext always below heading */}
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Manage and track your posted job openings
+          </p>
+        </div>
 
-          <div
-          className="flex flex-wrap gap-4 px-8 pb-10 overflow-y-auto">
+        {/* Sub-header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <span className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+            {jobs.filter(job => job.isOpen).length} Active Jobs
+          </span>
+          <Link
+            to="/post/job"
+            className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition w-full sm:w-auto text-center">
+            + Add Job Post
+          </Link>
+        </div>
+
+        {/* Job Cards */}
+        <div className="flex flex-wrap gap-4 pb-10 justify-center lg:justify-start">
           {fetching ? (
-            <div className="flex h-96 items-center justify-center w-full">
+            <div className="flex w-full justify-center items-center h-64">
               <MoonLoader color="#3B82F6" size={40} />
             </div>
           ) : jobs.length > 0 ? (
             jobs.map((job) => (
-              <div key={job._id} className="w-[23%]">
+              <div
+                key={job._id}
+                className="flex-grow-0 flex-shrink-0 sm:w-[48%] lg:w-[23%] min-w-[260px] transition-shadow">
                 <JobPost job={job} />
               </div>
             ))
           ) : (
-            <div className="text-center py-20 text-gray-400 font-medium w-full">
+            <div className="w-full text-center text-gray-500 dark:text-gray-400 font-medium py-20">
               No job posts available
             </div>
           )}
-          </div>
         </div>
-      </div>
+
+      </main>
+    </div>
   );
 };
 

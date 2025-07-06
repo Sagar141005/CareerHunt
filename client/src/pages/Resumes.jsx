@@ -3,7 +3,7 @@ import api from '../api/axios';
 import UserNavbar from '../components/UserNavbar';
 import { supabase } from '../utils/supabaseClient';
 import { RiFileUploadLine, RiSparkling2Fill } from '@remixicon/react';
-
+import Footer from '../components/Footer';
 
 const Resumes = () => {
   const [resumes, setResumes] = useState([]);
@@ -78,8 +78,6 @@ const Resumes = () => {
       alert('Failed to improve resume. Try again.');
     }
   };
-  
-
 
   const downloadResume = (resumeId, versionNumber, format) => {
     const url = `${import.meta.env.VITE_API_URL}/ai/resume/download?resumeId=${resumeId}&versionNumber=${versionNumber}&format=${format}`;
@@ -87,13 +85,13 @@ const Resumes = () => {
   };
 
   return (
-    <div className="relative bg-[#F9F9F9] min-h-screen">
+    <div className="w-full min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-300 transition-colors duration-300">
       <UserNavbar />
 
+      {/* Upload Button */}
       <button
         onClick={() => fileInputRef.current?.click()}
-        className="fixed bottom-8 right-8 bg-gradient-to-br from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white shadow-xl w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer"
-      >
+        className="fixed bottom-8 right-8 bg-gradient-to-br from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white shadow-xl w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer z-50">
         <RiFileUploadLine className="w-6 h-6" />
       </button>
       <input
@@ -105,30 +103,35 @@ const Resumes = () => {
         disabled={uploading}
       />
 
-      <div className="w-full h-full px-12 py-8 flex flex-col gap-6">
-        <h1 className="text-4xl font-bold text-gray-900 mb-10">My Resumes</h1>
+      {/* Content Container */}
+      <main className="flex-1 w-full px-6 sm:px-12 py-8 flex flex-col gap-6">
+        <h1 className="text-4xl font-bold mb-10 text-gray-900 dark:text-white">My Resumes</h1>
 
         {loading ? (
-          <p className="text-center text-gray-500 text-lg py-20">Loading your resumes...</p>
+          <p className="text-center text-gray-500 dark:text-gray-400 text-lg py-20">Loading your resumes...</p>
         ) : error ? (
           <p className="text-center text-red-600 font-medium">{error}</p>
         ) : resumes.length === 0 ? (
-          <div className="text-center text-gray-600 mt-20">
+          <div className="text-center text-gray-600 dark:text-gray-400 mt-20">
             <p className="mb-6 text-xl">No resumes yet.</p>
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="bg-blue-600 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700 transition font-semibold"
-            >
+              className="bg-blue-600 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700 transition font-semibold">
               Upload Resume
             </button>
           </div>
         ) : (
           <div className="flex flex-col gap-6">
             {resumes.map((resume) => (
-              <div key={resume.id} className="bg-white rounded-3xl shadow-md px-6 py-6">
-                <div className="flex justify-between items-center mb-6">
-                  <div>
-                    <h2 className="text-2xl font-semibold text-gray-900">{resume.title}</h2>
+              <div
+                key={resume.id}
+                className="bg-white dark:bg-[#1a1a1a] rounded-3xl shadow-md px-6 py-6">
+                {/* Resume Header */}
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                  <div className="max-w-full sm:max-w-xs">
+                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-white truncate">
+                      {resume.title}
+                    </h2>
                     <p className="text-sm text-gray-400 uppercase">
                       {resume.fileUrl.split('.').pop() || 'Unknown'} File
                     </p>
@@ -137,41 +140,41 @@ const Resumes = () => {
                     href={resume.fileUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 font-medium text-sm hover:underline"
-                  >
+                    className="text-blue-600 dark:text-blue-400 font-medium text-sm hover:underline">
                     View Original
                   </a>
                 </div>
 
+                {/* Improve Button */}
                 <div className="flex flex-wrap gap-4 mb-4">
                   <button
                     onClick={() => improveResume(resume.id)}
-                    className="bg-blue-600 text-white px-5 py-2 rounded-full shadow hover:bg-blue-700 transition-all font-semibold cursor-pointer"
-                  >
+                    className="bg-blue-600 text-white px-5 py-2 rounded-full shadow hover:bg-blue-700 transition-all font-semibold cursor-pointer">
                     <span className="flex items-center gap-2">
                       <RiSparkling2Fill className="w-4 h-4" color="#FFE138" /> Improve
                     </span>
                   </button>
                 </div>
 
+                {/* Resume Versions */}
                 {resume.versions?.length > 0 && (
-                  <div className="border-t pt-4 mt-4 space-y-2 max-h-60 overflow-y-auto pr-1">
+                  <div className="border-t dark:border-[#333] pt-4 mt-4 space-y-2 max-h-60 overflow-y-auto pr-1">
                     {resume.versions.map((v) => (
                       <div
                         key={v.versionNumber}
-                        className="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
-                      >
+                        className="flex justify-between items-start sm:items-center flex-col sm:flex-row p-3 bg-gray-50 dark:bg-[#222] rounded-lg gap-2">
                         <div>
-                          <p className="text-sm font-medium text-gray-900">
+                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                             V{v.versionNumber}{' '}
-                            <span className="text-gray-500 font-normal">({v.type})</span>
+                            <span className="text-gray-500 dark:text-gray-400 font-normal">({v.type})</span>
                           </p>
-                          <p className="text-xs text-gray-500 truncate max-w-xs">{v.contentPreview}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-xs">
+                            {v.contentPreview}
+                          </p>
                         </div>
                         <button
                           onClick={() => downloadResume(resume.id, v.versionNumber, 'pdf')}
-                          className="px-3 py-1 text-xs rounded bg-blue-100 text-blue-600 font-semibold hover:bg-blue-200"
-                        >
+                          className="px-3 py-1 text-xs rounded bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 font-semibold hover:bg-blue-200 dark:hover:bg-blue-800 transition">
                           Download PDF
                         </button>
                       </div>
@@ -182,7 +185,8 @@ const Resumes = () => {
             ))}
           </div>
         )}
-      </div>
+      </main>
+      <Footer />
     </div>
   );
 };

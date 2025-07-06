@@ -117,71 +117,79 @@ const EditJobPost = () => {
   
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-[#F0F4FF] to-[#E6ECFF] py-12 px-6 sm:px-10">
-      <Link 
-      to='/job/posts'
-      className='absolute flex items-center justify-center h-12 w-12 rounded-full bg-white top-4 left-4 shadow-lg cursor-pointer text-[#ccc] hover:text-black  transition-all duration-200'>
-        <RiArrowLeftLine size={30} color='currentColor' />
+    <div className="min-h-screen bg-gradient-to-tr from-[#F0F4FF] to-[#E6ECFF] dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-10 transition-colors duration-300">
+      <Link
+        to="/job/posts"
+        className="hidden sm:flex items-center justify-center h-12 w-12 rounded-full bg-white dark:bg-gray-800 top-4 left-4 shadow-lg cursor-pointer text-gray-400 hover:text-black dark:hover:text-white transition absolute">
+        <RiArrowLeftLine size={30} />
       </Link>
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-10 border border-neutral-200">
-        <h1 className="text-4xl font-bold text-gray-800 mb-10 text-center">Edit Job Post</h1>
-
-        <form onSubmit={handleSubmit} className="space-y-10" data-color-mode="light">
-        <div>
-            <label className="mb-2 font-semibold text-gray-700" htmlFor="title">
+  
+      <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 rounded-xl shadow-2xl p-6 sm:p-10 border border-neutral-200 dark:border-gray-700">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-10 text-center">Edit Job Post</h1>
+  
+        <form onSubmit={handleSubmit} className="space-y-10">
+          {/* Job Title */}
+          <div>
+            <label
+              htmlFor="title"
+              className="mb-2 font-semibold text-gray-700 dark:text-gray-200">
               Job Title <span className="text-red-600">*</span>
             </label>
-            <div>
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                    placeholder="e.g. Senior Frontend Developer"
-                    className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 pr-10"
-                    required />
-            </div>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="e.g. Senior Frontend Developer"
+              required
+              className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100" />
           </div>
-
+  
+          {/* Job Description */}
           <div>
-            <label className="mb-2 font-semibold text-gray-700" htmlFor="description">
+            <label
+              htmlFor="description"
+              className="mb-2 font-semibold text-gray-700 dark:text-gray-200">
               Job Description <span className="text-red-600">*</span>
             </label>
-            <div className="bg-white rounded-lg border border-gray-300">
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-700">
               <MDEditor
                 value={formData.description}
                 onChange={(value) =>
-                  setFormData((prev) => ({ ...prev, description: value || '' }))
+                  setFormData((prev) => ({ ...prev, description: value || "" }))
                 }
                 height={280}
                 preview="edit"
                 visibleDragbar={false}
                 fullscreen={false}
-                data-color-mode="light" />
+                className="!bg-white dark:!bg-neutral-900 dark:!text-white" />
             </div>
           </div>
-
-          <div className="flex gap-6">
-            <div className="w-1/2">
-              <label className="mb-2 font-semibold text-gray-700" htmlFor="location">
+  
+          {/* Location & Job Type */}
+          <div className="flex flex-col sm:flex-row gap-6">
+            <div className="w-full sm:w-1/2">
+              <label
+                htmlFor="location"
+                className="mb-2 font-semibold text-gray-700 dark:text-gray-200">
                 Location <span className="text-red-600">*</span>
               </label>
-              <div>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleChange}
-                  placeholder="e.g. Remote or New York"
-                  className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 pr-10"
-                  required />
-              </div>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                placeholder="e.g. Remote or New York"
+                required
+                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100" />
             </div>
-
-            <div className="w-1/2">
-              <label className="mb-2 font-semibold text-gray-700" htmlFor="type">
+  
+            <div className="w-full sm:w-1/2">
+              <label
+                htmlFor="type"
+                className="mb-2 font-semibold text-gray-700 dark:text-gray-200">
                 Job Type <span className="text-red-600">*</span>
               </label>
               <select
@@ -189,8 +197,8 @@ const EditJobPost = () => {
                 name="type"
                 value={formData.type}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
-                required>
+                required
+                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 appearance-none">
                 <option value="full-time">Full-time</option>
                 <option value="part-time">Part-time</option>
                 <option value="contract">Contract</option>
@@ -199,10 +207,13 @@ const EditJobPost = () => {
               </select>
             </div>
           </div>
-
-          <div className="flex gap-6">
-            <div className="w-1/2">
-              <label className="mb-2 font-semibold text-gray-700" htmlFor="salary">
+  
+          {/* Salary & Openings */}
+          <div className="flex flex-col sm:flex-row gap-6">
+            <div className="w-full sm:w-1/2">
+              <label
+                htmlFor="salary"
+                className="mb-2 font-semibold text-gray-700 dark:text-gray-200">
                 Salary (annual) (Optional)
               </label>
               <input
@@ -213,11 +224,13 @@ const EditJobPost = () => {
                 value={formData.salary}
                 onChange={handleChange}
                 placeholder="e.g. 70000"
-                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500" />
+                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100" />
             </div>
-
-            <div className="w-1/2">
-              <label className="mb-2 font-semibold text-gray-700" htmlFor="openings">
+  
+            <div className="w-full sm:w-1/2">
+              <label
+                htmlFor="openings"
+                className="mb-2 font-semibold text-gray-700 dark:text-gray-200">
                 Number of Openings <span className="text-red-600">*</span>
               </label>
               <input
@@ -227,15 +240,17 @@ const EditJobPost = () => {
                 name="openings"
                 value={formData.openings}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
-                required />
+                required
+                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100" />
             </div>
           </div>
-
-
-          <div className="flex gap-6">
-            <div className="w-1/2">
-              <label className="mb-2 font-semibold text-gray-700" htmlFor="employmentType">
+  
+          {/* Employment Type & Job Level */}
+          <div className="flex flex-col sm:flex-row gap-6">
+            <div className="w-full sm:w-1/2">
+              <label
+                htmlFor="employmentType"
+                className="mb-2 font-semibold text-gray-700 dark:text-gray-200">
                 Employment Type <span className="text-red-600">*</span>
               </label>
               <select
@@ -243,8 +258,8 @@ const EditJobPost = () => {
                 name="employmentType"
                 value={formData.employmentType}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
-                required>
+                required
+                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 appearance-none" >
                 <option value="full-time">Full-time</option>
                 <option value="part-time">Part-time</option>
                 <option value="contract">Contract</option>
@@ -252,9 +267,11 @@ const EditJobPost = () => {
                 <option value="temporary">Temporary</option>
               </select>
             </div>
-
-            <div className="w-1/2">
-              <label className="mb-2 font-semibold text-gray-700" htmlFor="level">
+  
+            <div className="w-full sm:w-1/2">
+              <label
+                htmlFor="level"
+                className="mb-2 font-semibold text-gray-700 dark:text-gray-200">
                 Job Level <span className="text-red-600">*</span>
               </label>
               <select
@@ -262,19 +279,22 @@ const EditJobPost = () => {
                 name="level"
                 value={formData.level}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
-                required>
-                <option>Entry</option>
-                <option>Mid</option>
-                <option>Senior</option>
-                <option>Lead</option>
-                <option>Director</option>
+                required
+                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 appearance-none">
+                <option value="entry">Entry</option>
+                <option value="mid">Mid</option>
+                <option value="senior">Senior</option>
+                <option value="lead">Lead</option>
+                <option value="director">Director</option>
               </select>
             </div>
           </div>
-
+  
+          {/* Department */}
           <div>
-            <label className="mb-2 font-semibold text-gray-700" htmlFor="department">
+            <label
+              htmlFor="department"
+              className="mb-2 font-semibold text-gray-700 dark:text-gray-200">
               Department <span className="text-red-600">*</span>
             </label>
             <select
@@ -282,19 +302,22 @@ const EditJobPost = () => {
               name="department"
               value={formData.department}
               onChange={handleChange}
-              className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
-              required>
-              <option>Engineering</option>
-              <option>Design</option>
-              <option>Marketing</option>
-              <option>Sales</option>
-              <option>Human Resources</option>
-              <option>Other</option>
+              required
+              className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 appearance-none">
+              <option value="engineering">Engineering</option>
+              <option value="design">Design</option>
+              <option value="marketing">Marketing</option>
+              <option value="sales">Sales</option>
+              <option value="human-resources">Human Resources</option>
+              <option value="other">Other</option>
             </select>
           </div>
-
+  
+          {/* Application Deadline */}
           <div>
-            <label className="mb-2 font-semibold text-gray-700" htmlFor="deadline">
+            <label
+              htmlFor="deadline"
+              className="mb-2 font-semibold text-gray-700 dark:text-gray-200">
               Application Deadline <span className="text-red-600">*</span>
             </label>
             <input
@@ -303,133 +326,21 @@ const EditJobPost = () => {
               name="deadline"
               value={formData.deadline}
               onChange={handleChange}
-              className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"
               required
-            />
+              className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100" />
           </div>
-
-          <div>
-            <label className="mb-2 font-semibold text-gray-700" htmlFor="tags">
-              Tags (comma separated)
-            </label>
-            <input
-              type="text"
-              id="tags"
-              name="tags"
-              value={formData.tags}
-              onChange={handleChange}
-              placeholder="e.g. React, JavaScript, Remote"
-              className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500"/>
-          </div>
-
-          <div>
-            <h2 className="text-2xl font-semibold text-blue-600 mb-6 border-b border-gray-200 pb-2">
-              Company Information
-            </h2>
-
-            <div className="space-y-6">
-              <div className="w-full">
-                <label className="mb-2 font-semibold text-gray-700" htmlFor="company">
-                  Company Name <span className="text-red-600">*</span>
-                </label>
-                <div>
-                  <input
-                    type="text"
-                    id="company"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleChange}
-                    placeholder="e.g. Acme Corp"
-                    className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 pr-10"
-                    required />
-                </div>
-              </div>
-
-              <div className="">
-                <label className="mb-2 font-semibold text-gray-700" htmlFor="companyWebsite">
-                  Company Website
-                </label>
-                <div>
-                  <input
-                    type="url"
-                    id="companyWebsite"
-                    name="companyWebsite"
-                    value={formData.companyWebsite}
-                    onChange={handleChange}
-                    placeholder="https://example.com"
-                    className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 pr-10" />
-                </div>
-              </div>
-
-              {formData.companyLogo && (
-                <div className="w-1/2">
-                  <img
-                    src={formData.companyLogo}
-                    alt="Company Logo Preview"
-                    className="h-24 w-24 rounded-md border object-cover" />
-                </div>
-              )}
-
-              <div className="w-full flex items-center gap-6 mt-4">
-                <label
-                  htmlFor="companyLogo"
-                  className="flex items-center gap-2 cursor-pointer px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow hover:bg-blue-700 transition">
-                  <span>{formData.companyLogo ? 'Change Logo' : 'Upload Company Logo'}</span>
-                </label>
-                <input
-                  id="companyLogo"
-                  name="companyLogo"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleLogoUpload}
-                  className="hidden" />
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center mt-10">
+  
+          {/* Submit Button */}
           <button
-            type="button"
-            onClick={() => setShowDeleteConfirm(true)}
-            className="px-6 py-3 bg-red-100 text-red-600 font-semibold rounded-lg border border-red-300 shadow-sm hover:bg-red-200 transition cursor-pointer">
-              Delete Job
-            </button>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-6 py-3 bg-blue-600 text-white font-semibold border border-blue-600 rounded-lg shadow hover:bg-blue-700 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3">
-                {loading ? <h3>Updating...</h3> : <h3>Update Job</h3>}
-            </button>
-          </div>
+            type="submit"
+            className="w-full py-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition">
+            Save Changes
+          </button>
         </form>
-
-          {showDeleteConfirm && (
-          <div className="fixed inset-0 bg-transparent backdrop-blur-md flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 space-y-4">
-              <h3 className="text-lg font-semibold text-red-600">Confirm Deletion</h3>
-              <p className="text-gray-600 text-sm">
-                Are you sure you want to delete this job post? This action is irreversible.
-              </p>
-              <div className="flex justify-end gap-4 mt-6">
-                <button
-                  onClick={() => setShowDeleteConfirm(false)}
-                  className="px-4 py-2 rounded-md text-gray-600 border border-gray-300 hover:bg-gray-100 cursor-pointer">
-                  Cancel
-                </button>
-                <button
-                  onClick={handleDelete}
-                  className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 cursor-pointer">
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-          )}
-
       </div>
     </div>
   );
+  
 };
 
 export default EditJobPost;

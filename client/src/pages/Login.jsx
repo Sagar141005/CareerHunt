@@ -34,11 +34,10 @@ const Login = () => {
   }, [hasSubmitted, user, navigate]);
 
   return (
-    <div className="w-full min-h-screen flex justify-center items-center animated-gradient-bg relative">
+    <div className="w-full min-h-screen flex justify-center items-center animated-gradient-bg relative px-4">
+      <div className="absolute inset-0 bg-black/30"></div>
 
-    <div className="absolute inset-0 bg-black/30"></div>
-
-    <div className="relative z-10 w-full max-w-md p-8 bg-white rounded-xl shadow-xl transform transition-all duration-500 hover:scale-102">
+      <div className="relative z-10 w-full max-w-md p-6 sm:p-8 bg-white rounded-xl shadow-xl transform transition-all duration-500 hover:scale-102">
         <h1 className="text-3xl font-extrabold text-blue-700 text-center mb-6 select-none">Welcome Back</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>

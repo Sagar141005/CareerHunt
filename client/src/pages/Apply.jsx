@@ -1,9 +1,9 @@
+// [UNCHANGED IMPORTS]
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import api from '../api/axios'; // your axios instance
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import api from '../api/axios';
 import { formatDistanceToNow } from 'date-fns';
 import UserNavbar from '../components/UserNavbar';
-
 import {
   RiMapPin2Line,
   RiBriefcaseLine,
@@ -11,8 +11,11 @@ import {
   RiFilePaper2Line,
   RiRestartLine,
   RiBuildingLine,
-  RiSendPlaneFill
+  RiSendPlaneFill,
+  RiArrowDownSLine,
+  RiArrowLeftLine
 } from '@remixicon/react';
+import Footer from '../components/Footer';
 
 const Apply = () => {
   const { jobId } = useParams();
@@ -127,50 +130,40 @@ const Apply = () => {
     }
   };
 
+
   if (loading || !job) {
-    return <div className="text-center py-24 text-gray-500">Loading application form...</div>;
+    return <div className="text-center py-24 text-gray-600 dark:text-gray-400">Loading application form...</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f8faff] to-[#eff3ff]">
+    <div className="min-h-screen relative bg-gradient-to-br from-[#f8faff] to-[#eff3ff] dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       <UserNavbar />
-      <div className="max-w-7xl mx-auto p-8 flex flex-col lg:flex-row gap-12">
-
-        {/* Left Panel: Job Summary */}
-        <div
-          className="lg:w-1/3 bg-white rounded-3xl p-8 shadow-lg border border-gray-200
-            flex flex-col"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at top left, #E8F0FE, transparent 70%)',
-          }}
-        >
-          {/* Company Logo */}
+      <Link
+        to="/jobs"
+        className="hidden sm:flex items-center justify-center h-12 w-12 rounded-full bg-white dark:bg-gray-800 top-24 left-4 shadow-lg cursor-pointer text-gray-400 hover:text-black dark:hover:text-white transition absolute">
+        <RiArrowLeftLine size={30} />
+      </Link>
+      <div className="max-w-7xl mx-auto p-6 sm:p-8 flex flex-col lg:flex-row gap-12">
+    
+        {/* Left Panel */}
+        <div className="lg:w-1/3 bg-white dark:bg-neutral-900 rounded-3xl p-8 shadow-lg border border-gray-200 dark:border-neutral-700 flex flex-col">
           <div className="mb-6 flex justify-center">
             {job.companyLogo ? (
-              <img
-                src={job.companyLogo}
-                alt={`${job.company} logo`}
-                className="w-20 h-20 rounded-full object-contain shadow-md"
-              />
+              <img src={job.companyLogo} alt={`${job.company} logo`} className="w-20 h-20 rounded-full bg-white object-contain shadow-md" />
             ) : (
-              <div className="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 text-3xl font-bold select-none shadow-md">
+              <div className="w-20 h-20 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-3xl font-bold shadow-md">
                 {job.company?.charAt(0) || 'C'}
               </div>
             )}
           </div>
 
-          <h1 className="text-3xl font-extrabold text-gray-900 mb-3 tracking-tight">
-            {job.title}
-          </h1>
-
-          <div className="flex items-center gap-2 text-gray-700 font-medium text-lg mb-4">
+          <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-3">{job.title}</h1>
+          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 font-medium text-lg mb-4">
             <RiBuildingLine size={22} className="text-blue-600" />
             <span>{job.company}</span>
           </div>
 
-          {/* Job Info List */}
-          <div className="flex flex-col gap-4 text-gray-700 font-medium text-base">
+          <div className="flex flex-col gap-4 text-gray-700 dark:text-gray-300 text-base">
             <div className="flex items-center gap-3">
               <RiBriefcaseLine size={20} className="text-blue-500" />
               <span>Type: {job.type}</span>
@@ -181,28 +174,22 @@ const Apply = () => {
             </div>
             <div className="flex items-center gap-3">
               <RiTimeLine size={20} className="text-blue-500" />
-              <span>
-                Posted: {formatDistanceToNow(new Date(job.createdAt), { addSuffix: true })}
-              </span>
+              <span>Posted: {formatDistanceToNow(new Date(job.createdAt), { addSuffix: true })}</span>
             </div>
           </div>
 
-          {/* Optional Job Description Preview */}
           {job.description && (
-            <div className="mt-8 text-gray-700 text-sm leading-relaxed max-h-48 overflow-auto scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-blue-50">
-              <h2 className="font-semibold mb-2 text-gray-900">Job Description</h2>
+            <div className="mt-8 text-sm leading-relaxed text-gray-700 dark:text-gray-300 max-h-48 overflow-auto scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-blue-50 dark:scrollbar-thumb-blue-500">
+              <h2 className="font-semibold mb-2 text-gray-900 dark:text-white">Job Description</h2>
               <p>{job.description}</p>
             </div>
           )}
         </div>
 
-
-        {/* Right Panel: Application Form */}
-        <div className="lg:w-2/3 bg-white rounded-3xl p-10 shadow-lg flex flex-col">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-8 flex items-center gap-3">
-            <div className="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-lg text-sm font-medium select-none">
-              AI
-            </div>
+        {/* Right Panel */}
+        <div className="lg:w-2/3 bg-white dark:bg-neutral-900 rounded-3xl p-8 shadow-lg border border-gray-200 dark:border-neutral-700">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-8 flex items-center gap-3">
+            <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-lg text-sm font-medium select-none">AI</span>
             Apply with Smart Assistant
           </h2>
 
@@ -210,37 +197,38 @@ const Apply = () => {
 
             {/* Resume Select */}
             <div>
-              <label
-                htmlFor="resumeSelect"
-                className="block mb-3 font-semibold text-gray-700"
-              >
+              <label htmlFor="resumeSelect" className="block mb-3 font-semibold text-gray-700 dark:text-gray-200">
                 Select Resume
               </label>
               {loadingResumes ? (
-                <p className="text-gray-500">Loading resumes...</p>
+                <p className="text-gray-500 dark:text-gray-400">Loading resumes...</p>
               ) : (
-                <select
-                  id="resumeSelect"
-                  onChange={handleResumeSelect}
-                  value={userResumes.find(r => r.fileUrl === form.resume)?.id || ''}
-                  required
-                  className="w-full appearance-none bg-white rounded-xl border border-gray-300 px-5 py-3 text-gray-900
-                    shadow-sm transition duration-300 focus:ring-2 focus:ring-blue-500 focus:outline-none
-                    hover:border-blue-400 hover:shadow-md"
-                >
-                  <option value="">-- Select your resume --</option>
-                  {userResumes.map(r => (
-                    <option key={r.id} value={r.id}>
-                      {r.title} (v{r.versions?.length + 1 || 1})
+                <div className="relative w-full">
+                  <select
+                    id="resumeSelect"
+                    onChange={handleResumeSelect}
+                    value={userResumes.find(r => r.fileUrl === form.resume)?.id || ''}
+                    required
+                    className="block w-full appearance-none bg-white dark:bg-neutral-800 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-neutral-600 px-5 py-3 pr-10 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="" disabled hidden>
+                      Choose from your uploaded resumes
                     </option>
-                  ))}
-                </select>
+                    {userResumes.map(r => (
+                      <option key={r.id} value={r.id}>
+                        {r.title} (v{r.versions?.length + 1 || 1})
+                      </option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute top-[15px] font-bold right-4 text-gray-400 dark:text-gray-100">
+                    <RiArrowDownSLine size={20} />
+                  </div>
+                </div>   
               )}
             </div>
 
-            {/* Resume Link (readonly) */}
+            {/* Resume Link */}
             <div>
-              <label htmlFor="resumeLink" className="block mb-3 font-semibold text-gray-700">
+              <label htmlFor="resumeLink" className="block mb-3 font-semibold text-gray-700 dark:text-gray-200">
                 Resume Link
               </label>
               <input
@@ -249,29 +237,25 @@ const Apply = () => {
                 name="resume"
                 readOnly
                 value={form.resume}
-                placeholder="Select a resume to autofill the link"
-                className="w-full rounded-xl border border-gray-300 px-5 py-3 bg-gray-100 text-gray-700 cursor-not-allowed
-                  transition-shadow duration-300 ease-in-out
-                  focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+                className="w-full bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 cursor-not-allowed border border-gray-300 dark:border-neutral-600 px-5 py-3 rounded-xl" />
             </div>
 
             {/* Tailored Resume Preview */}
             {loadingImprove ? (
-              <p className="text-gray-600 italic">Generating tailored resume...</p>
+              <p className="text-gray-600 dark:text-gray-400 italic">Generating tailored resume...</p>
             ) : tailoredResume ? (
-              <details className="bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-                <summary className="cursor-pointer font-medium px-5 py-3 hover:bg-gray-100 flex items-center gap-2 select-none">
+              <div className="bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 rounded-xl overflow-hidden shadow-sm">
+                <div className="cursor-pointer font-medium px-5 py-3 hover:bg-gray-100 dark:hover:bg-neutral-700 flex items-center gap-2 select-none">
                   <RiFilePaper2Line />
                   View Tailored Resume (AI-Optimized)
-                </summary>
-                <pre className="max-h-72 overflow-y-auto whitespace-pre-wrap px-5 py-4 text-sm text-gray-800 font-mono">
+                </div>
+                <div className="max-h-72 overflow-y-auto whitespace-pre-wrap px-5 py-4 text-sm text-gray-800 dark:text-gray-200 font-mono">
                   {tailoredResume}
-                </pre>
-              </details>
+                </div>
+              </div>
             ) : null}
 
-            {/* Regenerate Cover Letter */}
+            {/* Regenerate Button */}
             {form.resume && (
               <div className="flex justify-end">
                 <button
@@ -289,7 +273,7 @@ const Apply = () => {
                       setGeneratingCover(false);
                     }
                   }}
-                  className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-800 transition"
+                  className="inline-flex items-center text-blue-600 dark:text-blue-400 font-semibold hover:underline"
                 >
                   {generatingCover ? (
                     <span className="animate-pulse flex items-center gap-2">
@@ -308,7 +292,7 @@ const Apply = () => {
 
             {/* Cover Letter */}
             <div>
-              <label htmlFor="coverLetter" className="block mb-3 font-semibold text-gray-700">
+              <label htmlFor="coverLetter" className="block mb-3 font-semibold text-gray-700 dark:text-gray-200">
                 Cover Letter
               </label>
               <textarea
@@ -316,28 +300,23 @@ const Apply = () => {
                 name="coverLetter"
                 rows="6"
                 required
-                placeholder="I’m excited about this opportunity because..."
                 value={form.coverLetter}
                 onChange={handleChange}
-                className="w-full rounded-xl border border-gray-300 px-5 py-4 text-gray-800
-                  bg-white resize-none shadow-sm transition duration-200
-                  focus:ring-2 focus:ring-blue-500 focus:outline-none hover:shadow-md"
-              />
+                placeholder="I’m excited about this opportunity because..."
+                className="w-full rounded-xl border border-gray-300 dark:border-neutral-600 px-5 py-4 bg-white dark:bg-neutral-800 text-gray-800 dark:text-gray-100 resize-none shadow-sm focus:ring-2 focus:ring-blue-500" />
             </div>
 
-            {/* Submit Button */}
+            {/* Submit */}
             <button
               type="submit"
-              className="w-full flex justify-around bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-4 rounded-xl
-                shadow-md transition-transform duration-150 ease-in-out
-                hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-400 cursor-pointer"
-            >
-              <span className='flex items-center gap-2'><RiSendPlaneFill size={20} /> Submit Application</span>
+              className="w-full flex justify-center items-center gap-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-4 rounded-xl shadow-md transition hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-400">
+              <RiSendPlaneFill size={20} />
+              Submit Application
             </button>
-
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

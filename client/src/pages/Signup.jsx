@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 
 const Signup = () => {
-  const [role, setRole] = useState('jobseeker');
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const roleFromQuery = queryParams.get('role');
+
+  const [role, setRole] = useState(roleFromQuery || 'jobseeker');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,10 +39,10 @@ const Signup = () => {
   }
 
   return (
-    <div className="w-full min-h-screen flex justify-center items-center animated-gradient-bg relative">
+    <div className="w-full min-h-screen flex justify-center items-center px-4 sm:px-6 animated-gradient-bg relative">
       <div className="absolute inset-0 bg-black/30"></div>
 
-      <div className="relative z-10 w-full max-w-md p-8 bg-white rounded-xl shadow-xl transform transition-all duration-500 hover:scale-102">
+      <div className="relative z-10 w-full max-w-md p-6 sm:p-8 bg-white rounded-xl shadow-xl transform transition-all duration-500 hover:scale-102">
         <h1 className="text-3xl font-extrabold text-gray-800 text-center mb-6 select-none">
           Create Your Account
         </h1>
@@ -115,8 +119,7 @@ const Signup = () => {
           <button
             type="submit"
             className="w-full py-3 bg-gradient-to-br from-blue-600 to-blue-700 text-white font-semibold text-lg rounded-xl
-              shadow-lg transition-all duration-300 hover:brightness-110 hover:shadow-2xl active:scale-95 cursor-pointer"
-          >
+              shadow-lg transition-all duration-300 hover:brightness-110 hover:shadow-2xl active:scale-95 cursor-pointer">
             Sign Up
           </button>
         </form>
@@ -134,8 +137,7 @@ const Signup = () => {
                 key={alt}
                 className="p-3 rounded-full border border-gray-300 bg-white/80 hover:shadow-lg hover:scale-110 active:scale-95
                            transition-transform cursor-pointer"
-                aria-label={`Sign up with ${alt}`}
-              >
+                aria-label={`Sign up with ${alt}`}>
                 <img src={src} alt={alt} className="w-6 h-6" />
               </button>
             ))}

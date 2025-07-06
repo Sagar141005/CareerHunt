@@ -70,83 +70,81 @@ const ApplicantDetail = () => {
 
   if (authLoading || loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center h-screen dark:bg-gray-900">
         <MoonLoader />
       </div>
     );
   }
 
-  if (!applicant) return <p>No applicant data found.</p>;
+  if (!applicant) return <p className="text-center mt-10 dark:text-white">No applicant data found.</p>;
 
   const downloadLink = (resumeId, versionNumber, type = 'resume', format = 'pdf') => {
     return `${import.meta.env.VITE_API_URL}/ai/${type === 'coverLetter' ? 'cover-letter/download' : 'resume/download'}?resumeId=${resumeId}&versionNumber=${versionNumber}&format=${format}`;
   };
 
   return (
-    <div className="w-full h-screen bg-[#F2F2F2] flex gap-6 overflow-hidden">
+    <div className="w-full h-screen flex flex-col sm:flex-row bg-[#F2F2F2] dark:bg-gray-900 overflow-hidden">
       <RecruiterPannel />
 
-      <div className="flex-1 px-8 py-10 overflow-y-auto">
+      <div className="flex-1 flex flex-col p-6 overflow-y-auto lg:mr-4">
         {/* Top Bar */}
-        <div className="flex items-baseline justify-between">
-          <h2 className="text-xl font-bold">Applicant Profile</h2>
-          <CurrentDate />
+        <div className="flex items-center justify-between w-full flex-wrap">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Applicant Profile</h2>
+            <div className="shrink-0 mt-1 sm:mt-0">
+              <CurrentDate />
+            </div>
         </div>
 
         {/* Profile Section */}
-        <div className="flex items-center justify-between mt-8 p-6">
-          <div className="flex items-center gap-6">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mt-6 bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="flex items-start sm:items-center gap-4 sm:gap-6">
             <img
               src={applicant.profilePic || '/Recruiter.png'}
               alt={applicant.name}
-              className="w-20 h-20 rounded-full object-cover ring-2 ring-gray-300"
+              className="w-20 h-20 rounded-full object-cover ring-2 ring-gray-300 dark:ring-gray-600"
             />
             <div>
-              <h3 className="text-2xl font-semibold">{applicant.name}</h3>
-              <p className="text-sm text-gray-500">{applicant.email}</p>
-              <div className="flex items-center mt-2 gap-3">
+              <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">{applicant.name}</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{applicant.email}</p>
+              <div className="flex items-center mt-2 gap-3 flex-wrap">
                 <span
                   className={`px-3 py-1 text-xs font-semibold rounded-full ${
                     {
-                      Applied: 'bg-blue-100 text-[#3B82F6]',
-                      Shortlisted: 'bg-green-100 text-[#22C55E]',
-                      Interview: 'bg-purple-100 text-[#8B5CF6]',
-                      'On-hold': 'bg-yellow-100 text-[#FACC15]',
-                      Hired: 'bg-orange-100 text-[#FB923C]',
-                      Rejected: 'bg-red-100 text-[#FF6B6B]',
-                    }[status] || 'bg-gray-100 text-gray-600'
-                  }`}
-                >
+                      Applied: 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300',
+                      Shortlisted: 'bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300',
+                      Interview: 'bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300',
+                      'On-hold': 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300',
+                      Hired: 'bg-orange-100 text-orange-600 dark:bg-orange-900 dark:text-orange-300',
+                      Rejected: 'bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300',
+                    }[status] || 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
+                  }`}>
                   {status}
                 </span>
 
                 <button
                   onClick={() => setEditMode(!editMode)}
-                  className="ml-2 text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1"
-                >
+                  className="ml-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm flex items-center gap-1">
                   <RiEditLine />
-                  <span className='cursor-pointer'>{editMode ? 'Cancel' : 'Update'}</span>
+                  <span>{editMode ? 'Cancel' : 'Update'}</span>
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Status Dropdown + Save */}
           {editMode && (
-            <div className="flex items-center gap-3">
+            <div className="mt-4 lg:mt-0 flex flex-col sm:flex-row gap-3">
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="border border-gray-300 text-sm rounded-md px-5 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm rounded-md px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
                 {STATUS_OPTIONS.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
+                  <option key={option} value={option}>{option}</option>
                 ))}
               </select>
               <button
                 onClick={handleStatusUpdate}
-                className="bg-blue-600 hover:bg-blue-700 text-white text-md font-medium px-5 py-2 rounded-md shadow-sm cursor-pointer">
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-md shadow-sm"
+              >
                 Save
               </button>
             </div>
@@ -155,9 +153,9 @@ const ApplicantDetail = () => {
 
         {/* Resume */}
         <div className="mt-10">
-          <h4 className="text-lg font-semibold mb-2">Resume</h4>
+          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Resume</h4>
           {appliedResume ? (
-            <div className="text-blue-600 space-x-4 text-sm">
+            <div className="text-blue-600 dark:text-blue-400 space-x-4 text-sm">
               <a href={downloadLink(appliedResume.resumeId, appliedResume.versionNumber, 'resume', 'pdf')} target="_blank" className="hover:underline">PDF</a>
               <a href={downloadLink(appliedResume.resumeId, appliedResume.versionNumber, 'resume', 'docx')} target="_blank" className="hover:underline">DOCX</a>
             </div>
@@ -168,13 +166,13 @@ const ApplicantDetail = () => {
 
         {/* Cover Letter */}
         <div className="mt-8">
-          <h4 className="text-lg font-semibold mb-2">Cover Letter</h4>
+          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Cover Letter</h4>
           {appliedCoverLetter ? (
             <>
-              <div className="bg-white rounded-md p-4 text-sm text-gray-700 shadow-sm border border-gray-200 leading-relaxed whitespace-pre-wrap overflow-x-auto">
+              <div className="bg-white dark:bg-gray-800 rounded-md p-4 text-sm text-gray-700 dark:text-gray-200 shadow-sm border border-gray-200 dark:border-gray-700 whitespace-pre-wrap overflow-x-auto">
                 {appliedCoverLetter.content}
               </div>
-              <div className="mt-2 text-blue-600 space-x-4 text-sm">
+              <div className="mt-2 text-blue-600 dark:text-blue-400 space-x-4 text-sm">
                 <a href={downloadLink(appliedCoverLetter.resumeId, appliedCoverLetter.versionNumber, 'coverLetter', 'pdf')} target="_blank" className="hover:underline">PDF</a>
                 <a href={downloadLink(appliedCoverLetter.resumeId, appliedCoverLetter.versionNumber, 'coverLetter', 'docx')} target="_blank" className="hover:underline">DOCX</a>
               </div>
@@ -186,25 +184,23 @@ const ApplicantDetail = () => {
 
         {/* Interaction History */}
         <div className="mt-12">
-          <h4 className="text-xl font-semibold mb-6">Interaction History</h4>
+          <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Interaction History</h4>
 
           {interactionHistory?.length > 0 ? (
-            <div className="relative border-l-2 border-gray-200 space-y-6 pl-6">
+            <div className="relative border-l-2 border-gray-200 dark:border-gray-700 space-y-6 pl-6">
               {interactionHistory.map((e, idx) => (
                 <div key={idx} className="relative group">
-                  {/* Timeline dot */}
-                  <span className="absolute left-[-9px] top-1 w-4 h-4 rounded-full bg-blue-500 ring-2 ring-white shadow-md" />
-
-                  <div className="bg-white shadow-sm border border-gray-200 rounded-md p-4 transition hover:shadow-md">
-                    <p className="font-medium text-gray-800 capitalize">{e.action.replace(/_/g, ' ')}</p>
-
+                  <span className="absolute left-[-9px] top-1 w-4 h-4 rounded-full bg-blue-500 ring-2 ring-white dark:ring-gray-900 shadow-md" />
+                  <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-md p-4 transition hover:shadow-md">
+                    <p className="font-medium capitalize">{e.action.replace(/_/g, ' ')}</p>
                     {e.fromStatus && (
-                      <p className="text-sm text-gray-500 mt-1 flex gap-1">
-                        <span className="font-medium text-gray-600">{e.fromStatus}</span> <RiArrowRightLine size={15} /> <span className="font-medium text-gray-600">{e.toStatus}</span>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 flex items-center gap-1">
+                        <span>{e.fromStatus}</span>
+                        <RiArrowRightLine size={15} />
+                        <span>{e.toStatus}</span>
                       </p>
                     )}
-
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                       {formatDistanceToNow(new Date(e.timestamps), { addSuffix: true })}
                     </p>
                   </div>

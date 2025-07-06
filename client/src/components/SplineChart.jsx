@@ -99,85 +99,108 @@ const AreaChartWithFilter = () => {
     ];
   }, [selectedJob, labels]);
 
+  const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
   const chartOptions = {
     chart: {
       type: "area",
       height: 350,
       toolbar: { show: false },
       zoom: { enabled: false },
+      foreColor: isDark ? "#E5E7EB" : "#1F2937", 
     },
-    colors: ["#3B82F6", "#22C55E", "#FF6B6B"],
+    colors: isDark
+      ? ["#60A5FA", "#4ADE80", "#F87171"] 
+      : ["#3B82F6", "#22C55E", "#FF6B6B"], 
     dataLabels: { enabled: false },
     stroke: { curve: "smooth", width: 2 },
     fill: {
       type: "gradient",
       gradient: {
         shadeIntensity: 1,
-        opacityFrom: 0.4,
+        opacityFrom: 0.3,
         opacityTo: 0.05,
         stops: [0, 90, 100],
       },
     },
-    tooltip: { shared: true, intersect: false, x: { format: "dd MMM" } },
-    legend: { position: "top", horizontalAlign: "left" },
+    tooltip: {
+      theme: isDark ? "dark" : "light",
+      shared: true,
+      intersect: false,
+      x: { format: "dd MMM" },
+    },
+    legend: {
+      position: "top",
+      horizontalAlign: "left",
+      labels: {
+        colors: isDark ? "#E5E7EB" : "#1F2937",
+      },
+    },
     xaxis: {
       categories: labels,
       labels: { show: false },
       axisTicks: { show: false },
     },
     yaxis: {
-      labels: { formatter: (val) => val },
+      labels: {
+        style: { colors: isDark ? "#9CA3AF" : "#6B7280" },
+        formatter: (val) => val,
+      },
     },
   };
 
   return (
-    <div className="bg-transparent rounded-lg p-4 relative flex flex-col h-[500px]">
-    <div className="flex justify-between items-center mb-2 py-4">
-      <h3 className="text-xl font-semibold">Top Active Jobs</h3>
-      <select
-        className="text-blue-400 appearance-none p-1 text-sm font-medium"
-        value={timeRange}
-        onChange={(e) => setTimeRange(Number(e.target.value))}>
-        <option value="7">Last 7 Days</option>
-        <option value="30">Last 30 Days</option>
-        <option value="90">Last 90 Days</option>
-      </select>
-    </div>
-  
-    <div className="flex-shrink-0">
-      <ReactApexChart
-        options={chartOptions}
-        series={series}
-        type="area"
-        height={250} />
-    </div>
-  
-    <div className="flex-grow overflow-y-auto pr-4 mt-6 min-h-0">
-      {jobMap.map((job) => (
-        <div
-          key={job.id}
-          onClick={() => setSelectedJobID(job.id)}
-          className={`flex justify-between items-center py-3 px-2 transition-all cursor-pointer ${
-            selectedJobID === job.id ? "bg-gray-100 rounded-lg" : ""
-          }`}>
-          <div>
-            <div className="font-medium text-sm">{job.title}</div>
-            <div className="text-xs text-gray-500">
-              {Object.values(job.chartData.applications).reduce((a, b) => a + b, 0)} Applications
+    <div className="bg-transparent dark:bg-transparent rounded-lg p-4 relative flex flex-col h-[500px]">
+      <div className="flex justify-between items-center mb-2 py-4">
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Top Active Jobs</h3>
+        <select
+          className="text-blue-500 dark:text-blue-400 bg-transparent appearance-none p-1 text-sm font-medium"
+          value={timeRange}
+          onChange={(e) => setTimeRange(Number(e.target.value))}>
+          <option value="7">Last 7 Days</option>
+          <option value="30">Last 30 Days</option>
+          <option value="90">Last 90 Days</option>
+        </select>
+      </div>
+
+      <div className="flex-shrink-0">
+        <ReactApexChart
+          options={chartOptions}
+          series={series}
+          type="area"
+          height={250} />
+      </div>
+
+      <div className="flex-grow overflow-y-auto pr-4 mt-6 min-h-0">
+        {jobMap.map((job) => (
+          <div
+            key={job.id}
+            onClick={() => setSelectedJobID(job.id)}
+            className={`flex justify-between items-center py-3 px-2 transition-all cursor-pointer 
+              ${
+                selectedJobID === job.id
+                  ? "bg-gray-100 dark:bg-gray-700 rounded-lg"
+                  : "hover:bg-gray-50 dark:hover:bg-gray-800"
+              }`}>
+            <div>
+              <div className="font-medium text-sm text-gray-800 dark:text-white">{job.title}</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                {Object.values(job.chartData.applications).reduce((a, b) => a + b, 0)} Applications
+              </div>
             </div>
+            <button
+              className={`w-8 h-8 flex items-center justify-center p-1 border rounded-lg transition-colors
+                ${
+                  selectedJobID === job.id
+                    ? "bg-blue-500 text-white border-blue-500"
+                    : "bg-transparent text-blue-500 dark:text-blue-400 border-blue-300 dark:border-blue-500"
+                }`}>
+              <RiLineChartLine size={16} />
+            </button>
           </div>
-          <button
-            className={`w-8 h-8 flex items-center justify-center p-1 border border-blue-300 rounded-lg transition-colors ${
-              selectedJobID === job.id
-                ? "bg-blue-400 text-white"
-                : "bg-transparent text-blue-500"
-            }`}>
-            <RiLineChartLine size={16} />
-          </button>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
-  </div>
   );
 };
 

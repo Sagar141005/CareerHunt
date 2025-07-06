@@ -2,28 +2,29 @@ import React, { useMemo, useState } from "react";
 import useRecentApplications from "../hooks/useRecentApplications";
 
 const HorizontalBar = () => {
-    const [ timeRange, setTimeRange ] = useState(7);
+  const [timeRange, setTimeRange] = useState(7);
 
-    const { applications } = useRecentApplications({ days: timeRange });
+  const { applications } = useRecentApplications({ days: timeRange });
 
-    const acquisitionStats = useMemo(() => {
-
+  const acquisitionStats = useMemo(() => {
     const counts = {
-      "Applications": applications.length,
-      "Shortlisted": applications.filter(app => app.status === 'Shortlisted').length,
-      "On-hold": applications.filter(app => app.status === "On-hold").length,
-      "Rejected": applications.filter(app => app.status === "Rejected").length
-    }
+      Applications: applications.length,
+      Shortlisted: applications.filter((app) => app.status === "Shortlisted").length,
+      "On-hold": applications.filter((app) => app.status === "On-hold").length,
+      Rejected: applications.filter((app) => app.status === "Rejected").length,
+    };
 
     const maxCount = Math.max(...Object.values(counts));
 
     if (maxCount === 0) {
-      return [{
-        label: "No Applications",
-        value: 100,
-        rawCount: 0,
-        color: "#D1D5DB",
-      }];
+      return [
+        {
+          label: "No Applications",
+          value: 100,
+          rawCount: 0,
+          color: "#D1D5DB",
+        },
+      ];
     }
 
     return Object.entries(counts).map(([label, count]) => ({
@@ -31,19 +32,22 @@ const HorizontalBar = () => {
       value: maxCount > 0 ? (count / maxCount) * 100 : 0,
       rawCount: count,
       color:
-        label === "Applications" ? "#3B82F6" :
-        label === "Shortlisted" ? "#22C55E" :
-        label === "On-hold" ? "#FACC15" :
-        "#EF4444",
+        label === "Applications"
+          ? "#3B82F6"
+          : label === "Shortlisted"
+          ? "#22C55E"
+          : label === "On-hold"
+          ? "#FACC15"
+          : "#EF4444",
     }));
   }, [applications]);
 
   return (
     <div className="p-4 w-full max-w-md">
       <div className="flex justify-between items-center mb-2">
-        <h3 className="text-lg font-bold text-gray-800">Acquisitions</h3>
+        <h3 className="text-lg font-bold text-gray-800 dark:text-white">Acquisitions</h3>
         <select
-        className="text-blue-400 appearance-none p-1 text-sm font-medium"
+          className="text-blue-500 dark:text-blue-400 appearance-none p-1 text-sm font-medium bg-transparent"
           value={timeRange}
           onChange={(e) => setTimeRange(Number(e.target.value))}>
           <option value="7">Last 7 Days</option>
@@ -52,34 +56,35 @@ const HorizontalBar = () => {
         </select>
       </div>
 
-      <div className="flex w-full h-2.5 rounded-2xl overflow-hidden mb-4 bg-gray-10">
+      <div className="flex w-full h-2.5 rounded-2xl overflow-hidden mb-4 bg-gray-200 dark:bg-gray-700">
         {acquisitionStats.map((item, index) => (
-            <div
+          <div
             key={index}
             className="h-full"
             style={{
-                width: `${item.value}%`,
-                backgroundColor: item.color
+              width: `${item.value}%`,
+              backgroundColor: item.color,
             }}>
-            </div>
+          </div>
         ))}
       </div>
 
       <div className="flex flex-col space-y-2 text-sm">
         {acquisitionStats.map((item, index) => (
-            <div key={index} className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                    <span
-                    className="w-4 h-2.5 rounded-2xl"
-                    style={{ backgroundColor: item.color}}></span>
-                    <span className="text-gray-700">{item.label}</span>
-                </div>
-                <span className="font-semibold text-gray-900">{item.rawCount}</span>
+          <div key={index} className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <span
+                className="w-4 h-2.5 rounded-2xl"
+                style={{ backgroundColor: item.color }}>
+              </span>
+              <span className="text-gray-700 dark:text-gray-300">{item.label}</span>
             </div>
+            <span className="font-semibold text-gray-900 dark:text-white">{item.rawCount}</span>
+          </div>
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HorizontalBar
+export default HorizontalBar;
