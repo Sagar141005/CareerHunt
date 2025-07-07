@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import RecruiterPannel from '../components/RecruiterPannel';
-import { RiCloseLine } from '@remixicon/react';
+import { RiCloseLine, RiMoonClearFill, RiSunFill } from '@remixicon/react';
 
 const Settings = () => {
   const { user, logout } = useAuth();
@@ -80,8 +80,8 @@ const Settings = () => {
           <div>
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Theme</h3>
             <div className="flex items-center justify-between p-4 bg-white dark:bg-neutral-800 rounded-lg border border-gray-200 dark:border-neutral-700 transition">
-              <span className="text-gray-700 dark:text-gray-200">
-                {darkMode ? '🌙 Dark Mode' : '☀️ Light Mode'}
+              <span className="text-gray-700 flex items-center justify-center gap-3 dark:text-gray-200">
+                {darkMode ? <><RiMoonClearFill color='#4F46E5' /> Dark Mode</> : <><RiSunFill color='#FBBF24' /> Light Mode</>}
               </span>
               <label htmlFor="toggle" className="relative inline-block w-14 h-8 cursor-pointer">
                 <input

@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-10">
         
         <div className="flex flex-col flex-1 space-y-4">
-          <div className="flex items-center gap-2 cursor-pointer">
+          <div className="flex items-center gap-2">
             <RiSparkling2Fill size={25} className="text-blue-600 dark:text-blue-400" />
             <h1 className="text-3xl font-semibold tracking-wide pt-1 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent animate-gradient-x">
               CareerHunt
