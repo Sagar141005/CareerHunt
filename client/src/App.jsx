@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Loader from "./components/Loader";
 import ToastProvider from "./components/ToastProvider";
+import RequireAuth from "./components/RequireAuth";
+import RequireRole from "./components/RequireRole";
 
 // Lazy load pages
 const Home = lazy(() => import("./pages/Home"));
@@ -32,37 +34,141 @@ function App() {
     <>
       <Suspense fallback={<Loader />}>
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/setting" element={<Setting />} />
-          <Route path="/post/job" element={<PostJob />} />
-          <Route path="/post/job/edit/:jobId" element={<EditJobPost />} />
-          <Route path="/job/posts" element={<JobPosts />} />
-          <Route path="/applications" element={<Applications />} />
-          <Route path="/applications/applicants/:jobId" element={<Applicants />} />
-          <Route path="/applications/applicant/:jobPostId/:userId" element={<ApplicantDetail />} />
-          <Route path="/jobs" element={<FindJob />} />
-          <Route path="/saved" element={<Saved />} />
-          <Route path="/my-applications" element={<MyApplications />} />
-          <Route path="/jobs/:id" element={<JobDetails />} />
-          <Route path="/profile/edit" element={<EditProfile />} />
-          <Route path="/apply/:jobId" element={<Apply />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsAndConditions />} />
+
+          {/* Routes requiring user to be logged in */}
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            } />
+          <Route
+            path="/setting"
+            element={
+              <RequireAuth>
+                <Setting />
+              </RequireAuth>
+            } />
+          <Route
+            path="/profile/edit"
+            element={
+              <RequireAuth>
+                <EditProfile />
+              </RequireAuth>
+            } />
+          <Route
+            path="/dashboard"
+            element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            } />
+
+          {/* Job-Seeker routes */}
+          <Route
+            path="/jobs"
+            element={
+              <RequireAuth>
+                <FindJob />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/saved"
+            element={
+              <RequireAuth>
+                <Saved />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/my-applications"
+            element={
+              <RequireAuth>
+                <MyApplications />
+              </RequireAuth>
+            }
+          />
           <Route
             path="/resume"
             element={
-              <ErrorBoundary>
-                <Resumes />
-              </ErrorBoundary>
+              <RequireAuth>
+                <ErrorBoundary>
+                  <Resumes />
+                </ErrorBoundary>
+              </RequireAuth>
             }
           />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<TermsAndConditions />} />
+          <Route
+            path="/jobs/:id"
+            element={
+              <RequireAuth>
+                <JobDetails />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/apply/:jobId"
+            element={
+              <RequireAuth>
+                <Apply />
+              </RequireAuth>
+            }
+          />
+         
+          {/* Public routes */}
+          <Route 
+            path="/post/job" 
+            element={
+              <RequireRole role="recruiter">
+                <PostJob />
+              </RequireRole>
+            } />
+          <Route 
+            path="/post/job/edit/:jobId" 
+            element={
+              <RequireRole role="recruiter">
+                <EditJobPost />
+              </RequireRole>
+            } />
+          <Route 
+            path="/job/posts" 
+            element={
+              <RequireRole role="recruiter">
+                <JobPosts />
+              </RequireRole>
+            } />
+          <Route 
+            path="/applications" 
+            element={
+              <RequireRole role="recruiter">
+                <Applications />
+              </RequireRole>
+            } />
+          <Route 
+            path="/applications/applicants/:jobId" 
+            element={
+              <RequireRole role="recruiter">
+                <Applicants />
+              </RequireRole>
+            } />
+          <Route 
+            path="/applications/applicant/:jobPostId/:userId" 
+            element={
+              <RequireRole role="recruiter">
+                <ApplicantDetail />
+              </RequireRole>
+            } />          
+
         </Routes>
       </Suspense>
-
       <ToastProvider />
     </>
   );
