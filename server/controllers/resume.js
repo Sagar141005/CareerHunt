@@ -179,6 +179,7 @@ export const getUserResumes = async (req, res) => {
                 versionNumber: version.versionNumber,
                 type: version.type,
                 job: version.job,
+                content: version.content,
                 contentPreview: version.content?.slice(0, 200) + '...' || '',
                 createdAt: version.createdAt
             })),

@@ -23,7 +23,7 @@ const PostJob = () => {
     department: 'Other',
     deadline: '',
     tags: '',
-    companyName: '',
+    company: '',
     companyWebsite: '',
     companyLogo: '',
   });
@@ -60,9 +60,14 @@ const PostJob = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await api.post('/jobs', formData);
+      await api.post('/job-posts/create', { ...formData,
+      tags: formData.tags
+      .split(',')
+      .map(tag => tag.trim())
+      .filter(tag => tag.length > 0) 
+    });
       toast.success('Job posted successfully!');
-      navigate('/jobs');
+      navigate('/job/posts');
     } catch (error) {
       const msg = error.response?.data?.message || error.message || 'Failed to post job.';
       toast.error(`Error: ${msg}`);
@@ -75,7 +80,7 @@ const PostJob = () => {
     if (user?.role === 'recruiter' && user.company) {
       setFormData((prev) => ({
         ...prev,
-        companyName: user.company.name || '',
+        company: user.company.name || '',
         companyWebsite: user.company.website || '',
         companyLogo: user.company.logoUrl || '',
       }));
@@ -155,11 +160,9 @@ const PostJob = () => {
                 value={formData.type}
                 onChange={handleChange}
                 className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 appearance-none">
-                <option value="full-time">Full-time</option>
-                <option value="part-time">Part-time</option>
-                <option value="contract">Contract</option>
-                <option value="internship">Internship</option>
-                <option value="temporary">Temporary</option>
+                <option value="On-site">On-site</option>
+                <option value="Remote">Remote</option>
+                <option value="Hybrid">Hybrid</option>
               </select>
             </div>
           </div>
@@ -203,11 +206,12 @@ const PostJob = () => {
                 value={formData.employmentType}
                 onChange={handleChange}
                 className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 appearance-none">
-                <option value="full-time">Full-time</option>
-                <option value="part-time">Part-time</option>
-                <option value="contract">Contract</option>
-                <option value="internship">Internship</option>
-                <option value="temporary">Temporary</option>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Temporary">Temporary</option>
+                <option value="Freelance">Freelance</option>
+                <option value="Internship">Internship</option>
               </select>
             </div>
             <div>
@@ -218,11 +222,11 @@ const PostJob = () => {
                 value={formData.level}
                 onChange={handleChange}
                 className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-10 appearance-none">
-                <option>Entry</option>
+                <option>Intern</option>
                 <option>Mid</option>
                 <option>Senior</option>
                 <option>Lead</option>
-                <option>Director</option>
+                <option>Junior</option>
               </select>
             </div>
           </div>
@@ -236,11 +240,12 @@ const PostJob = () => {
               value={formData.department}
               onChange={handleChange}
               className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 appearance-none">
-              <option>Engineering</option>
+              <option>IT</option>
               <option>Design</option>
               <option>Marketing</option>
               <option>Sales</option>
-              <option>Human Resources</option>
+              <option>Finance</option>
+              <option>Hospitality</option>
               <option>Other</option>
             </select>
           </div>
@@ -281,12 +286,12 @@ const PostJob = () => {
 
             <div className="space-y-6">
               <div>
-                <label className="block font-semibold mb-2" htmlFor="companyName">Company Name</label>
+                <label className="block font-semibold mb-2" htmlFor="company">Company Name</label>
                 <input
                   type="text"
-                  id="companyName"
-                  name="companyName"
-                  value={formData.companyName}
+                  id="company"
+                  name="company"
+                  value={formData.company}
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"

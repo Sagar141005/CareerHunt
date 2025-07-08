@@ -13,7 +13,7 @@ const JobDetails = () => {
   const [job, setJob] = useState(null);
   const [jobPost, setJobPost] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+  const [showWithdrawConfirm, setShowWithdrawConfirm] = useState(false);
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -37,7 +37,6 @@ const JobDetails = () => {
 
     try {
       await api.patch(`/applications/withdraw/${job._id}`);
-      alert('Application withdrawn successfully');
       setJob(prev => ({ ...prev, status: 'Withdrawn' }));
       toast.success('Application withdrawn successfully');
     } catch (error) {
@@ -73,8 +72,8 @@ const JobDetails = () => {
               <div className="flex flex-wrap gap-4 mt-4">
                 {[
                   {
-                    label: 'Experience',
-                    value: jobPost.experience || 'Not specified',
+                    label: 'Job Tpe',
+                    value: jobPost.employmentType || 'Not specified',
                     icon: <RiBriefcase2Line size={18} />,
                   },
                   {
@@ -95,7 +94,7 @@ const JobDetails = () => {
                 ].map((item, idx) => (
                   <div
                     key={idx}
-                    className="flex items-start gap-2 px-4 py-2 rounded-md bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 text-gray-700 dark:text-gray-300 text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200">
+                    className="flex items-center gap-2 px-4 py-2 rounded-md bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 text-gray-700 dark:text-gray-300 text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200">
                     {item.icon}
                     <div className="flex flex-col leading-tight">
                       <span className="text-xs text-gray-500 dark:text-gray-400">{item.label}</span>
@@ -135,7 +134,7 @@ const JobDetails = () => {
 
             {['Applied', 'Shortlisted', 'Interview'].includes(job?.status) ? (
               <button
-                onClick={handleWithdraw}
+                onClick={() => setShowWithdrawConfirm(true)}
                 className="bg-red-600 hover:bg-red-700 transition text-white px-5 py-2.5 rounded-lg font-medium shadow-md active:scale-95 cursor-pointer">
                 Withdraw Application
               </button>
@@ -170,6 +169,27 @@ const JobDetails = () => {
           </div>
         </div>
       </div>
+      {showWithdrawConfirm && (
+              <div className="fixed inset-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-4 sm:px-0">
+                <div className="bg-red-50 dark:bg-neutral-800 p-6 rounded-lg border border-red-200 dark:border-red-500 max-w-sm w-full shadow-xl transition-colors">
+                  <p className="text-sm text-red-600 dark:text-red-400 mb-4 font-semibold">
+                    This action is irreversible.
+                  </p>
+                  <div className="flex justify-end gap-4">
+                    <button
+                      onClick={() => setShowWithdrawConfirm(false)}
+                      className="px-4 py-2 text-sm text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-neutral-700 transition cursor-pointer">
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleWithdraw}
+                      className="px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700 transition cursor-pointer">
+                      Confirm Withdraw
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
       <Footer />
     </div>
   );

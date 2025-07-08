@@ -64,7 +64,7 @@ const RecruiterDashboard = () => {
                 <div className="flex-grow"></div>
                 <div className="w-1/2 -mr-6">
                   <Suspense fallback={<Loader />}>
-                    <RadialChart growth={all.growth} label="" size="52%" color="#3B82F6" />
+                    <RadialChart growth={all.percentage} label="" size="52%" color="#3B82F6" />
                   </Suspense>
                 </div>
               </div>
@@ -77,7 +77,7 @@ const RecruiterDashboard = () => {
                 <div className="flex-grow"></div>
                 <div className="w-1/2 -mr-6">
                   <Suspense fallback={<Loader />}>
-                    <RadialChart growth={shortlist.growth} label="" size="52%" color="#22C55E" />
+                    <RadialChart growth={shortlist.percentage} label="" size="52%" color="#22C55E" />
                   </Suspense>
                 </div>
               </div>
@@ -107,7 +107,7 @@ const RecruiterDashboard = () => {
                   <div className="flex justify-center items-center py-6">
                     <MoonLoader color="#3B82F6" size={12} />
                   </div>}>
-                  <RadialChart growth={onHold.growth} label="" size="52%" color="#FACC15" />
+                  <RadialChart growth={onHold.percentage} label="" size="52%" color="#FACC15" />
                 </Suspense>
               </div>
             </div>
@@ -152,7 +152,7 @@ const RecruiterDashboard = () => {
               <h3 className="text-xl font-bold text-gray-900 dark:text-white">Hired</h3>
               <img className="h-32 -mt-2" src="./image.png" alt="" />
               <Suspense fallback={<Loader />}>
-                <RadialChart growth={hired.growth} label="" size="52%" color="#FB923C" />
+                <RadialChart growth={hired.percentage} label="" size="52%" color="#FB923C" />
               </Suspense>
             </div>
           </div>

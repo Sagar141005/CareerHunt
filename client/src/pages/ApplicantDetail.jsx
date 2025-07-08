@@ -47,6 +47,12 @@ const ApplicantDetail = () => {
         setStatus(res.data.currentStatus);
         setSelectedStatus(res.data.currentStatus);
         setInteractionHistory(res.data.interactionHistory);
+        console.log({
+          resumeId: res.data.appliedResume?.resumeId,
+          versionNumber: res.data.appliedResume?.versionNumber,
+          appliedResume: res.data.appliedResume,
+        });
+        
       } catch (error) {
         const msg = error.response?.data?.message || error.message || 'Failed to fetch interaction history';
         toast.error(msg);
@@ -142,7 +148,7 @@ const ApplicantDetail = () => {
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm rounded-md px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm rounded-md px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none cursor-pointer">
                 {STATUS_OPTIONS.map((option) => (
                   <option key={option} value={option}>{option}</option>
                 ))}

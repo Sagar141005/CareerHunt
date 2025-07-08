@@ -8,7 +8,9 @@ const useMonthlyGrowth = (status) => {
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const queryParam = status ? `?statusQuery=${status}` : '';
+        const queryParam = status
+          ? `?statusQuery=${status.toLowerCase()}&noPagination=true`
+          : '?noPagination=true';
         const response = await api.get(`/job-posts/applications/all${queryParam}`);
         const applications = response.data.applications;
 
@@ -35,19 +37,18 @@ const useMonthlyGrowth = (status) => {
           const month = date.getMonth();
           const year = date.getFullYear();
 
+
           if (month === thisMonth && year === thisYear) current++;
           else if (month === lastMonth && year === lastMonthYear) previous++;
         }
 
-        const growth =
-          previous === 0
-            ? current > 0
-              ? 100
-              : 0
-            : Math.round(((current - previous) / previous) * 100);
+        const growth = previous === 0
+          ? (current > 0 ? 100 : 0)
+          : Math.max(Math.round(((current - previous) / previous) * 100), -100);
 
         setCurrentCount(current);
         setPercentage(growth);
+
       } catch (error) {
         console.error('Failed to fetch monthly growth:', error);
         setCurrentCount(0);

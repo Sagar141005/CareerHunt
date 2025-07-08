@@ -20,6 +20,8 @@ export const generateImprovedResume = async (resumeText) => {
     10. Keep language professional, concise, and ATS-friendly.
     
     Your goal is to enhance only the grammar, tone, and formatting of the resume, while preserving the original structure and information.
+
+    **Length:** Keep it between 800-1200 words
     
     --- RESUME TO IMPROVE ---
     ${resumeText}
@@ -85,6 +87,8 @@ export const generateJobSpecificResume = async (resumeText, jobPost) => {
     7. DO NOT use symbols like ◆ or markdown like **bold**, *, or _.
     8. DO NOT include introductory or closing comments (e.g., “--- IMPROVED RESUME ---”).
     9. Return clean plain text ONLY.
+
+    **Length:** Keep it between 800-1200 words
 
     --- ORIGINAL RESUME ---
     ${resumeText}
@@ -169,7 +173,7 @@ export const generateCoverLetter = async (resumeText, jobPost) => {
     - Try to incorporate STAR method subtly (Situation, Task, Action, Result)
     - Do not use Markdown or formatting characters like asterisks or underscores. Return plain text only.
     
-    **Length:** Keep it under 400 words, with proper formatting (salutation, body, closing).
+    **Length:** Keep it between 800-1200 words, with proper formatting (salutation, body, closing).
     
     --- CANDIDATE RESUME ---
     ${resumeText}

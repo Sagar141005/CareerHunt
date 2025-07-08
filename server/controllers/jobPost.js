@@ -53,6 +53,7 @@ export const createJobPost = async (req, res) => {
 
         return res.status(201).json({ message: "Job post created successfully", data: { jobPost } });
     } catch (error) {
+        console.error('Error in createJobPost:', error);
         return res.status(500).json({ message: "Error occurred while creating job post", error: error.message});
     }
 }
@@ -212,6 +213,8 @@ export const getJobApplications = async (req, res) => {
     try {
         const recruiterId = req.user._id;
         const { statusQuery, since, page = 1, limit = 20 } = req.query;
+        const noPagination = req.query.noPagination === 'true';
+
 
         const jobPosts = await JobPost.find({ recruiter: recruiterId }).lean();
         if (jobPosts.length === 0) {
@@ -240,15 +243,17 @@ export const getJobApplications = async (req, res) => {
             filter.dateApplied = { $gte: sinceDate };
         }
 
-        const skip = (parseInt(page) - 1) * parseInt(limit);
+        let query = Job.find(filter)
+        .sort({ createdAt: -1 })
+        .populate('userId', 'name email profilePic')
+        .populate('jobPostId', 'title company');
 
-        const applications = await Job.find(filter)
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(parseInt(limit))
-            .populate('userId', 'name email profilePic')
-            .populate('jobPostId', 'title company')
-            .lean();
+        if (!noPagination) {
+        const skipValue = (parseInt(page) - 1) * parseInt(limit);
+        query = query.skip(skipValue).limit(parseInt(limit));
+        }
+
+        const applications = await query.lean();
 
         return res.status(200).json({
             applications,

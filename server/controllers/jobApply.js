@@ -46,16 +46,11 @@ export const getAvailableJobs = async (req, res) => {
                 filter.$and = filter.$and || [];
                 filter.$and.push({ $or: orConditions });
             };
-            
-            
-
 
             addPartialMatchFilter('type', mergeQueryArrays(type, typeQuery));
             addPartialMatchFilter('employmentType', normalizeToArray(employmentType));
             addPartialMatchFilter('level', mergeQueryArrays(level, levelQuery));
             addPartialMatchFilter('department', normalizeToArray(department));
-
-
 
             if (search) {
                 const regex = new RegExp(search, 'i');
@@ -134,65 +129,69 @@ export const getPublicJobPostById = async (req, res) => {
 
 export const applyToJob = async (req, res) => {
     try {
-        const userId = req.user._id;
-        const { jobPostId } = req.params;
-        const { resumeId, resumeVersionNumber, coverLetterVersionNumber } = req.body;
-
-        if(!resumeId) {
-            return res.status(400).json({ message: 'Resume ID is required' });
+      const userId = req.user._id;
+      const { jobPostId } = req.params;
+      const { resumeId, resumeVersionNumber, coverLetterVersionNumber } = req.body;
+  
+      if (!resumeId) {
+        return res.status(400).json({ message: 'Resume ID is required' });
+      }
+  
+      let job = await Job.findOne({ userId, jobPostId });
+  
+      if (job) {
+        const currentStatus = job.status;
+        const disallowedStatuses = ['Applied', 'Shortlisted', 'On-hold', 'Interview', 'Rejected', 'Hired'];
+  
+        if (disallowedStatuses.includes(currentStatus)) {
+          return res.status(400).json({ message: `Cannot apply — already in status: "${currentStatus}"` });
         }
-        
-        let job = await Job.findOne({ userId, jobPostId });
-        if(job) {
-            const currentStatus = job.status;
-
-            const disallowedStatuses = ['Applied', 'Shortlisted', 'On-hold', 'Interview', 'Rejected', 'Hired'];
-
-            if(disallowedStatuses.includes(currentStatus)) {
-                return res.status(400).json({ message: `Cannot apply — already in status: "${currentStatus}"`});
-            }
-
-            if(currentStatus === 'Withdrawn' || currentStatus === null) {
-                job.status = 'Applied';
-                job.interactionHistory.push({
-                    action: 'applied',
-                    fromStatus: currentStatus,
-                    toStatus: 'Applied',
-                    timestamps: new Date()
-                });
-            }
-        } else {
-            job = new Job({
-                userId,
-                jobPostId,
-                status: 'Applied',
-                resume: resumeId,
-                resumeVersionNumber,
-                coverLetterVersionNumber,
-                interactionHistory: [{
-                    action: 'applied',
-                    fromStatus: null,
-                    toStatus: 'Applied',
-                    timestamps: new Date()
-                }]
-            });
+  
+        if (currentStatus === 'Withdrawn' || currentStatus === null) {
+          job.status = 'Applied';
+          job.interactionHistory.push({
+            action: 'applied',
+            fromStatus: currentStatus,
+            toStatus: 'Applied',
+            timestamps: new Date()
+          });
         }
-
+  
+        // Update resume and cover letter version numbers on re-apply
         job.resume = resumeId;
         job.resumeVersionNumber = resumeVersionNumber;
         job.coverLetterVersionNumber = coverLetterVersionNumber;
-
-        await job.save();
-        await JobPost.findByIdAndUpdate(jobPostId, { $inc: { applicationCount: 1 } });
-
-        await redis.del(`userApplications:${userId}`);
-
-        return res.status(201).json({ message: "Successfully applied to job",  job });
-
+  
+      } else {
+        // New job application
+        job = new Job({
+          userId,
+          jobPostId,
+          status: 'Applied',
+          resume: resumeId,
+          resumeVersionNumber,
+          coverLetterVersionNumber,
+          interactionHistory: [{
+            action: 'applied',
+            fromStatus: null,
+            toStatus: 'Applied',
+            timestamps: new Date()
+          }]
+        });
+      }
+  
+      await job.save();
+      await JobPost.findByIdAndUpdate(jobPostId, { $inc: { applicationCount: 1 } });
+  
+      await redis.del(`userApplications:${userId}`);
+  
+      return res.status(201).json({ message: "Successfully applied to job", job });
+  
     } catch (error) {
-        return res.status(500).json({ message: "An error occurred", error: error.message });
+      return res.status(500).json({ message: "An error occurred", error: error.message });
     }
-}
+  };
+  
 
 export const getJobApplication = async (req, res) => {
     try {
