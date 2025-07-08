@@ -6,6 +6,7 @@ import api from '../api/axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { MoonLoader } from 'react-spinners';
+import { toast } from 'react-toastify';
 
 const JobPosts = () => {
   const { user, loading } = useAuth();
@@ -29,7 +30,8 @@ const JobPosts = () => {
         const response = await api.get('/job-posts/all');
         setJobs(response.data.jobPosts || []);
       } catch (error) {
-        console.error(error.response?.data || error.message);
+        const msg = error.response?.data?.message || error.message || "Failed to fetch jobs.";
+        toast.error(`Error: ${msg}`);
       } finally {
         setFetching(false);
       }
@@ -69,7 +71,7 @@ const JobPosts = () => {
           </span>
           <Link
             to="/post/job"
-            className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition w-full sm:w-auto text-center">
+            className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition w-full sm:w-auto text-center cursor-pointer">
             + Add Job Post
           </Link>
         </div>

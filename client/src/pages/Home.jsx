@@ -10,10 +10,10 @@ const Home = () => {
     <div>
       <section className="relative h-[90vh] lg:min-h-screen sm:h-1/3 flex flex-col items-center justify-center text-center px-6">
         <div className="absolute top-6 right-6 z-30 flex gap-4">
-          <Link to="/login" className="bg-transparent border border-[#0164FC] text-[#0164FC] hover:bg-blue-50 transition font-semibold px-5 py-2 rounded-lg">
+          <Link to="/login" className="bg-transparent border border-[#0164FC] text-[#0164FC] hover:bg-blue-50 transition font-semibold px-5 py-2 rounded-lg cursor-pointer">
             Log in
           </Link>
-          <Link to="/signup" className="bg-[#0164FC] hover:bg-[#004fcb] transition text-white font-semibold px-5 py-2 rounded-lg shadow-sm">
+          <Link to="/signup" className="bg-[#0164FC] hover:bg-[#004fcb] transition text-white font-semibold px-5 py-2 rounded-lg shadow-sm cursor-pointer">
             Register
           </Link>
         </div>
@@ -47,12 +47,12 @@ const Home = () => {
             <div className="mt-8 flex gap-4 flex-wrap justify-center">
               <Link
                 to="/signup"
-                className="bg-[#0164FC] hover:bg-[#004fcb] transition text-white font-bold rounded-xl shadow-md text-sm sm:text-base px-4 sm:px-6 py-3 sm:py-3">
+                className="bg-[#0164FC] hover:bg-[#004fcb] transition text-white font-bold rounded-xl shadow-md text-sm sm:text-base px-4 sm:px-6 py-3 sm:py-3 cursor-pointer">
                 I’m a Job Seeker
               </Link>
               <Link
                 to="/signup?role=recruiter"
-                className="bg-white border border-[#0164FC] text-[#0164FC] hover:bg-blue-50 transition font-bold rounded-xl text-sm sm:text-base px-4 sm:px-6 py-3 sm:py-3">
+                className="bg-white border border-[#0164FC] text-[#0164FC] hover:bg-blue-50 transition font-bold rounded-xl text-sm sm:text-base px-4 sm:px-6 py-3 sm:py-3 cursor-pointer">
                 I’m a Recruiter
               </Link>
             </div>
@@ -154,7 +154,7 @@ const Home = () => {
         <p className="text-lg max-w-2xl mx-auto text-gray-600 mb-8">
           Whether you’re hiring for one role or many, we help you post jobs and manage responses with zero noise.
         </p>
-        <Link to="/recruiter/dashboard" className="bg-black text-white px-6 py-4 rounded-xl font-bold shadow-md hover:scale-105 transition">
+        <Link to="/recruiter/dashboard" className="bg-black text-white px-6 py-4 rounded-xl font-bold shadow-md hover:scale-105 transition cursor-pointer">
           Post a Job
         </Link>
       </section>

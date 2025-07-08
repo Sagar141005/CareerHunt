@@ -16,6 +16,7 @@ import {
   RiArrowLeftLine
 } from '@remixicon/react';
 import Footer from '../components/Footer';
+import { toast } from 'react-toastify';
 
 const Apply = () => {
   const { jobId } = useParams();
@@ -44,7 +45,8 @@ const Apply = () => {
         const app = res.data.job
         setJob(app.jobPostId);
       } catch (err) {
-        console.error(err);
+        const msg = err?.response?.data?.message || 'Failed to load job details.';
+        toast.error(msg);
       } finally {
         setLoading(false);
       }
@@ -55,7 +57,8 @@ const Apply = () => {
         const res = await api.get('/ai/resume/all');
         setUserResumes(res.data.resumes);
       } catch (err) {
-        console.error(err);
+        const msg = err?.response?.data?.message || 'Failed to load your resumes.';
+        toast.error(msg);
       } finally {
         setLoadingResumes(false);
       }
@@ -86,9 +89,10 @@ const Apply = () => {
     try {
       const res = await api.post(`/ai/resume/improve/${selectedResumeId}/${jobId}`);
       setTailoredResume(res.data.improvedContent);
-    } catch (err) {
-      setTailoredResume('Failed to generate tailored resume.');
-      console.error(err);
+    } catch (error) {
+      const msg = error?.response?.data?.message || 'Failed to generate tailored resume.';
+      toast.error(msg);
+      setTailoredResume(msg);
     } finally {
       setLoadingImprove(false);
     }
@@ -98,8 +102,8 @@ const Apply = () => {
       const clRes = await api.post(`/ai/cover-letter/${selectedResumeId}/${jobId}`);
       setForm(prev => ({ ...prev, coverLetter: clRes.data.content }));
     } catch (err) {
-      console.error(err);
-      alert('Failed to generate AI cover letter');
+      const msg = err?.response?.data?.message || 'Failed to generate cover letter.';
+      toast.error(msg);
     } finally {
       setGeneratingCover(false);
     }
@@ -116,7 +120,7 @@ const Apply = () => {
 
     try {
       if (!form.resume || !form.coverLetter) {
-        return alert("Please complete all fields before applying.");
+        toast.warning("Please complete all fields before applying.");
       }      
 
       await api.post(`/applications/${jobId}`, {
@@ -124,9 +128,11 @@ const Apply = () => {
         resumeVersionNumber: tailoredResumeVersion?.versionNumber,
         coverLetterVersionNumber: coverLetterVersion?.versionNumber
       });
+      toast.success('Application submitted successfully!');
       navigate('/my-applications');
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to submit application.');
+      const msg = err?.response?.data?.message || 'Failed to submit application.';
+      toast.error(msg);
     }
   };
 
@@ -273,7 +279,7 @@ const Apply = () => {
                       setGeneratingCover(false);
                     }
                   }}
-                  className="inline-flex items-center text-blue-600 dark:text-blue-400 font-semibold hover:underline"
+                  className="inline-flex items-center text-blue-600 dark:text-blue-400 font-semibold hover:underline cursor-pointer"
                 >
                   {generatingCover ? (
                     <span className="animate-pulse flex items-center gap-2">
@@ -309,7 +315,7 @@ const Apply = () => {
             {/* Submit */}
             <button
               type="submit"
-              className="w-full flex justify-center items-center gap-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-4 rounded-xl shadow-md transition hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-400">
+              className="w-full flex justify-center items-center gap-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-4 rounded-xl shadow-md transition hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-400 cursor-pointer">
               <RiSendPlaneFill size={20} />
               Submit Application
             </button>

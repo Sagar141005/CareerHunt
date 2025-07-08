@@ -5,6 +5,7 @@ import JobCard from '../components/JobCard'
 import { Link } from 'react-router-dom'
 import ApplicationStagePanel from '../components/ApplicationStagePanel'
 import Footer from '../components/Footer'
+import { toast } from 'react-toastify'
 
 const MyApplications = () => {
   const [applications, setApplications] = useState([])
@@ -15,7 +16,8 @@ const MyApplications = () => {
         const response = await api.get('/applications/applied/all')
         setApplications(response.data.jobs)
       } catch (error) {
-        console.error(error.response?.data || error.message)
+        const msg = error.response?.data?.message || error.message || "Failed to fetch applications.";
+        toast.error(`Error: ${msg}`);
       }
     }
 
@@ -63,7 +65,7 @@ const MyApplications = () => {
               <p className="mb-6 text-lg sm:text-xl">You haven't applied to any jobs yet.</p>
               <Link
                 to="/jobs"
-                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition cursor-pointer"
               >
                 Browse Jobs
               </Link>

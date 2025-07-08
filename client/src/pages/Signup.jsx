@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
+import { toast } from 'react-toastify';
 
 const Signup = () => {
   const location = useLocation();
@@ -22,10 +23,11 @@ const Signup = () => {
         password,
         role
       });
-      console.log('Signup successful', response.data);
+      toast.success('Account created successfully! 🎉');
       navigate('/login');
     } catch (error) {
-      console.error('Signup failed', error.response?.data || error.message);
+      const msg = error.response?.data?.message || error.message || "Signup failed.";
+      toast.error(msg);
     }
   }
 
@@ -34,7 +36,8 @@ const Signup = () => {
         await api.post('/auth/social/preference', { role });
         window.location.href = `${import.meta.env.VITE_API_URL}/auth/${provider}`
     } catch (error) {
-        console.error("Error storing role before social login", error);
+        const msg = error.response?.data?.message || error.message || 'Error storing role before social login';
+        toast.error(msg);
     }
   }
 
@@ -146,7 +149,7 @@ const Signup = () => {
 
         <p className="text-sm text-gray-600 text-center mt-6 select-none">
           Already have an account?{' '}
-          <Link to="/login" className="text-blue-700 hover:underline">
+          <Link to="/login" className="text-blue-700 hover:underline cursor-pointer">
             Login
           </Link>
         </p>

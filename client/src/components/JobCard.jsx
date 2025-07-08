@@ -31,7 +31,8 @@ const JobCard = ({ job }) => {
       try {
         const response = await api.patch(`/applications/saved/${job._id}`, { isSaved: saved });
       } catch (error) {
-        console.error(error.response?.data || error.message);
+        const msg = error.response?.data?.message || error.message || 'Failed to save job';
+        toast.error(msg);
       }
     }
 
@@ -126,7 +127,7 @@ const JobCard = ({ job }) => {
           ) : (
             <Link
               to={`/apply/${job._id}`}
-              className="text-white font-medium bg-black dark:bg-gray-200 dark:text-black py-2 px-4 rounded-lg hover:bg-neutral-900 dark:hover:bg-gray-300 transition-all duration-200 text-sm">
+              className="text-white font-medium bg-black dark:bg-gray-200 dark:text-black py-2 px-4 rounded-lg hover:bg-neutral-900 dark:hover:bg-gray-300 transition-all duration-200 text-sm cursor-pointer">
               Apply with AI
             </Link>
           )}

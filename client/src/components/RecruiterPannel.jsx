@@ -30,13 +30,13 @@ const RecruiterPannel = () => {
     <>
       {/* Mobile header */}
       <div className="sm:hidden flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-neutral-800 bg-white dark:bg-neutral-900">
-        <Link to="/dashboard" className="flex items-center gap-2">
+        <Link to="/dashboard" className="flex items-center gap-2 cursor-pointer">
           <RiSparkling2Fill size={24} className="text-blue-600" />
           <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
             CareerHunt
           </h1>
         </Link>
-        <button onClick={toggleMenu} className="text-gray-600 dark:text-gray-300">
+        <button onClick={toggleMenu} className="text-gray-600 dark:text-gray-300 cursor-pointer">
           {isOpen ? <RiCloseLine size={24} /> : <RiMenuLine size={24} />}
         </button>
       </div>
@@ -47,7 +47,7 @@ const RecruiterPannel = () => {
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="px-6 pt-6 pb-4 border-b border-gray-200 dark:border-neutral-800">
-            <Link to="/dashboard" className="flex items-center gap-2 select-none">
+            <Link to="/dashboard" className="flex items-center gap-2 select-non cursor-pointere">
               <RiSparkling2Fill size={26} className="text-blue-600" />
               <h1 className="text-2xl font-semibold tracking-wide pt-1 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent animate-gradient-x">
                 CareerHunt
@@ -82,7 +82,7 @@ const RecruiterPannel = () => {
             to="/profile"
             onClick={closeMenu}
             className="flex items-center gap-3 px-4 py-4 border-t border-gray-200 dark:border-neutral-800">
-            <div className="flex gap-4 items-center p-2 w-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition rounded-3xl">
+            <div className="flex gap-4 items-center p-2 w-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition rounded-3xl cursor-pointer">
               <img
                 className="h-9 w-9 object-cover rounded-full ring-2 ring-gray-300 dark:ring-neutral-600"
                 src={user?.profilePic || '/Recruiter.png'}

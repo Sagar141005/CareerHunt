@@ -44,7 +44,7 @@ const UserNavbar = () => {
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <Link key={link.name} to={link.path} className="relative group">
+              <Link key={link.name} to={link.path} className="relative group cursor-pointer">
                 <h3 className={`
                   group relative text-md font-light transition-colors
                   ${isActive(link.path)
@@ -76,7 +76,7 @@ const UserNavbar = () => {
           <div className="flex items-center gap-4">
             <Link
               to='/profile'
-              className="h-9 w-9 rounded-full overflow-hidden flex items-center justify-center"
+              className="h-9 w-9 rounded-full overflow-hidden flex items-center justify-center cursor-pointer"
               aria-label="Go to profile">
               <img
                 className="w-full h-full rounded-full object-cover"
@@ -87,7 +87,7 @@ const UserNavbar = () => {
 
             <Link
               to='/setting'
-              className="h-9 w-9 border border-white/30 text-white rounded-full overflow-hidden flex items-center justify-center"
+              className="h-9 w-9 border border-white/30 text-white rounded-full overflow-hidden flex items-center justify-center cursor-pointer"
               aria-label="Go to settings">
               <RiSettings2Line size={18} color="currentColor" />
             </Link>
@@ -96,7 +96,7 @@ const UserNavbar = () => {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden text-white"
+            className="md:hidden text-white cursor-pointer"
             aria-label="Toggle navigation menu">
             {menuOpen ? <RiCloseLine size={24} /> : <RiMenuLine size={24} />}
           </button>
@@ -110,7 +110,7 @@ const UserNavbar = () => {
             <Link
               key={link.name}
               to={link.path}
-              className={`block text-sm font-light ${
+              className={`block text-sm font-light cursor-pointer ${
                 isActive(link.path)
                   ? 'text-white font-medium'
                   : 'text-blue-200 dark:text-neutral-300 hover:text-white'

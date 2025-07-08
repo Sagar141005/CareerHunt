@@ -4,6 +4,7 @@ import UserNavbar from './UserNavbar';
 import Footer from './Footer';
 import api from '../api/axios';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const UserDashboard = () => {
   const { user } = useAuth();
@@ -16,7 +17,8 @@ const UserDashboard = () => {
         const response = await api.get('/applications/all');
         setJobs(response.data.jobs);
       } catch (error) {
-        console.error(error.response?.data || error.message);
+        const msg = error.response?.data?.message || error.message || 'Failed to fetch jobs';
+        toast.error(msg);
       }
     };
     fetchJobs();
@@ -41,12 +43,12 @@ const UserDashboard = () => {
             <Link
               to="/resume"
               className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow
-                hover:bg-blue-700 transition">
+                hover:bg-blue-700 transition cursor-pointer">
               Build Resume
             </Link>
             <Link
               to="/my-applications"
-              className="px-6 py-3 bg-white text-blue-600 font-semibold border border-blue-600 rounded-full hover:bg-blue-50 transition dark:bg-gray-800 dark:text-blue-400 dark:border-blue-400 dark:hover:bg-gray-700">
+              className="px-6 py-3 bg-white text-blue-600 font-semibold border border-blue-600 rounded-full hover:bg-blue-50 transition dark:bg-gray-800 dark:text-blue-400 dark:border-blue-400 dark:hover:bg-gray-700 cursor-pointer">
               Track Applications
             </Link>
           </div>
@@ -75,12 +77,12 @@ const UserDashboard = () => {
           <div className="flex flex-wrap gap-4">
             <Link
               to="/jobs"
-              className="px-5 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition font-medium">
+              className="px-5 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition font-medium cursor-pointer">
               Find New Jobs
             </Link>
             <Link
               to="/saved"
-              className="px-5 py-2 bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200 transition font-medium dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
+              className="px-5 py-2 bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200 transition font-medium dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 cursor-pointer">
               View Saved
             </Link>
           </div>

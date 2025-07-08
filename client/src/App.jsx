@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Loader from "./components/Loader";
+import ToastProvider from "./components/ToastProvider";
 
 // Lazy load pages
 const Home = lazy(() => import("./pages/Home"));
@@ -61,6 +62,8 @@ function App() {
           <Route path="/terms" element={<TermsAndConditions />} />
         </Routes>
       </Suspense>
+
+      <ToastProvider />
     </>
   );
 }

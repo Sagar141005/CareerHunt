@@ -5,6 +5,7 @@ import { formatDistanceToNow } from 'date-fns';
 import api from '../api/axios';
 import { RiArrowLeftLine, RiBriefcase2Line, RiBuildingLine, RiMapPinLine } from '@remixicon/react';
 import Footer from '../components/Footer';
+import { toast } from 'react-toastify';
 
 const JobDetails = () => {
   const { state } = useLocation();
@@ -21,7 +22,8 @@ const JobDetails = () => {
         setJob(response.data.job);
         setJobPost(response.data.job.jobPostId);
       } catch (err) {
-        console.error('Error fetching job:', err);
+        const msg = err.response?.data?.message || err.message || 'Failed to fetch job.';
+        toast.error(`Error: ${msg}`);
       } finally {
         setLoading(false);
       }
@@ -37,9 +39,10 @@ const JobDetails = () => {
       await api.patch(`/applications/withdraw/${job._id}`);
       alert('Application withdrawn successfully');
       setJob(prev => ({ ...prev, status: 'Withdrawn' }));
-    } catch (err) {
-      console.error(err);
-      alert(err.response?.data?.message || 'Failed to withdraw');
+      toast.success('Application withdrawn successfully');
+    } catch (error) {
+      const msg = error.response?.data?.message || error.message || 'Failed to withdraw.';
+      toast.error(`Error: ${msg}`);
     }
   }
 
@@ -133,13 +136,13 @@ const JobDetails = () => {
             {['Applied', 'Shortlisted', 'Interview'].includes(job?.status) ? (
               <button
                 onClick={handleWithdraw}
-                className="bg-red-600 hover:bg-red-700 transition text-white px-5 py-2.5 rounded-lg font-medium shadow-md active:scale-95">
+                className="bg-red-600 hover:bg-red-700 transition text-white px-5 py-2.5 rounded-lg font-medium shadow-md active:scale-95 cursor-pointer">
                 Withdraw Application
               </button>
             ) : (
               <Link
                 to={`/apply/${jobPost._id}`}
-                className="bg-blue-600 hover:bg-blue-700 transition text-white px-5 py-2.5 rounded-lg font-medium shadow-md active:scale-95">
+                className="bg-blue-600 hover:bg-blue-700 transition text-white px-5 py-2.5 rounded-lg font-medium shadow-md active:scale-95 cursor-pointer">
                 Apply with AI
               </Link>
             )}

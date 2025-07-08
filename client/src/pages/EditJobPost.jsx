@@ -4,6 +4,7 @@ const MDEditor = lazy(() => import('@uiw/react-md-editor'));
 import api from '../api/axios';
 import { RiArrowLeftLine } from '@remixicon/react';
 import Loader from '../components/Loader';
+import { toast } from 'react-toastify';
 
 const EditJobPost = () => {
   const { jobId } = useParams();
@@ -50,7 +51,8 @@ const EditJobPost = () => {
           companyLogo: job.companyLogo || '',
         });
       } catch (error) {
-        console.error('Error fetching job data:', error);
+        const msg = error.response?.data?.message || error.message || 'Failed to fetch job';
+        toast.error(msg);
       }
     };
 
@@ -79,7 +81,8 @@ const EditJobPost = () => {
       const data = await res.json();
       setFormData((prev) => ({ ...prev, companyLogo: data.secure_url }));
     } catch (error) {
-      console.error('Logo upload failed:', error);
+      const msg = error.response?.data?.message || error.message || 'Logo upload failed';
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -96,7 +99,8 @@ const EditJobPost = () => {
       });
       navigate('/job/posts');
     } catch (error) {
-      console.error('Update job error:', error.response?.data || error.message);
+      const msg = error.response?.data?.message || error.message || 'Failed to update job post';
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -108,7 +112,8 @@ const EditJobPost = () => {
       await api.delete(`/job-posts/${jobId}`);
       navigate('/job/posts');
     } catch (error) {
-      console.error('Delete job error:', error.response?.data || error.message);
+      const msg = error.response?.data?.message || error.message || 'Failed to delete job post';
+      toast.error(msg);
     } finally {
       setLoading(false);
       setShowDeleteConfirm(false);
@@ -331,14 +336,135 @@ const EditJobPost = () => {
               required
               className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100" />
           </div>
-  
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full py-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition">
-            Save Changes
-          </button>
+
+          {/* Tags */}
+            <div>
+              <label
+                htmlFor="tags"
+                className="mb-2 font-semibold text-gray-700 dark:text-gray-200">
+                Tags (comma separated)
+              </label>
+              <input
+                type="text"
+                id="tags"
+                name="tags"
+                value={formData.tags}
+                onChange={handleChange}
+                placeholder="e.g. React, JavaScript, Remote"
+                className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+              />
+            </div>
+
+            {/* Company Information */}
+            <div>
+              <h2 className="text-2xl font-semibold text-blue-600 mb-6 border-b border-gray-200 dark:border-gray-700 pb-2">
+                Company Information
+              </h2>
+
+              <div className="space-y-6">
+                <div className="w-full">
+                  <label
+                    htmlFor="company"
+                    className="mb-2 font-semibold text-gray-700 dark:text-gray-200">
+                    Company Name <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="company"
+                    name="company"
+                    value={formData.company}
+                    onChange={handleChange}
+                    placeholder="e.g. Acme Corp"
+                    required
+                    className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="companyWebsite"
+                    className="mb-2 font-semibold text-gray-700 dark:text-gray-200">
+                    Company Website
+                  </label>
+                  <input
+                    type="url"
+                    id="companyWebsite"
+                    name="companyWebsite"
+                    value={formData.companyWebsite}
+                    onChange={handleChange}
+                    placeholder="https://example.com"
+                    className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+                  />
+                </div>
+
+                {formData.companyLogo && (
+                  <div className="w-1/2">
+                    <img
+                      src={formData.companyLogo}
+                      alt="Company Logo Preview"
+                      className="h-24 w-24 rounded-md border object-cover"
+                    />
+                  </div>
+                )}
+
+                <div className="w-full flex items-center gap-6 mt-4">
+                  <label
+                    htmlFor="companyLogo"
+                    className="flex items-center gap-2 cursor-pointer px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow hover:bg-blue-700 transition">
+                    <span>{formData.companyLogo ? 'Change Logo' : 'Upload Company Logo'}</span>
+                  </label>
+                  <input
+                    id="companyLogo"
+                    name="companyLogo"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleLogoUpload}
+                    className="hidden"
+                  />
+                </div>
+              </div>
+            </div>
+
+          
+            <div className="flex justify-between items-center mt-10">
+              <button
+                type="button"
+                onClick={() => setShowDeleteConfirm(true)}
+                className="px-6 py-3 bg-red-100 text-red-600 font-semibold rounded-lg border border-red-300 shadow-sm hover:bg-red-200 transition cursor-pointer">
+                Delete Job
+              </button>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-6 py-3 bg-blue-600 text-white font-semibold border border-blue-600 rounded-lg shadow hover:bg-blue-700 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3">
+                {loading ? <h3>Updating...</h3> : <h3>Update Job</h3>}
+              </button>
+            </div>
         </form>
+
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-4 sm:px-0">
+            <div className="bg-red-50 dark:bg-neutral-800 p-6 rounded-lg border border-red-200 dark:border-red-500 max-w-md w-full shadow-xl transition-colors">
+              <h3 className="text-lg font-semibold text-red-600 dark:text-red-400">Confirm Deletion</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">
+                Are you sure you want to delete this job post? This action is irreversible.
+              </p>
+              <div className="flex justify-end gap-4 mt-6">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="px-4 py-2 text-sm text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-neutral-700 transition cursor-pointer">
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700 transition cursor-pointer">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

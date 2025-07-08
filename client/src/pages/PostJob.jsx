@@ -4,6 +4,7 @@ import MDEditor from '@uiw/react-md-editor';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext'
 import { RiArrowLeftLine } from '@remixicon/react';
+import { toast } from 'react-toastify';
 
 const PostJob = () => {
   const { user } = useAuth();
@@ -48,7 +49,8 @@ const PostJob = () => {
       const data = await res.json();
       setFormData((prev) => ({ ...prev, companyLogo: data.secure_url }));
     } catch (error) {
-      console.error('Upload failed', error);
+      const msg = error?.response?.data?.message || error.message || 'Logo upload failed.';
+      toast.error(`Error: ${msg}`);
     } finally {
       setLoading(false);
     }
@@ -59,9 +61,11 @@ const PostJob = () => {
     setLoading(true);
     try {
       await api.post('/jobs', formData);
+      toast.success('Job posted successfully!');
       navigate('/jobs');
     } catch (error) {
-      console.error('Post job error:', error.response?.data || error.message);
+      const msg = error.response?.data?.message || error.message || 'Failed to post job.';
+      toast.error(`Error: ${msg}`);
     } finally {
       setLoading(false);
     }
@@ -334,13 +338,13 @@ const PostJob = () => {
           <div className="flex justify-end gap-6">
           <Link
               to="/job/posts"
-              className="px-5 py-2.5 border border-gray-400 dark:border-neutral-500 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 transition">
+              className="px-5 py-2.5 border border-gray-400 dark:border-neutral-500 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 transition cursor-pointer">
               Cancel
             </Link>
             <button
               type="submit"
               disabled={loading}
-              className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+              className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
               {loading ? 'Posting...' : 'Post Job'}
             </button>
           </div>

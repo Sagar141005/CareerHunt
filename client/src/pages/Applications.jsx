@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import RecruiterSearch from '../components/RecruiterSearch';
 import { MoonLoader } from 'react-spinners';
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const Applications = () => {
   const { user, loading } = useAuth();
@@ -35,7 +36,8 @@ const Applications = () => {
         const response = await api.get('/job-posts/all');
         setJobs(response.data.jobPosts);
       } catch (error) {
-        console.error(error.response?.data || error.message);
+        const msg = error?.response?.data?.message || error?.message || 'Failed to load job posts.';
+        toast.error(msg);
       } finally {
         setLoader(false);
       }

@@ -3,6 +3,7 @@ import UserNavbar from '../components/UserNavbar'
 import api from '../api/axios'
 import JobCard from '../components/JobCard'
 import Footer from '../components/Footer'
+import { toast } from 'react-toastify'
 
 const Saved = () => {
   const [jobs, setJobs] = useState([])
@@ -13,7 +14,8 @@ const Saved = () => {
         const response = await api.get('/applications/saved/all')
         setJobs(response.data.jobs)
       } catch (error) {
-        console.error(error.response?.data || error.message)
+        const msg = error.response?.data?.message || error.message || "Failed to fetch jobs.";
+        toast.error(`Error: ${msg}`);
       }
     }
 

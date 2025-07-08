@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api/axios';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Applicant = () => {
   const [users, setUsers] = useState([]);
@@ -11,7 +12,8 @@ const Applicant = () => {
         const response = await api.get('/job-posts/applications/all');
         setUsers(response.data.applications || []);
       } catch (error) {
-        console.error("Error fetching users", error);
+        const msg = error.response?.data?.message || error.message || "Error fetching users";
+        toast.error(msg);
       }
     };
     fetchData();

@@ -5,6 +5,7 @@ import CurrentDate from './CurrentDate'
 import { useNavigate } from 'react-router-dom'
 import useMonthlyGrowth from "../hooks/useMonthlyGrowth";
 import Loader from './Loader';
+import { MoonLoader } from 'react-spinners';
 
 const RadialChart = lazy(() => import('./RadialChart'));
 const SplineChart = lazy(() => import('./SplineChart'));

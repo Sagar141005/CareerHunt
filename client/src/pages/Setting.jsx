@@ -4,14 +4,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import RecruiterPannel from '../components/RecruiterPannel';
 import { RiCloseLine, RiMoonClearFill, RiSunFill } from '@remixicon/react';
+import { toast } from 'react-toastify';
 
 const Settings = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem('theme') === 'dark';
-  });
+  const getInitialTheme = () => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) return savedTheme === "dark";
+  
+    // Default to system preference
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  };
+  const [darkMode, setDarkMode] = useState(getInitialTheme);
+
   const [passwords, setPasswords] = useState({ oldPassword: '', newPassword: '' });
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -31,7 +38,7 @@ const Settings = () => {
       await logout();
       navigate('/login');
     } catch (error) {
-      console.error('Logout failed:', error.message);
+      toast.error(error.message || 'Logout failed. Please try again.');
     }
   };
 
@@ -39,10 +46,10 @@ const Settings = () => {
     e.preventDefault();
     try {
       await api.patch('/auth/change-password', passwords);
-      alert('Password updated successfully.');
+      toast.success('Password updated successfully!');
       setPasswords({ oldPassword: '', newPassword: '' });
     } catch (error) {
-      alert(error.response?.data?.message || 'Failed to update password.');
+      toast.error(error.response?.data?.message || 'Failed to update password.');
     }
   };
 
@@ -50,9 +57,10 @@ const Settings = () => {
     try {
       await api.delete('/auth/delete');
       await logout();
+      toast.success('Account deleted. Redirecting to signup.');
       navigate('/signup');
     } catch (error) {
-      alert('Could not delete account');
+      toast.error(error.response?.data?.message || 'Could not delete account.');
     }
   };
 
@@ -142,6 +150,28 @@ const Settings = () => {
               className="text-red-600 hover:underline cursor-pointer">
               Delete your account
             </button>
+
+            {showDeleteConfirm && (
+              <div className="fixed inset-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-4 sm:px-0">
+                <div className="bg-red-50 dark:bg-neutral-800 p-6 rounded-lg border border-red-200 dark:border-red-500 max-w-sm w-full shadow-xl transition-colors">
+                  <p className="text-sm text-red-600 dark:text-red-400 mb-4 font-semibold">
+                    This action is irreversible.
+                  </p>
+                  <div className="flex justify-end gap-4">
+                    <button
+                      onClick={() => setShowDeleteConfirm(false)}
+                      className="px-4 py-2 text-sm text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-neutral-700 transition cursor-pointer">
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleDeleteAccount}
+                      className="px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700 transition cursor-pointer">
+                      Confirm Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

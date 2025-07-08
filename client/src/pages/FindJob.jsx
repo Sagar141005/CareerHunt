@@ -6,6 +6,7 @@ import CheckboxGroup from '../components/CheckboxGroup'
 import api from '../api/axios'
 import JobCard from '../components/JobCard';
 import Footer from '../components/Footer';
+import { toast } from 'react-toastify';
 
 const FindJob = () => {
   const [jobs, setJobs] = useState([]);
@@ -71,7 +72,8 @@ const FindJob = () => {
         const response = await api.get(`/applications/all?${queryParams.toString()}`);
         setJobs(response.data.jobs);
       } catch (error) {
-        console.error(error.response?.data || error.message);
+        const msg = error.response?.data?.message || error.message || "Failed to fetch jobs.";
+        toast.error(`Error: ${msg}`);
       }
     }
 
@@ -184,13 +186,13 @@ const FindJob = () => {
         {/* Mobile Header (collapsed) */}
         <div className="flex md:hidden items-center justify-between w-full max-w-7xl mx-auto">
           <button
-            className="flex items-center gap-2 px-3 py-2 bg-blue-600 rounded-md hover:bg-blue-700 transition"
+            className="flex items-center gap-2 px-3 py-2 bg-blue-600 rounded-md hover:bg-blue-700 transition cursor-pointer"
             onClick={() => setHeaderCollapsed(!headerCollapsed)}>
             <RiSearch2Line size={20} />
             <span>Search Filters</span>
           </button>
           <button
-            className="flex items-center gap-2 px-3 py-2 bg-blue-600 rounded-md hover:bg-blue-700 transition"
+            className="flex items-center gap-2 px-3 py-2 bg-blue-600 rounded-md hover:bg-blue-700 transition cursor-pointer"
             onClick={() => setFilterSidebarOpen(true)}>
             <RiFilter3Line size={20} />
             <span>More Filters</span>
@@ -298,7 +300,7 @@ const FindJob = () => {
           <aside className="fixed top-0 right-0 w-72 h-full bg-white dark:bg-gray-900 dark:text-gray-300 shadow-lg z-50 p-4 flex flex-col overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xl font-medium">Filters</h3>
-              <button onClick={() => setFilterSidebarOpen(false)} className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+              <button onClick={() => setFilterSidebarOpen(false)} className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer">
                 <RiCloseLine size={24} />
               </button>
             </div>

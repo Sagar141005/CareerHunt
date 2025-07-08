@@ -5,6 +5,7 @@ import api from '../api/axios'
 import MDEditor from '@uiw/react-md-editor';
 import { RiArrowLeftLine } from '@remixicon/react';
 import Loader from '../components/Loader';
+import { toast } from 'react-toastify';
 
 const EditProfile = () => {
   const { user, loading } = useAuth();
@@ -71,7 +72,7 @@ const EditProfile = () => {
         }));
       }
     } catch (err) {
-      console.error('Image upload failed:', err);
+      toast.error(err.message || 'Image upload failed');
     }
   };
 
@@ -99,9 +100,11 @@ const EditProfile = () => {
     e.preventDefault();
     try {
       await api.put('auth/profile', formData);
+      toast.success('Profile updated successfully!');
       navigate('/profile');
-    } catch (err) {
-      console.error(err.response?.data || err.message);
+    } catch (error) {
+      const msg = error.response?.data?.message || error.message || 'Failed to update profile';
+      toast.error(msg);
     }
   };
 
@@ -234,12 +237,12 @@ const EditProfile = () => {
           <div className="flex justify-end items-center gap-4 pt-6 border-t border-gray-300 dark:border-neutral-700">
             <Link
               to="/profile"
-              className="px-5 py-2.5 border border-gray-400 dark:border-neutral-500 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 transition">
+              className="px-5 py-2.5 border border-gray-400 dark:border-neutral-500 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 transition cursor-pointer">
               Cancel
             </Link>
             <button
               type="submit"
-              className="px-6 py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition shadow">
+              className="px-6 py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition shadow cursor-pointer">
               Save Changes
             </button>
           </div>

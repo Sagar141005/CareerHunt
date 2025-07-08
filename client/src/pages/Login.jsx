@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const { user, setUser } = useAuth();
@@ -21,9 +22,10 @@ const Login = () => {
       });
       setUser(response.data.user);
       setHasSubmitted(true);
-
+      toast.success("Login successfull! 🎉");
     } catch (error) {
-      console.error("Login failed", error.response?.data || error.message);
+      const msg = error.response?.data?.message || error.message || "Login failed.";
+      toast.error(msg);
     }
   }
 
@@ -92,7 +94,7 @@ const Login = () => {
 
         <p className="text-sm text-gray-600 text-center mt-6">
           New here?{' '}
-          <Link to="/signup" className="text-blue-700 hover:underline">
+          <Link to="/signup" className="text-blue-700 hover:underline cursor-pointer">
             Create an account
           </Link>
         </p>

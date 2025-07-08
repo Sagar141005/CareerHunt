@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import api from '../api/axios';
 import { SyncLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const RecruiterSearch = () => {
   const [input, setInput] = useState('');
@@ -34,7 +35,8 @@ const RecruiterSearch = () => {
           ...(response.data.result.applicants || []),
         ]);
       } catch (error) {
-        console.error(error.response?.data || error.message);
+        const msg = error.response?.data?.message || error.message || 'Failed to search';
+        toast.error(msg);
       } finally {
         setShowResults(true);
         setLoader(false);
@@ -82,7 +84,7 @@ const RecruiterSearch = () => {
             <button
               onClick={() => setInput('')}
               aria-label="Clear search"
-              className="text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition p-1 rounded-full focus:outline-none">
+              className="text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition p-1 rounded-full focus:outline-none cursor-pointer">
               <RiCloseLine size={22} />
             </button>
           )}

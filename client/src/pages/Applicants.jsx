@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import api from '../api/axios';
 import { MoonLoader } from 'react-spinners';
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const Applicants = () => {
   const { user, loading } = useAuth();
@@ -35,7 +36,8 @@ const Applicants = () => {
         const response = await api.get(`/job-posts/applications/${jobId}`);
         setApplicants(response.data.applications);
       } catch (error) {
-        console.error(error.response?.data || error.message);
+        const msg = error.response?.data?.message || error.message || 'Failed to fetch job';
+        toast.error(msg);
       } finally {
         setLoader(false);
       }

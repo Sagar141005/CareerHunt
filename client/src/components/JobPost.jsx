@@ -56,12 +56,12 @@ const JobPost = ({ job }) => {
       <div className="flex justify-between items-center">
         <Link
           to={`/post/job/edit/${job._id}`}
-          className="text-sm font-medium bg-black dark:bg-white text-white dark:text-black py-2 px-4 rounded-lg hover:bg-white dark:hover:bg-gray-200 hover:text-black dark:hover:text-black border border-black dark:border-transparent transition-colors">
+          className="text-sm font-medium bg-black dark:bg-white text-white dark:text-black py-2 px-4 rounded-lg hover:bg-white dark:hover:bg-gray-200 hover:text-black dark:hover:text-black border border-black dark:border-transparent transition-colors cursor-pointer">
           Edit
         </Link>
         <Link
           to={`/applications/applicants/${job._id}`}
-          className="text-sm font-medium bg-blue-600 dark:bg-blue-700 text-white py-2 px-4 rounded-lg border border-blue-600 dark:border-blue-700 hover:border-blue-700 dark:hover:border-blue-600 hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors">
+          className="text-sm font-medium bg-blue-600 dark:bg-blue-700 text-white py-2 px-4 rounded-lg border border-blue-600 dark:border-blue-700 hover:border-blue-700 dark:hover:border-blue-600 hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors cursor-pointer">
           View Applicants
         </Link>
       </div>

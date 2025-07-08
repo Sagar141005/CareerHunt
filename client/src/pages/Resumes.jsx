@@ -4,6 +4,7 @@ import UserNavbar from '../components/UserNavbar';
 import { supabase } from '../utils/supabaseClient';
 import { RiFileUploadLine, RiSparkling2Fill } from '@remixicon/react';
 import Footer from '../components/Footer';
+import { toast } from 'react-toastify';
 
 const Resumes = () => {
   const [resumes, setResumes] = useState([]);
@@ -19,7 +20,8 @@ const Resumes = () => {
       const response = await api.get('/ai/resume/all');
       setResumes(response.data.resumes || []);
     } catch (err) {
-      setError('Failed to fetch resumes. Please try again.');
+      const msg = err.response?.data?.message || err.message || 'Failed to fetch resumes.';
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -60,10 +62,10 @@ const Resumes = () => {
       const payload = { title: file.name, fileUrl: publicUrlData.publicUrl, fileType };
 
       await api.post('/ai/resume/upload', payload);
+      toast.success('Resume uploaded successfully!');
       fetchResumes();
     } catch (error) {
-      console.error('Resume upload error:', error.message);
-      alert('Failed to upload resume. Please try again.');
+      toast.error(error.message || 'Failed to upload resume.');
     } finally {
       setUploading(false);
     }
@@ -73,9 +75,10 @@ const Resumes = () => {
     try {
       await api.post(`/ai/resume/improve/${resumeId}`);
       await fetchResumes();
-      alert('Resume improved successfully!');
-    } catch {
-      alert('Failed to improve resume. Try again.');
+      toast.success('Resume improved successfully!');
+    } catch (error) {
+      const msg = error.response?.data?.message || error.message || 'Failed to improve resume.';
+      toast.error(msg);
     }
   };
 
@@ -116,7 +119,7 @@ const Resumes = () => {
             <p className="mb-6 text-xl">No resumes yet.</p>
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="bg-blue-600 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700 transition font-semibold">
+              className="bg-blue-600 text-white px-6 py-3 rounded-full shadow hover:bg-blue-700 transition font-semibold cursor-pointer">
               Upload Resume
             </button>
           </div>
@@ -174,7 +177,7 @@ const Resumes = () => {
                         </div>
                         <button
                           onClick={() => downloadResume(resume.id, v.versionNumber, 'pdf')}
-                          className="px-3 py-1 text-xs rounded bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 font-semibold hover:bg-blue-200 dark:hover:bg-blue-800 transition">
+                          className="px-3 py-1 text-xs rounded bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 font-semibold hover:bg-blue-200 dark:hover:bg-blue-800 transition cursor-pointer">
                           Download PDF
                         </button>
                       </div>

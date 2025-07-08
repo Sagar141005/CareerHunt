@@ -2,6 +2,7 @@ import { RiLineChartLine } from "@remixicon/react";
 import React, { useState, useEffect, useMemo } from "react";
 import ReactApexChart from "react-apexcharts";
 import api from "../api/axios";
+import { toast } from "react-toastify";
 
 const getPastDates = (days) => {
   const options = { day: "2-digit", month: "short" };
@@ -30,8 +31,9 @@ const AreaChartWithFilter = () => {
         const since = sinceDate.toISOString();
         const res = await api.get(`/job-posts/applications/chart?since=${since}`);
         setJobPosts(res.data.jobPosts || []);
-      } catch (err) {
-        console.error("Error fetching job posts:", err);
+      } catch (error) {
+        const msg = error.response?.data?.message || error.message || 'Error fetching job posts';
+        toast.error(msg);
       }
     };
     fetchJobPosts();
@@ -99,7 +101,7 @@ const AreaChartWithFilter = () => {
     ];
   }, [selectedJob, labels]);
 
-  const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = document.documentElement.classList.contains("dark");
 
   const chartOptions = {
     chart: {
@@ -107,7 +109,7 @@ const AreaChartWithFilter = () => {
       height: 350,
       toolbar: { show: false },
       zoom: { enabled: false },
-      foreColor: isDark ? "#E5E7EB" : "#1F2937", 
+      foreColor: isDark ? "#E5E7EB" : "#111827", 
     },
     colors: isDark
       ? ["#60A5FA", "#4ADE80", "#F87171"] 
@@ -133,7 +135,7 @@ const AreaChartWithFilter = () => {
       position: "top",
       horizontalAlign: "left",
       labels: {
-        colors: isDark ? "#E5E7EB" : "#1F2937",
+        colors: isDark ? "#E5E7EB" : "#111827",
       },
     },
     xaxis: {

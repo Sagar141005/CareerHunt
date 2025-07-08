@@ -7,6 +7,7 @@ import { MoonLoader } from 'react-spinners';
 import { useAuth } from '../context/AuthContext';
 import { RiArrowRightLine, RiEditLine } from '@remixicon/react';
 import { formatDistanceToNow } from 'date-fns';
+import { toast } from 'react-toastify';
 
 
 const STATUS_OPTIONS = [
@@ -46,8 +47,9 @@ const ApplicantDetail = () => {
         setStatus(res.data.currentStatus);
         setSelectedStatus(res.data.currentStatus);
         setInteractionHistory(res.data.interactionHistory);
-      } catch (err) {
-        console.error(err.response?.data || err.message);
+      } catch (error) {
+        const msg = error.response?.data?.message || error.message || 'Failed to fetch interaction history';
+        toast.error(msg);
       } finally {
         setLoading(false);
       }
@@ -63,8 +65,11 @@ const ApplicantDetail = () => {
       });
       setStatus(selectedStatus);
       setEditMode(false);
+
+      toast.success(`Status updated to "${selectedStatus}"`);
     } catch (err) {
-      console.error('Status update failed:', err.response?.data || err.message);
+      const msg = err.response?.data?.message || err.message || "Failed to update status.";
+      toast.error(msg);
     }
   };
 
@@ -124,7 +129,7 @@ const ApplicantDetail = () => {
 
                 <button
                   onClick={() => setEditMode(!editMode)}
-                  className="ml-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm flex items-center gap-1">
+                  className="ml-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm flex items-center gap-1 cursor-pointer">
                   <RiEditLine />
                   <span>{editMode ? 'Cancel' : 'Update'}</span>
                 </button>
@@ -144,7 +149,7 @@ const ApplicantDetail = () => {
               </select>
               <button
                 onClick={handleStatusUpdate}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-md shadow-sm"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-md shadow-sm cursor-pointer"
               >
                 Save
               </button>
