@@ -20,7 +20,7 @@ const mergeQueryArrays = (...args) => {
 
 export const getAvailableJobs = async (req, res) => {
     try {
-        const { title, location, minSalary,  maxSalary, type, typeQuery, employmentType, level, levelQuery, department, search } = req.query;
+        const { title, location, minSalary,  maxSalary, type, typeQuery, employmentType, level, levelQuery, department, search, page = 1, limit = 10  } = req.query;
         const userId = req.user._id;
         
         const stringify = (val) => Array.isArray(val) ? val.sort().join(',') : val || 'all';
@@ -75,17 +75,26 @@ export const getAvailableJobs = async (req, res) => {
                 filter.$and.push({ $or: salaryFilter });
             }
 
-            return await JobPost.find(filter).sort({ createdAt: -1 }).lean();
+            const total = await JobPost.countDocuments(filter);
+
+            const skip = (parseInt(page) - 1) * parseInt(limit);
+            const paginatedJobs = await JobPost.find(filter)
+              .sort({ createdAt: -1 })
+              .skip(skip)
+              .limit(parseInt(limit))
+              .lean();
+
+            return { paginatedJobs, total };
         }, 60);
 
-        const jobPostIds = jobs.map(job => job._id);
+        const jobPostIds = jobs.paginatedJobs.map(job => job._id);
         const userJobs = await Job.find({ userId, jobPostId: { $in: jobPostIds } }).lean();
 
         const userJobsMap = new Map(
             userJobs.map(job => [job.jobPostId.toString(), { isSaved: job.isSaved, status: job.status }])
         );
 
-        const jobsWithUserData = jobs.map(job => {
+        const jobsWithUserData = jobs.paginatedJobs.map(job => {
             const userJob = userJobsMap.get(job._id.toString());
             return {
                 ...job,
@@ -94,7 +103,7 @@ export const getAvailableJobs = async (req, res) => {
             }
         });
 
-        return res.status(200).json({ message: "Jobs fetched successfully", jobs: jobsWithUserData });
+        return res.status(200).json({ message: "Jobs fetched successfully", jobs: jobsWithUserData, total: jobs.total });
     } catch (error) {
         return res.status(500).json({ message: "Error fetching jobs", error: error.message });
     }

@@ -6,29 +6,12 @@ import api from '../api/axios';
 import { Link, useNavigate } from 'react-router-dom';
 import RecruiterSearch from '../components/RecruiterSearch';
 import { MoonLoader } from 'react-spinners';
-import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 
 const Applications = () => {
-  const { user, loading } = useAuth();
 
   const [jobs, setJobs] = useState([]);
   const [loader, setLoader] = useState(true);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate('/login');
-    }
-  }, [user, loading, navigate]);
-
-  useEffect(() => {
-    if (user && user.role !== 'recruiter') {
-      navigate('/dashboard');
-      console.error('Not Authenticated');
-    }
-  }, [user, navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,10 +27,6 @@ const Applications = () => {
     };
     fetchData();
   }, []);
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <div className="w-full h-screen bg-gradient-to-b from-gray-50 to-[#F2F2F2] dark:from-gray-900 dark:to-gray-800 flex flex-col sm:flex-row overflow-hidden transition-colors duration-300">

@@ -4,7 +4,6 @@ import api from '../api/axios';
 import RecruiterPannel from '../components/RecruiterPannel';
 import CurrentDate from '../components/CurrentDate';
 import { MoonLoader } from 'react-spinners';
-import { useAuth } from '../context/AuthContext';
 import { RiArrowRightLine, RiEditLine } from '@remixicon/react';
 import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'react-toastify';
@@ -30,12 +29,6 @@ const ApplicantDetail = () => {
   const [editMode, setEditMode] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('');
 
-  const { user, loading: authLoading } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!authLoading && !user) navigate('/login');
-  }, [authLoading, user, navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,14 +71,6 @@ const ApplicantDetail = () => {
       toast.error(msg);
     }
   };
-
-  if (authLoading || loading) {
-    return (
-      <div className="flex justify-center items-center h-screen dark:bg-gray-900">
-        <MoonLoader />
-      </div>
-    );
-  }
 
   if (!applicant) return <p className="text-center mt-10 dark:text-white">No applicant data found.</p>;
 

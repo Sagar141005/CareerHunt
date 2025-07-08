@@ -2,33 +2,17 @@ import React, { useEffect, useState } from 'react';
 import RecruiterPannel from '../components/RecruiterPannel';
 import CurrentDate from '../components/CurrentDate';
 import RecruiterSearch from '../components/RecruiterSearch';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import api from '../api/axios';
 import { MoonLoader } from 'react-spinners';
-import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 
 const Applicants = () => {
-  const { user, loading } = useAuth();
   const [applicants, setApplicants] = useState([]);
   const [loader, setLoader] = useState(true);
   const { jobId } = useParams();
-  const navigate = useNavigate();
   const location = useLocation();
   const { title } = location.state || {};
-
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate('/login');
-    }
-  }, [user, loading, navigate]);
-
-  useEffect(() => {
-    if (user && user.role !== 'recruiter') {
-      navigate('/dashboard');
-      console.error('Not Authenticated');
-    }
-  }, [user, navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,10 +29,6 @@ const Applicants = () => {
 
     fetchData();
   }, [jobId]);
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <div className="w-full h-screen bg-gradient-to-b from-gray-50 to-[#F2F2F2] dark:from-gray-900 dark:to-gray-800 flex flex-col sm:flex-row overflow-hidden transition-colors duration-300">

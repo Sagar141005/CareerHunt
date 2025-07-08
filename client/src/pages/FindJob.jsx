@@ -16,6 +16,9 @@ const FindJob = () => {
   const [typeQuery, setTypeQuery] = useState('');
   const [levelQuery, setLevelQuery] = useState('');
   const [range, setRange] = useState([0, 9000]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 10; 
+  const [totalPages, setTotalPages] = useState(1);
 
   const [filters, setFilters] = useState({
     employmentType: [],
@@ -69,8 +72,13 @@ const FindJob = () => {
         queryParams.append('minSalary', range[0]);
         queryParams.append('maxSalary', range[1]);
 
+        queryParams.append('page', currentPage);
+        queryParams.append('limit', jobsPerPage);
+
+
         const response = await api.get(`/applications/all?${queryParams.toString()}`);
         setJobs(response.data.jobs);
+        setTotalPages(Math.ceil(response.data.total / jobsPerPage));
       } catch (error) {
         const msg = error.response?.data?.message || error.message || "Failed to fetch jobs.";
         toast.error(`Error: ${msg}`);
@@ -78,7 +86,7 @@ const FindJob = () => {
     }
 
     fetchJobs();
-  }, [filters, titleQuery, locationQuery, typeQuery, levelQuery, range]);
+  }, [filters, titleQuery, locationQuery, typeQuery, levelQuery, range, currentPage]);
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-gray-50 to-gray-20 dark:from-gray-900 dark:to-gray-800 dark:text-gray-300 transition-colors duration-300 overflow-hidden">
@@ -401,7 +409,30 @@ const FindJob = () => {
             )}
           </div>
         </main>
+
       </div>
+      {totalPages >= 1 && (
+        <div className="w-full flex justify-center mt-12 mb-4 px-4">
+          <div className="inline-flex items-center gap-2 bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-600 rounded-lg px-4 py-2 shadow-sm">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-1.5 text-sm rounded-md font-medium transition-all bg-gray-100 dark:bg-neutral-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-neutral-600 disabled:opacity-50 disabled:cursor-not-allowed">
+              Prev
+            </button>
+            <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1.5 text-sm rounded-md font-medium transition-all bg-gray-100 dark:bg-neutral-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-neutral-600 disabled:opacity-50 disabled:cursor-not-allowed">
+              Next
+            </button>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </div>
   );
