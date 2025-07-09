@@ -8,7 +8,7 @@ import RequireRole from "./components/RequireRole";
 
 // Lazy load pages
 const Home = lazy(() => import("./pages/Home"));
-const Signup = lazy(() => import("./pages/signup"));
+const Signup = lazy(() => import("./pages/Signup"));
 const Login = lazy(() => import("./pages/Login"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
