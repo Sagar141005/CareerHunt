@@ -52,10 +52,10 @@ if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-app.use('/auth', userRoutes);
-app.use('/applications', jobApplyRoutes);
-app.use('/job-posts', jobPostRoutes);
-app.use('/ai', resumeRoutes);
+app.use('/api/auth', userRoutes);
+app.use('/api/applications', jobApplyRoutes);
+app.use('/api/job-posts', jobPostRoutes);
+app.use('/api/ai', resumeRoutes);
 
 app.get('/', (req, res) => {
     res.send("Hello World!");
@@ -66,6 +66,10 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: "Internal server error" });
 })
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+if (process.argv[1] === new URL(import.meta.url).pathname) {
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+}
+
+export default app;

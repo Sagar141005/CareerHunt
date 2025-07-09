@@ -199,7 +199,7 @@ export const applyToJob = async (req, res) => {
     } catch (error) {
       return res.status(500).json({ message: "An error occurred", error: error.message });
     }
-  };
+};
   
 
 export const getJobApplication = async (req, res) => {
