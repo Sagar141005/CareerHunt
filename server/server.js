@@ -23,11 +23,21 @@ const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100
 });
+const allowedOrigins = [
+    'http://localhost:5173', // for local dev
+    'https://career-hunt.vercel.app' // for Vercel frontend
+];
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: process.env.VITE_URL,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true
 }));
 app.use(cookieParser());
