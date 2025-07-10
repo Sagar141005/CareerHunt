@@ -12,7 +12,20 @@ const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const navigate = useNavigate();
+
+  const validatePassword = (value) => {
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasNumber = /\d/.test(value);
+    const isLongEnough = value.length >= 8;
+
+    if (!isLongEnough) return "Password must be at least 8 characters long.";
+    if (!hasUpperCase) return "Password must contain at least one uppercase letter.";
+    if (!hasNumber) return "Password must contain at least one number.";
+    return "";
+  };
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -113,16 +126,25 @@ const Signup = () => {
               type="password"
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                const val = e.target.value;
+                setPassword(val);
+                setPasswordError(validatePassword(val));
+              }}
               placeholder="At least 8 characters"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            {passwordError && (
+              <p className="text-sm text-red-600 mt-1">{passwordError}</p>
+            )}
           </div>
 
           <button
             type="submit"
-            className="w-full py-3 bg-gradient-to-br from-blue-600 to-blue-700 text-white font-semibold text-lg rounded-xl
-              shadow-lg transition-all duration-300 hover:brightness-110 hover:shadow-2xl active:scale-95 cursor-pointer">
+            disabled={!!passwordError}
+            className={`w-full py-3 rounded-xl font-semibold text-lg shadow-lg transition-all duration-300
+              ${!!passwordError
+                ? "bg-gray-300 cursor-not-allowed text-gray-500"
+                : "bg-gradient-to-br from-blue-600 to-blue-700 text-white hover:brightness-110 hover:shadow-2xl active:scale-95"}`}>
             Sign Up
           </button>
         </form>

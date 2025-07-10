@@ -10,7 +10,29 @@ const Login = () => {
   const [ email, setEmail ] = useState("");
   const [ password, setPassword ] = useState("");
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
+
+  
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasNumber = /\d/.test(value);
+    const isLongEnough = value.length >= 8;
+
+    if (!isLongEnough) {
+      setPasswordError("Password must be at least 8 characters.");
+    } else if (!hasUpperCase) {
+      setPasswordError("Password must contain an uppercase letter.");
+    } else if (!hasNumber) {
+      setPasswordError("Password must contain a number.");
+    } else {
+      setPasswordError("");
+    }
+  };
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -62,15 +84,20 @@ const Login = () => {
               type="password"
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               placeholder="Your password"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"  />
+            {passwordError && (
+              <p className="text-sm text-red-600 mt-1">{passwordError}</p>
+            )}
           </div>
 
           <button 
             type="submit"
-            className="w-full py-3 bg-gradient-to-br from-blue-600 to-blue-700 text-white font-semibold text-lg rounded-xl
-            shadow-lg transition-all duration-300 hover:brightness-110 hover:shadow-2xl active:scale-95 cursor-pointer">
+            disabled={!!passwordError}
+            className={`w-full py-3 bg-gradient-to-br from-blue-600 to-blue-700 text-white font-semibold text-lg rounded-xl
+              shadow-lg transition-all duration-300 hover:brightness-110 hover:shadow-2xl active:scale-95 
+              ${!!passwordError ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
             Login
           </button>
         </form>
