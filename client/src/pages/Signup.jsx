@@ -34,7 +34,7 @@ const Signup = () => {
   const handleSocialLogin = async (provider) => {
     try {
         await api.post('/auth/social/preference', { role });
-        window.location.href = `${import.meta.env.VITE_API_URL}/auth/${provider}`
+        window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/${provider}`
     } catch (error) {
         const msg = error.response?.data?.message || error.message || 'Error storing role before social login';
         toast.error(msg);

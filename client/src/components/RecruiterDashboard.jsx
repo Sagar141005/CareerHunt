@@ -137,7 +137,7 @@ const RecruiterDashboard = () => {
               <div className="flex flex-col items-center justify-around h-full pb-10">
                 <img
                   className="h-24 w-24 object-cover rounded-full"
-                  src={user.profilePic || '/Recruiter.png'}
+                  src={user.profilePic || '/Recruiter.jpg'}
                   alt="user-profile-pic"
                 />
                 <div className="flex flex-col items-center">

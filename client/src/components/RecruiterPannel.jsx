@@ -85,7 +85,7 @@ const RecruiterPannel = () => {
             <div className="flex gap-4 items-center p-2 w-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition rounded-3xl cursor-pointer">
               <img
                 className="h-9 w-9 object-cover rounded-full ring-2 ring-gray-300 dark:ring-neutral-600"
-                src={user?.profilePic || '/Recruiter.png'}
+                src={user?.profilePic || '/Recruiter.jpg'}
                 alt={user?.name || 'User'}
               />
               <div className="truncate">

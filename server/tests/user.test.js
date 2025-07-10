@@ -11,7 +11,7 @@ const dummyUser = {
 };
 
 describe('User Routes', () => {
-  let cookie;
+  let token;
 
   beforeAll(async () => {
     await User.deleteMany({ email: dummyUser.email });
@@ -39,16 +39,15 @@ describe('User Routes', () => {
     expect(res.statusCode).toBe(409);
   });
 
-  it('should login with correct credentials and return a token cookie', async () => {
+  it('should login with correct credentials and return a token', async () => {
     const res = await request(app)
       .post('/api/auth/login')
       .send({ email: dummyUser.email, password: dummyUser.password });
 
     expect(res.statusCode).toBe(200);
-    expect(res.headers['set-cookie']).toBeDefined();
+    expect(res.body.token).toBeDefined();
 
-    cookie = res.headers['set-cookie'];
-    expect(cookie).toBeDefined();
+    token = res.body.token;
   });
 
   it('should reject login with wrong password', async () => {
@@ -59,10 +58,10 @@ describe('User Routes', () => {
     expect(res.statusCode).toBe(401);
   });
 
-  it('should fetch profile when authenticated', async () => {
+  it('should fetch profile when authenticated via token', async () => {
     const res = await request(app)
       .get('/api/auth/profile')
-      .set('Cookie', cookie);
+      .set('Authorization', `Bearer ${token}`);
 
     expect(res.statusCode).toBe(200);
     expect(res.body.user.email).toBe(dummyUser.email);

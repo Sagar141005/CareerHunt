@@ -15,6 +15,12 @@ export const AuthProvider = ({ children }) => {
         const fetchUser = async () => {
             if(fetchCalled.current) return;
             fetchCalled.current = true;
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+            setLoading(false);
+            return;
+            }
             
             try {
                 const response = await api.get('/auth/profile');

@@ -16,8 +16,11 @@ const Saved = () => {
         const response = await api.get('/applications/saved/all')
         setJobs(response.data.jobs)
       } catch (error) {
-        const msg = error.response?.data?.message || error.message || "Failed to fetch jobs.";
-        toast.error(`Error: ${msg}`);
+        const status = error.response?.status;
+        if (status !== 404) {
+          const msg = error.response?.data?.message || error.message || "Failed to fetch jobs.";
+          toast.error(`Error: ${msg}`);
+        }
       }
     }
 

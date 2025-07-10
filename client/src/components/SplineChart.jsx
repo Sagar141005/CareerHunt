@@ -30,7 +30,7 @@ const AreaChartWithFilter = () => {
         sinceDate.setDate(sinceDate.getDate() - timeRange);
         const since = sinceDate.toISOString();
         const res = await api.get(`/job-posts/applications/chart?since=${since}`);
-        setJobPosts(res.data.jobPosts || []);
+        setJobPosts(res.data.jobPosts);
       } catch (error) {
         const msg = error.response?.data?.message || error.message || 'Error fetching job posts';
         toast.error(msg);
@@ -165,43 +165,51 @@ const AreaChartWithFilter = () => {
         </select>
       </div>
 
-      <div className="flex-shrink-0">
-        <ReactApexChart
-          options={chartOptions}
-          series={series}
-          type="area"
-          height={250} />
-      </div>
-
-      <div className="flex-grow overflow-y-auto pr-4 mt-6 min-h-0">
-        {jobMap.map((job) => (
-          <div
-            key={job.id}
-            onClick={() => setSelectedJobID(job.id)}
-            className={`flex justify-between items-center py-3 px-2 transition-all cursor-pointer 
-              ${
-                selectedJobID === job.id
-                  ? "bg-gray-100 dark:bg-gray-700 rounded-lg"
-                  : "hover:bg-gray-50 dark:hover:bg-gray-800"
-              }`}>
-            <div>
-              <div className="font-medium text-sm text-gray-800 dark:text-white">{job.title}</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
-                {Object.values(job.chartData.applications).reduce((a, b) => a + b, 0)} Applications
-              </div>
-            </div>
-            <button
-              className={`w-8 h-8 flex items-center justify-center p-1 border rounded-lg transition-colors
-                ${
-                  selectedJobID === job.id
-                    ? "bg-blue-500 text-white border-blue-500"
-                    : "bg-transparent text-blue-500 dark:text-blue-400 border-blue-300 dark:border-blue-500"
-                }`}>
-              <RiLineChartLine size={16} />
-            </button>
+      {jobPosts.length === 0 ? (
+        <div className="flex-grow flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm">
+          No job posts yet
+        </div>
+      ) : (
+        <>
+          <div className="flex-shrink-0">
+            <ReactApexChart
+              options={chartOptions}
+              series={series}
+              type="area"
+              height={250} />
           </div>
-        ))}
-      </div>
+
+          <div className="flex-grow overflow-y-auto pr-4 mt-6 min-h-0">
+            {jobMap.map((job) => (
+              <div
+                key={job.id}
+                onClick={() => setSelectedJobID(job.id)}
+                className={`flex justify-between items-center py-3 px-2 transition-all cursor-pointer 
+                  ${
+                    selectedJobID === job.id
+                      ? "bg-gray-100 dark:bg-gray-700 rounded-lg"
+                      : "hover:bg-gray-50 dark:hover:bg-gray-800"
+                  }`}>
+                <div>
+                  <div className="font-medium text-sm text-gray-800 dark:text-white">{job.title}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                    {Object.values(job.chartData.applications).reduce((a, b) => a + b, 0)} Applications
+                  </div>
+                </div>
+                <button
+                  className={`w-8 h-8 flex items-center justify-center p-1 border rounded-lg transition-colors
+                    ${
+                      selectedJobID === job.id
+                        ? "bg-blue-500 text-white border-blue-500"
+                        : "bg-transparent text-blue-500 dark:text-blue-400 border-blue-300 dark:border-blue-500"
+                    }`}>
+                  <RiLineChartLine size={16} />
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -19,8 +19,11 @@ const Applications = () => {
         const response = await api.get('/job-posts/all');
         setJobs(response.data.jobPosts);
       } catch (error) {
-        const msg = error?.response?.data?.message || error?.message || 'Failed to load job posts.';
-        toast.error(msg);
+        const status = error.response?.status;
+        if (status !== 404) {
+          const msg = error?.response?.data?.message || error?.message || 'Failed to load job posts.';
+          toast.error(msg);
+        }
       } finally {
         setLoader(false);
       }
