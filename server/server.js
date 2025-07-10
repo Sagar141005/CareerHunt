@@ -12,6 +12,7 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import './config/passport.js';
 import passport from "passport";
+import session from 'express-session';
 
 dotenv.config();
 connectDB();
@@ -38,6 +39,16 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(limiter);
 app.use(passport.initialize());
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production', // Required for Vercel + Render
+      sameSite: 'None',
+      httpOnly: true
+    }
+}));
 app.use(passport.session());
 
 
