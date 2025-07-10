@@ -14,20 +14,20 @@ passport.deserializeUser((obj, done) => done(null, obj));
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: `${BASE_URL}/auth/google/callback`
+    callbackURL: `${BASE_URL}/api/auth/google/callback`
 }, (accessToken, refreshToken, profile, done) => done(null, profile)));
 
 passport.use(new GithubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID, 
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: `${BASE_URL}/auth/github/callback`,
+    callbackURL: `${BASE_URL}/api/auth/github/callback`,
     scope: ['user:email']
 }, (accessToken, refreshToken, profile, done) => done(null, profile)));
 
 passport.use(new LinkedinStrategy({
     clientID: process.env.LINKEDIN_CLIENT_ID,
     clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-    callbackURL: `${BASE_URL}/auth/linkedin/callback`,
+    callbackURL: `${BASE_URL}/api/auth/linkedin/callback`,
     scope: ['r_liteprofile', 'r_emailaddress'],
     state: true
 }, (accessToken, refreshToken, profile, done) => done(null, profile)));

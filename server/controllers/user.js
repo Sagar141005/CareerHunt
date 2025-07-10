@@ -86,15 +86,10 @@ export const socialLogin = async (req, res) => {
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
             expiresIn: '24h',
         });
-      
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Strict',
-            maxAge: 24 * 60 * 60 * 1000,
-        });
 
-        return res.redirect(`${process.env.VITE_URL}/dashboard`);
+        const redirectUrl = `${process.env.VITE_URL}/oauth-callback?token=${token}`;
+      
+        return res.redirect(redirectUrl);
     } catch (error) {
         return res.status(500).json({ message: 'Social auth error', error: error.message });
     }

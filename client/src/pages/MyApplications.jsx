@@ -16,8 +16,11 @@ const MyApplications = () => {
         const response = await api.get('/applications/applied/all')
         setApplications(response.data.jobs)
       } catch (error) {
-        const msg = error.response?.data?.message || error.message || "Failed to fetch applications.";
-        toast.error(`Error: ${msg}`);
+        const status = error.response?.status;
+        if (status !== 404) {
+          const msg = error.response?.data?.message || error.message || "Failed to fetch applications.";
+          toast.error(`Error: ${msg}`);
+        }
       }
     }
 

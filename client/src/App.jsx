@@ -5,6 +5,7 @@ import Loader from "./components/Loader";
 import ToastProvider from "./components/ToastProvider";
 import RequireAuth from "./components/RequireAuth";
 import RequireRole from "./components/RequireRole";
+import OAuthCallback from "./pages/OAuthCallback";
 
 // Lazy load pages
 const Home = lazy(() => import("./pages/Home"));
@@ -40,6 +41,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsAndConditions />} />
+          <Route path="/oauth-callback" element={<OAuthCallback />} />
 
           {/* Routes requiring user to be logged in */}
           <Route

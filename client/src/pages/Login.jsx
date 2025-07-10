@@ -22,7 +22,7 @@ const Login = () => {
       });
       localStorage.setItem('token', response.data.token); 
       setUser(response.data.user);
-      setHasSubmitted(true);
+      setHasSubmitted(true); 
       toast.success("Login successfull! 🎉");
     } catch (error) {
       const msg = error.response?.data?.message || error.message || "Login failed.";
@@ -79,14 +79,18 @@ const Login = () => {
           <p className="text-sm text-gray-700 mb-4 font-semibold">Or login with</p>
           <div className="flex justify-center gap-6">
             {[
-              { src: '/Google-icon.svg', alt: 'Google' },
-              { src: '/Linkedin-icon.svg', alt: 'LinkedIn' },
-              { src: '/Github-icon.svg', alt: 'GitHub' }
-            ].map(({ src, alt }) => (
+              { src: '/Google-icon.svg', alt: 'Google', provider: 'google' },
+              { src: '/Linkedin-icon.svg', alt: 'LinkedIn', provider: 'linkedin' },
+              { src: '/Github-icon.svg', alt: 'GitHub', provider: 'github' }
+            ].map(({ src, alt, provider }) => (
               <button
                 key={alt}
+                onClick={() => {
+                  window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/${provider}`;
+                }}
                 className="p-3 rounded-full border border-gray-300 bg-white/80 hover:shadow-lg hover:scale-110 active:scale-95
-                transition-transform cursor-pointer">
+                  transition-transform cursor-pointer"
+                aria-label={`Login with ${alt}`}>
                 <img src={src} alt={alt} className="w-6 h-6" loading='lazy' />
               </button>
             ))}
