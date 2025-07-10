@@ -4,34 +4,37 @@ import { validationResult } from 'express-validator'
 
 export const protectAndVerifyRole = (roles) => {
     return async (req, res, next) => {
-        let token = req.cookies.token;
-
-        if (!token && req.headers.authorization?.startsWith('Bearer ')) {
-            token = req.headers.authorization.split(' ')[1];
+      console.log("Cookies received:", req.cookies);  // ADD THIS
+      let token = req.cookies.token;
+  
+      if (!token && req.headers.authorization?.startsWith('Bearer ')) {
+        token = req.headers.authorization.split(' ')[1];
+      }
+  
+      if (!token) {
+        console.log("No token found");
+        return res.status(401).json({ message: "Authorization failed" });
+      }
+  
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id).select('-password');
+        if (!user) {
+          return res.status(401).json({ message: "User not found" });
         }
-    
-        if(!token) {
-            return res.status(401).json({ message: "Authorization failed" });
+  
+        if (!roles.includes(user.role)) {
+          return res.status(403).json({ message: "Access denied" });
         }
-    
-        try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            const user = await User.findById(decoded.id).select('-password');
-    
-            if(!user) {
-                return res.status(401).json({ message: "User not found" });
-            }
-            req.user = user;
-            if(!roles.includes(user.role)) {
-                return res.status(403).json({ message: "Access denied. You do not have the required role"});
-            }
-    
-            next();
-        } catch (error) {
-            res.status(401).json({ message: `Authorization failed: ${error.message}` });
-        }
-    }
-};
+  
+        req.user = user;
+        next();
+      } catch (error) {
+        res.status(401).json({ message: `Authorization failed: ${error.message}` });
+      }
+    };
+  };
+  
 
 export const validateRequest = (req, res, next) => {
     const errors = validationResult(req);
