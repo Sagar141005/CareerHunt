@@ -14,7 +14,7 @@ router.post('/social/preference', storeRoleInSession);
 
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
-router.get('/linkedin', passport.authenticate('linkedin', { scope: ['r_emailaddress', 'r_liteprofile'] }));
+router.get('/linkedin', passport.authenticate('linkedin', { scope: ['openid', 'profile', 'email'] }));
 
 
 router.get('/google/callback', passport.authenticate('google', { session: false }), socialLogin);
