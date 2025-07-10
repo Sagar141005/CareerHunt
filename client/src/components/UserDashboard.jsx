@@ -14,7 +14,7 @@ const UserDashboard = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await api.get('/applications/all');
+        const response = await api.get('/applications/applied/all');
         setJobs(response.data.jobs);
       } catch (error) {
         const msg = error.response?.data?.message || error.message || 'Failed to fetch jobs';
@@ -124,7 +124,7 @@ const UserDashboard = () => {
                     </div>
                     <span
                       className={`text-xs px-3 py-1 rounded-full font-medium ${
-                        job.status === 'Accepted'
+                        job.status === 'Applied'
                           ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-400'
                           : job.status === 'Rejected'
                           ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400'
