@@ -18,7 +18,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100
@@ -76,10 +76,10 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: "Internal server error" });
 })
 
-if (process.argv[1] === new URL(import.meta.url).pathname) {
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
+if (import.meta.url === `file://${process.argv[1]}`) {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 }
 
 export default app;
