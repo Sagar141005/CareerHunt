@@ -33,14 +33,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
+      if (!origin) {
+        // allow requests like curl or server-to-server
+        return callback(null, true);
       }
+  
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+  
+      console.error(`Blocked by CORS: ${origin}`);
+      return callback(new Error('Not allowed by CORS'));
     },
     credentials: true
-}));
+  }));
 app.use(cookieParser());
 app.use(helmet());
 app.use(limiter);
