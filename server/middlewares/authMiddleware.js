@@ -1,19 +1,24 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 import { validationResult } from 'express-validator'
+import redis from '../utils/redis.js';
 
 export const protectAndVerifyRole = (roles) => {
     return async (req, res, next) => {
-      console.log("Cookies received:", req.cookies);  // ADD THIS
-      let token = req.cookies.token;
+      let token;
   
-      if (!token && req.headers.authorization?.startsWith('Bearer ')) {
-        token = req.headers.authorization.split(' ')[1];
+      const authHeader = req.headers.authorization;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        token = authHeader.split(' ')[1];
       }
   
       if (!token) {
-        console.log("No token found");
-        return res.status(401).json({ message: "Authorization failed" });
+        return res.status(401).json({ message: "Authorization failed: No token" });
+      }
+
+      const isBlacklisted = await redis.get(`bl_${token}`);
+      if (isBlacklisted) {
+        return res.status(401).json({ message: "Token has been blacklisted" });
       }
   
       try {
@@ -24,7 +29,7 @@ export const protectAndVerifyRole = (roles) => {
         }
   
         if (!roles.includes(user.role)) {
-          return res.status(403).json({ message: "Access denied" });
+          return res.status(403).json({ message: "Access denied. Invalid role" });
         }
   
         req.user = user;
@@ -33,7 +38,7 @@ export const protectAndVerifyRole = (roles) => {
         res.status(401).json({ message: `Authorization failed: ${error.message}` });
       }
     };
-  };
+};
   
 
 export const validateRequest = (req, res, next) => {

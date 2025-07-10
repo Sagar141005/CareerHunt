@@ -20,6 +20,7 @@ const Login = () => {
         email, 
         password 
       });
+      localStorage.setItem('token', res.data.token); 
       setUser(response.data.user);
       setHasSubmitted(true);
       toast.success("Login successfull! 🎉");

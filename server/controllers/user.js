@@ -1,5 +1,6 @@
 import User from "../models/user.js";
 import jwt from 'jsonwebtoken';
+import redis from "../utils/redis.js";
 
 export const signupUser = async (req, res) => {
     const { name, email, password, role } = req.body;
@@ -42,15 +43,8 @@ export const loginUser = async (req, res) => {
         }
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '24h'});
-
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: true,         
-            sameSite: 'None',  
-            maxAge: 24 * 60 * 60 * 1000
-          });
         
-        return res.status(200).json({ message: "User logged in successfully", user });
+        return res.status(200).json({ message: "User logged in successfully", user, token });
     } catch (error) {
         return res.status(500).json({ message: "Error logging in", error: error.message });
     }
@@ -185,12 +179,16 @@ export const changePassword = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
     try {
-        res.clearCookie('token', {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Strict'
-        });
+        const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
+        if (token) {
+          const decoded = jwt.decode(token);
+          const expiresIn = decoded.exp - Math.floor(Date.now() / 1000); // in seconds
+    
+          // Save token in Redis blacklist with TTL
+          await redis.set(`bl_${token}`, '1', 'EX', expiresIn);
+        }
+    
         return res.status(200).json({ message: "User logged out successfully" });
     } catch (error) {
         return res.status(500).json({ message: "Logout failed", error: error.message });
