@@ -55,9 +55,9 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'Strict',
-      httpOnly: true
+        secure: true,              
+        sameSite: 'None',          
+        httpOnly: true
     }
 }));
 
