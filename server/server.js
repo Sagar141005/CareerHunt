@@ -10,7 +10,6 @@ import resumeRoutes from './routes/resume.js'
 import morgan from 'morgan';
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
-import session from 'express-session';
 import './config/passport.js';
 import passport from "passport";
 
@@ -32,35 +31,12 @@ const allowedOrigins = [
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: function (origin, callback) {
-      if (!origin) {
-        // allow requests like curl or server-to-server
-        return callback(null, true);
-      }
-  
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-  
-      console.error(`Blocked by CORS: ${origin}`);
-      return callback(new Error('Not allowed by CORS'));
-    },
-    credentials: true
-  }));
+    origin: allowedOrigins,
+    credentials: true,
+}));
 app.use(cookieParser());
 app.use(helmet());
 app.use(limiter);
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-secret-key',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        secure: true,              
-        sameSite: 'None',          
-        httpOnly: true
-    }
-}));
-
 app.use(passport.initialize());
 app.use(passport.session());
 
