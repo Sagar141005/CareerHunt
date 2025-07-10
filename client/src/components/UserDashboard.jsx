@@ -116,10 +116,10 @@ const UserDashboard = () => {
                     className="py-3 flex justify-between items-center">
                     <div>
                       <p className="text-base font-medium text-gray-800 dark:text-gray-100 transition-colors duration-300">
-                        {job.title}
+                        {job.jobPostId?.title}
                       </p>
                       <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">
-                        {job.company}
+                        {job.jobPostId?.company}
                       </p>
                     </div>
                     <span
