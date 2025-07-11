@@ -78,7 +78,7 @@ const MyApplications = () => {
               ({ key, label }) =>
                 grouped[key]?.length > 0 && (
                   <ApplicationStagePanel key={key} title={label} jobs={grouped[key]}>
-                    <div className="w-full flex flex-wrap gap-4">
+                    <div className="w-full flex flex-wrap sm:w-full sm:justify-center gap-4">
                       {grouped[key].map((job) => (
                         <JobCard job={{ ...job, ...job.jobPostId }} key={job._id} />
                       ))}
