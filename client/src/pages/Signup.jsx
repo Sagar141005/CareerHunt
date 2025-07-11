@@ -141,10 +141,9 @@ const Signup = () => {
           <button
             type="submit"
             disabled={!!passwordError}
-            className={`w-full py-3 rounded-xl font-semibold text-lg shadow-lg transition-all duration-300
-              ${!!passwordError
-                ? "bg-gray-300 cursor-not-allowed text-gray-500"
-                : "bg-gradient-to-br from-blue-600 to-blue-700 text-white hover:brightness-110 hover:shadow-2xl active:scale-95"}`}>
+            className={`w-full py-3 bg-gradient-to-br from-blue-600 to-blue-700 text-white font-semibold text-lg rounded-xl
+            shadow-lg transition-all duration-300 hover:brightness-110 hover:shadow-2xl active:scale-95 
+            ${!!passwordError ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
             Sign Up
           </button>
         </form>
