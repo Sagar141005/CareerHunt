@@ -78,7 +78,7 @@ const JobDetails = () => {
                   },
                   {
                     label: 'Salary',
-                    value: jobPost.salary ? `$${jobPost.salary}` : 'Not disclosed',
+                    value: jobPost.salary && jobPost.salary > 0 ? `$${jobPost.salary}` : 'Not disclosed',
                     icon: <span className="text-lg">$</span>,
                   },
                   {
