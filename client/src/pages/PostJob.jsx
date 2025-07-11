@@ -16,7 +16,7 @@ const PostJob = () => {
     description: '',
     location: '',
     type: 'On-Site',
-    salary: 0,
+    salary: '',
     openings: 1,
     employmentType: 'Full-time',
     level: 'Mid',
@@ -61,6 +61,7 @@ const PostJob = () => {
     setLoading(true);
     try {
       await api.post('/job-posts/create', { ...formData,
+      salary: Number(formData.salary),
       tags: formData.tags
       .split(',')
       .map(tag => tag.trim())
