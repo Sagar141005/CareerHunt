@@ -141,7 +141,9 @@ const PostJob = () => {
           {/* Row 1: Location + Type */}
           <div className="grid sm:grid-cols-2 gap-6">
             <div>
-              <label className="block font-semibold mb-2" htmlFor="location">Location</label>
+              <label className="block font-semibold mb-2" htmlFor="location">
+                Location <span className="text-red-600">*</span>
+              </label>
               <input
                 type="text"
                 id="location"
@@ -154,7 +156,9 @@ const PostJob = () => {
               />
             </div>
             <div>
-              <label className="block font-semibold mb-2" htmlFor="type">Job Type</label>
+              <label className="block font-semibold mb-2" htmlFor="type">
+                Job Type <span className="text-red-600">*</span>
+              </label>
               <select
                 id="type"
                 name="type"
@@ -173,7 +177,9 @@ const PostJob = () => {
           {/* Row 2: Salary + Openings */}
           <div className="grid sm:grid-cols-2 gap-6">
             <div>
-              <label className="block font-semibold mb-2" htmlFor="salary">Salary</label>
+              <label className="block font-semibold mb-2" htmlFor="salary">
+                Salary <span className="text-red-600">*</span>
+              </label>
               <input
                 type="number"
                 id="salary"
@@ -203,7 +209,9 @@ const PostJob = () => {
           {/* Row 3: Employment Type + Level */}
           <div className="grid sm:grid-cols-2 gap-6">
             <div>
-              <label className="block font-semibold mb-2" htmlFor="employmentType">Employment Type</label>
+              <label className="block font-semibold mb-2" htmlFor="employmentType">
+                Employment Type <span className="text-red-600">*</span>
+              </label>
               <select
                 id="employmentType"
                 name="employmentType"
@@ -291,7 +299,9 @@ const PostJob = () => {
 
             <div className="space-y-6">
               <div>
-                <label className="block font-semibold mb-2" htmlFor="company">Company Name</label>
+                <label className="block font-semibold mb-2" htmlFor="company">
+                  Company Name <span className="text-red-600">*</span>
+                </label>
                 <input
                   type="text"
                   id="company"

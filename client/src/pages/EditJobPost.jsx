@@ -221,7 +221,7 @@ const EditJobPost = () => {
               <label
                 htmlFor="salary"
                 className="mb-2 font-semibold text-gray-700 dark:text-gray-200">
-                Salary (annual) (Optional)
+                Salary <span className="text-red-600">*</span>
               </label>
               <input
                 type="number"
@@ -231,6 +231,7 @@ const EditJobPost = () => {
                 value={formData.salary}
                 onChange={handleChange}
                 placeholder="e.g. 70000"
+                required
                 className="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100" />
             </div>
   
