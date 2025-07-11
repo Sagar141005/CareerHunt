@@ -32,7 +32,7 @@ const JobPost = ({ job }) => {
       </div>
 
       {/* Job Title */}
-      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 line-clamp-2">{job.title}</h2>
+      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 truncate max-w-full">{job.title}</h2>
 
       {/* Tags */}
       <div className="flex flex-wrap gap-2 mb-4">

@@ -89,7 +89,7 @@ const JobCard = ({ job }) => {
       {/* Company + Job Info */}
       <div className="flex flex-col gap-2">
         <div className="flex items-baseline gap-2">
-          <h5 className="text-md text-gray-900 dark:text-gray-200">{job.company}</h5>
+          <h5 className="text-md text-gray-900 dark:text-gray-200 truncate max-w-full">{job.company}</h5>
           <p className="text-xs text-neutral-400 dark:text-gray-500">
             {formatDistanceToNow(new Date(job.createdAt), { addSuffix: true })}
           </p>
