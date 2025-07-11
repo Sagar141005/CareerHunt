@@ -24,10 +24,7 @@ const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100
 });
-const allowedOrigins = [
-    'http://localhost:5173', // for local dev
-    'https://career-hunt.vercel.app' // for Vercel frontend
-];
+const allowedOrigins = [process.env.VITE_URL, "http://localhost:5173"]
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
