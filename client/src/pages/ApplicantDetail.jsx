@@ -40,12 +40,6 @@ const ApplicantDetail = () => {
         setStatus(res.data.currentStatus);
         setSelectedStatus(res.data.currentStatus);
         setInteractionHistory(res.data.interactionHistory);
-        console.log({
-          resumeId: res.data.appliedResume?.resumeId,
-          versionNumber: res.data.appliedResume?.versionNumber,
-          appliedResume: res.data.appliedResume,
-        });
-        
       } catch (error) {
         const msg = error.response?.data?.message || error.message || 'Failed to fetch interaction history';
         toast.error(msg);

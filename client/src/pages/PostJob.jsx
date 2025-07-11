@@ -16,7 +16,7 @@ const PostJob = () => {
     description: '',
     location: '',
     type: 'full-time',
-    salary: '',
+    salary: Number(formData.salary || 0),
     openings: 1,
     employmentType: 'full-time',
     level: 'Mid',
@@ -170,7 +170,7 @@ const PostJob = () => {
           {/* Row 2: Salary + Openings */}
           <div className="grid sm:grid-cols-2 gap-6">
             <div>
-              <label className="block font-semibold mb-2" htmlFor="salary">Salary (optional)</label>
+              <label className="block font-semibold mb-2" htmlFor="salary">Salary</label>
               <input
                 type="number"
                 id="salary"
@@ -178,6 +178,7 @@ const PostJob = () => {
                 min="0"
                 value={formData.salary}
                 onChange={handleChange}
+                required
                 className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
               />
             </div>
