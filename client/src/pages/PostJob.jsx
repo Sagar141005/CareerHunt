@@ -16,7 +16,7 @@ const PostJob = () => {
     description: '',
     location: '',
     type: 'full-time',
-    salary: Number(formData.salary || 0),
+    salary: 0,
     openings: 1,
     employmentType: 'full-time',
     level: 'Mid',
