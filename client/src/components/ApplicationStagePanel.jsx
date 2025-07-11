@@ -24,7 +24,7 @@ const ApplicationStagePanel = ({ title, jobs = [], children }) => {
       {/* Panel Content */}
       {open && (
         <div className="w-full sm:p-6 bg-gray-50 dark:bg-[#121212]">
-          <div className="flex flex-wrap sm:justify-center py-4 gap-4 w-full overflow-x-hidden">
+          <div className="flex flex-wrap py-4 gap-4 w-full overflow-x-hidden">
             {children}
           </div>
         </div>
