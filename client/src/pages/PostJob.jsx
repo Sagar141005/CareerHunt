@@ -160,7 +160,9 @@ const PostJob = () => {
                 name="type"
                 value={formData.type}
                 onChange={handleChange}
+                required
                 className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 appearance-none">
+                <option value="" disabled>Select Job type</option> 
                 <option value="On-site">On-site</option>
                 <option value="Remote">Remote</option>
                 <option value="Hybrid">Hybrid</option>
@@ -208,6 +210,7 @@ const PostJob = () => {
                 value={formData.employmentType}
                 onChange={handleChange}
                 className="w-full px-4 py-3 border rounded-md bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 appearance-none">
+                <option value="" disabled>Select Employment type</option> 
                 <option value="Full-time">Full-time</option>
                 <option value="Part-time">Part-time</option>
                 <option value="Contract">Contract</option>
