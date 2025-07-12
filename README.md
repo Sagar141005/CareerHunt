@@ -1,4 +1,5 @@
 CareerHunt 💼
+
 CareerHunt is a full-stack job board platform built for both developers and recruiters. It uses the latest technologies, includes DevOps workflows, and leverages AI tools to enhance the experience for both developers and recruiters.
 
 🔗 Live Demo
@@ -43,18 +44,29 @@ Auto-fill company details from your profile
 Upload logos via Cloudinary
 
 🧱 Tech Stack
+
 Layer	Tools / Stack
-Frontend	React (Vite), Tailwind CSS, React Router
-Backend	Node.js, Express
-Database	MongoDB (Mongoose)
-Auth	Google, GitHub, LinkedIn OAuth
-AI Assistant	OpenAI API
-File Uploads	Cloudinary
-Caching	Redis
-DevOps	Docker, GitHub Actions
-Hosting	Vercel (Frontend), Render (Backend)
+
+Frontend:	React (Vite), Tailwind CSS, React Router
+
+Backend:	Node.js, Express
+
+Database:	MongoDB (Mongoose)
+
+Auth:	Google, GitHub, LinkedIn OAuth
+
+AI Assistant:	OpenAI API
+
+File Uploads:	Cloudinary
+
+Caching:	Redis
+
+DevOps:	Docker, GitHub Actions
+
+Hosting:	Vercel (Frontend), Render (Backend)
 
 🚀 Deployment
+
 Frontend (Vercel)
 Automatically deployed from GitHub’s main branch
 
