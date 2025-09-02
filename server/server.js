@@ -64,6 +64,10 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+app.get("/ping", (req, res) => {
+  res.status(200).send("pong");
+});
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: "Internal server error" });
