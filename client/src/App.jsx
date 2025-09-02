@@ -29,6 +29,7 @@ const Apply = lazy(() => import("./pages/Apply"));
 const Resumes = lazy(() => import("./pages/Resumes"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
   return (
@@ -50,28 +51,32 @@ function App() {
               <RequireAuth>
                 <Profile />
               </RequireAuth>
-            } />
+            }
+          />
           <Route
             path="/setting"
             element={
               <RequireAuth>
                 <Setting />
               </RequireAuth>
-            } />
+            }
+          />
           <Route
             path="/profile/edit"
             element={
               <RequireAuth>
                 <EditProfile />
               </RequireAuth>
-            } />
+            }
+          />
           <Route
             path="/dashboard"
             element={
               <RequireAuth>
                 <Dashboard />
               </RequireAuth>
-            } />
+            }
+          />
 
           {/* Job-Seeker routes */}
           <Route
@@ -124,51 +129,59 @@ function App() {
               </RequireAuth>
             }
           />
-         
+
           {/* Public routes */}
-          <Route 
-            path="/post/job" 
+          <Route
+            path="/post/job"
             element={
               <RequireRole role="recruiter">
                 <PostJob />
               </RequireRole>
-            } />
-          <Route 
-            path="/post/job/edit/:jobId" 
+            }
+          />
+          <Route
+            path="/post/job/edit/:jobId"
             element={
               <RequireRole role="recruiter">
                 <EditJobPost />
               </RequireRole>
-            } />
-          <Route 
-            path="/job/posts" 
+            }
+          />
+          <Route
+            path="/job/posts"
             element={
               <RequireRole role="recruiter">
                 <JobPosts />
               </RequireRole>
-            } />
-          <Route 
-            path="/applications" 
+            }
+          />
+          <Route
+            path="/applications"
             element={
               <RequireRole role="recruiter">
                 <Applications />
               </RequireRole>
-            } />
-          <Route 
-            path="/applications/applicants/:jobId" 
+            }
+          />
+          <Route
+            path="/applications/applicants/:jobId"
             element={
               <RequireRole role="recruiter">
                 <Applicants />
               </RequireRole>
-            } />
-          <Route 
-            path="/applications/applicant/:jobPostId/:userId" 
+            }
+          />
+          <Route
+            path="/applications/applicant/:jobPostId/:userId"
             element={
               <RequireRole role="recruiter">
                 <ApplicantDetail />
               </RequireRole>
-            } />          
+            }
+          />
 
+          {/* 404 Route */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
       <ToastProvider />
