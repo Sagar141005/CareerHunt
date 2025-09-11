@@ -138,11 +138,22 @@ docker-compose -f docker-compose.prod.yml up --build -d
 
 ---
 
-## 📌 Planned Features
+## 🧪 Upcoming Features / TODO
 
-- 📧 Email notifications (e.g. job application updates)  
-- 🧠 AI mock interview assistant  
-- 💡 Smart job recommendations  
+### ⚡ One-Click Job Management
+- 🔗 Browser extension to save jobs in one click
+- ⬇️ Automated LinkedIn/Indeed job import
+
+### 👥 Collaboration & Dashboards
+- 🧑‍💼 Collaborative recruiter dashboards (teams)
+- 📈 Analytics for job seekers (conversion rates, response tracking)
+
+### 📧 Notifications & Updates
+- 📬 Email notifications (e.g. job application updates)
+
+### 🤖 AI Enhancements
+- 🗣️ AI mock interview assistant
+- 🎯 Smart job recommendations
 
 ---
 
