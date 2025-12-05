@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import {
   RiRobotLine,
   RiAppsLine,
@@ -7,27 +7,21 @@ import {
   RiUserSearchLine,
   RiFlashlightLine,
   RiTeamLine,
-  RiShieldCheckLine,
-  RiCpuLine,
-  RiInfinityLine,
 } from "@remixicon/react";
 
 const WhyChooseUs = () => {
-  // Configuration: 4-Column Grid System
   const features = [
     {
-      // 1. AI (The Hero Block): Large 2x2 Square
       title: "AI-Powered Intelligence",
       desc: "Our engine parses thousands of job descriptions to tailor your resume keywords perfectly against the ATS.",
       icon: <RiRobotLine size={32} />,
-      bgIcon: <RiCpuLine size={240} />,
+      bgIcon: <RiRobotLine size={240} />,
       gridArea: "md:col-span-2 md:row-span-2",
       color: "text-blue-600",
       bg: "bg-blue-50 dark:bg-blue-900/10",
       border: "hover:border-blue-500/50",
     },
     {
-      // 2. Speed: Tall Vertical 1x2
       title: "Lightning Fast",
       desc: "Zero latency. Built on edge networks for instant updates across all devices.",
       icon: <RiFlashlightLine size={32} />,
@@ -38,7 +32,6 @@ const WhyChooseUs = () => {
       border: "hover:border-amber-500/50",
     },
     {
-      // 3. Platform: Standard 1x1
       title: "All-in-One",
       desc: "Search, apply, and track. One tab rule.",
       icon: <RiAppsLine size={32} />,
@@ -49,7 +42,6 @@ const WhyChooseUs = () => {
       border: "hover:border-purple-500/50",
     },
     {
-      // 4. Recruiters: Standard 1x1
       title: "Recruiter Access",
       desc: "Direct visibility to hiring managers.",
       icon: <RiUserSearchLine size={32} />,
@@ -60,7 +52,6 @@ const WhyChooseUs = () => {
       border: "hover:border-pink-500/50",
     },
     {
-      // 5. Results: Wide Horizontal 2x1
       title: "Proven Analytics",
       desc: "92% of users land interviews within 30 days. Visualize your success funnel.",
       icon: <RiBarChartBoxLine size={32} />,
@@ -71,11 +62,10 @@ const WhyChooseUs = () => {
       border: "hover:border-emerald-500/50",
     },
     {
-      // 6. Community: Wide Horizontal 2x1
       title: "Global Community",
       desc: "Join 100,000+ professionals sharing salary insights and referral tips.",
       icon: <RiTeamLine size={32} />,
-      bgIcon: <RiInfinityLine size={150} />,
+      bgIcon: <RiTeamLine size={150} />,
       gridArea: "md:col-span-2 md:row-span-1",
       color: "text-cyan-600",
       bg: "bg-cyan-50 dark:bg-cyan-900/10",
@@ -84,9 +74,8 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-32 px-6 bg-neutral-50 dark:bg-neutral-950 transition-colors duration-500">
+    <section className="py-32 px-6 transition-colors duration-500">
       <div className="max-w-7xl mx-auto">
-        {/* --- Header --- */}
         <div className="text-center max-w-3xl mx-auto mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -107,14 +96,6 @@ const WhyChooseUs = () => {
           </motion.div>
         </div>
 
-        {/* --- BENTO GRID CONTAINER --- */}
-        {/* 
-            Grid Logic: 
-            - 1 column on mobile 
-            - 4 columns on desktop 
-            - Rows automatically sized to 180px minimum 
-            - Dense packing to fill gaps 
-        */}
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -137,23 +118,20 @@ const WhyChooseUs = () => {
                 relative group overflow-hidden 
                 rounded-3xl p-8 
                 ${feature.gridArea} 
-                bg-white dark:bg-[#0B1120] 
+                bg-white dark:bg-blue-900/10
                 border border-neutral-200 dark:border-white/5 
                 shadow-sm hover:shadow-2xl hover:shadow-neutral-200/40 dark:hover:shadow-none
                 transition-all duration-300
                 ${feature.border}
               `}
             >
-              {/* Content Container (Flex column to push content to corners if needed) */}
               <div className="relative z-10 flex flex-col h-full justify-between gap-6">
-                {/* Top: Icon */}
                 <div
                   className={`w-14 h-14 rounded-2xl ${feature.bg} ${feature.color} flex items-center justify-center`}
                 >
                   {feature.icon}
                 </div>
 
-                {/* Bottom: Text */}
                 <div>
                   <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-2">
                     {feature.title}
@@ -164,8 +142,6 @@ const WhyChooseUs = () => {
                 </div>
               </div>
 
-              {/* Decorative Background Icon */}
-              {/* Positioned differently based on shape to look good */}
               <div
                 className={`
                   absolute -bottom-4 -right-4 
@@ -179,9 +155,6 @@ const WhyChooseUs = () => {
               >
                 {feature.bgIcon}
               </div>
-
-              {/* Subtle Gradient Overlay on Hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent to-neutral-50 dark:to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             </motion.div>
           ))}
         </motion.div>
