@@ -31,8 +31,8 @@ const Footer = () => {
   return (
     <footer className="w-full bg-white dark:bg-black border-t border-neutral-200 dark:border-neutral-800 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
-          <div className="lg:col-span-5 flex flex-col space-y-6">
+        <div className="flex md:flex-row flex-col items-start justify-between gap-8">
+          <div className="flex flex-col space-y-6">
             <Link to="/" className="flex items-center gap-2 w-fit group">
               <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/30 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40 transition-colors">
                 <RiSparkling2Fill size={20} className="text-blue-600" />
@@ -69,7 +69,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
+          <div className="flex gap-8">
             <LinkGroup
               title="For Job Seekers"
               links={[
@@ -86,31 +86,28 @@ const Footer = () => {
                 { label: "Manage Listings", to: "/job/posts" },
               ]}
             />
-
-            <LinkGroup
-              title="Company"
-              links={[
-                { label: "Privacy Policy", to: "/privacy" },
-                { label: "Terms of Service", to: "/terms" },
-              ]}
-            />
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="pt-8 mt-8 border-t border-neutral-100 dark:border-neutral-900 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-neutral-400 dark:text-neutral-500 text-center md:text-left">
             © {currentYear} CareerHunt Inc. All rights reserved.
           </p>
 
           <div className="flex gap-6 items-center">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="relative inline-flex rounded-full h-2 w-2 animate-pulse bg-green-500"></span>
-              </span>
-              <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
-                All systems normal
-              </span>
+            <div className="flex items-center gap-6">
+              <Link
+                to="/privacy"
+                className="text-xs text-neutral-500 hover:text-blue-600 dark:text-neutral-400 transition-colors duration-200 w-fit"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                to="/terms"
+                className="text-xs text-neutral-500 hover:text-blue-600 dark:text-neutral-400 transition-colors duration-200 w-fit"
+              >
+                Terms of Service
+              </Link>
             </div>
           </div>
         </div>
