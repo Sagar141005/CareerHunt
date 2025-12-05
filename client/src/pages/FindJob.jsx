@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import UserNavbar from "../components/UserNavbar";
+import UserNavbar from "../components/job-seeker/UserNavbar";
 import {
   RiBriefcaseLine,
   RiMapPin2Line,
@@ -7,6 +7,8 @@ import {
   RiSearch2Line,
   RiFilter3Line,
   RiCloseLine,
+  RiArrowRightSLine,
+  RiArrowLeftSLine,
 } from "@remixicon/react";
 import Slider from "@mui/material/Slider";
 import CheckboxGroup from "../components/CheckboxGroup";
@@ -127,395 +129,374 @@ const FindJob = () => {
   ]);
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-b from-gray-50 to-gray-20 dark:from-gray-900 dark:to-gray-800 dark:text-gray-300 transition-colors duration-300 overflow-hidden">
+    <div className="w-full min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-200 transition-colors duration-300 flex flex-col">
       <UserNavbar />
 
-      {/* Responsive Header */}
-      <div className="bg-gradient-to-r from-sky-700 to-blue-700 dark:bg-[#141414] dark:bg-none text-white px-4 py-3 flex items-center justify-between">
-        {/* Title */}
-        <div className="hidden md:flex items-center gap-6 flex-wrap max-w-7xl mx-auto w-full">
-          {/* Job input */}
-          <div className="flex items-center gap-3 border-r border-white/30 pr-4 flex-1 min-w-[120px] max-w-[200px]">
-            <div className="h-8 w-10 flex items-center justify-center border border-white/30 rounded-full">
-              <RiSearch2Line size={18} />
+      <div className="sticky top-16 z-30 bg-white/80 dark:bg-neutral-950/80 border-b border-neutral-200 dark:border-neutral-800 shadow-sm transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+          <div className="hidden md:flex items-center gap-3 w-full">
+            <div className="flex-1 flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800 px-3 py-2.5 rounded-xl border border-transparent focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
+              <RiSearch2Line size={18} className="text-neutral-400 shrink-0" />
+              <input
+                className="flex-1 bg-transparent text-sm font-medium text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-none"
+                type="text"
+                placeholder="Search job title..."
+                value={titleQuery}
+                onChange={(e) => setTitleQuery(e.target.value)}
+              />
             </div>
-            <input
-              className="text-md pt-1 focus:outline-none w-full bg-transparent placeholder-white/70 text-white truncate"
-              type="text"
-              placeholder="Job"
-              value={titleQuery}
-              onChange={(e) => setTitleQuery(e.target.value)}
-            />
-          </div>
-          {/* Location input */}
-          <div className="flex items-center gap-3 border-r border-white/30 pr-4 flex-1 min-w-[120px] max-w-[200px]">
-            <div className="h-8 w-10 flex items-center justify-center border border-white/30 rounded-full">
-              <RiMapPin2Line size={18} />
+
+            <div className="flex-1 flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800 px-3 py-2.5 rounded-xl border border-transparent focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
+              <RiMapPin2Line size={18} className="text-neutral-400 shrink-0" />
+              <input
+                className="flex-1 bg-transparent text-sm font-medium text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-none"
+                type="text"
+                placeholder="City or Remote"
+                value={locationQuery}
+                onChange={(e) => setLocationQuery(e.target.value)}
+              />
             </div>
-            <input
-              className="text-md pt-1 focus:outline-none w-full bg-transparent placeholder-white/70 text-white truncate"
-              type="text"
-              placeholder="Location"
-              value={locationQuery}
-              onChange={(e) => setLocationQuery(e.target.value)}
-            />
-          </div>
-          {/* Type input */}
-          <div className="flex items-center gap-3 border-r border-white/30 pr-4 flex-1 min-w-[120px] max-w-[200px]">
-            <div className="h-8 w-10 flex items-center justify-center border border-white/30 rounded-full">
-              <RiBriefcaseLine size={18} />
+
+            <div className="w-[140px] flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800 px-3 py-2.5 rounded-xl border border-transparent focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
+              <RiBriefcaseLine
+                size={18}
+                className="text-neutral-400 shrink-0"
+              />
+              <input
+                className="flex-1 bg-transparent text-sm font-medium text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-none"
+                type="text"
+                placeholder="Type"
+                value={typeQuery}
+                onChange={(e) => setTypeQuery(e.target.value)}
+              />
             </div>
-            <input
-              className="text-md pt-1 focus:outline-none w-full bg-transparent placeholder-white/70 text-white truncate"
-              type="text"
-              placeholder="Type"
-              value={typeQuery}
-              onChange={(e) => setTypeQuery(e.target.value)}
-            />
-          </div>
-          {/* Level input */}
-          <div className="flex items-center gap-3 border-r border-white/30 pr-4 flex-1 min-w-[120px] max-w-[200px]">
-            <div className="h-8 w-10 flex items-center justify-center border border-white/30 rounded-full">
-              <RiMedalLine size={18} />
+
+            <div className="w-[140px] flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800 px-3 py-2.5 rounded-xl border border-transparent focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
+              <RiMedalLine size={18} className="text-neutral-400 shrink-0" />
+              <input
+                className="flex-1 bg-transparent text-sm font-medium text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-none"
+                type="text"
+                placeholder="Level"
+                value={levelQuery}
+                onChange={(e) => setLevelQuery(e.target.value)}
+              />
             </div>
-            <input
-              className="text-md pt-1 focus:outline-none w-full bg-transparent placeholder-white/70 text-white truncate"
-              type="text"
-              placeholder="Level"
-              value={levelQuery}
-              onChange={(e) => setLevelQuery(e.target.value)}
-            />
-          </div>
-          {/* Salary Range */}
-          <div className="flex flex-col gap-2 min-w-[300px] max-w-[400px] flex-1">
-            <div className="w-full flex items-center justify-between">
-              <h3 className="text-md text-white whitespace-nowrap">
-                Salary Range
-              </h3>
-              <div className="flex items-center gap-1">
-                <div className="flex items-center gap-1 justify-center">
-                  <span className="text-xs pt-1 text-white">$</span>
-                  <input
-                    onWheel={(e) => e.target.blur()}
-                    readOnly
-                    className="w-[50px] text-right text-sm pt-1 focus:outline-none appearance-none bg-transparent text-white"
-                    type="number"
-                    value={range[0]}
-                  />
-                </div>
-                <span className="w-4 text-center px-1 text-white">–</span>
-                <div className="flex items-center gap-1 justify-center">
-                  <span className="text-xs pt-1 text-white">$</span>
-                  <input
-                    onWheel={(e) => e.target.blur()}
-                    readOnly
-                    className="w-[60px] text-left text-sm pt-1 focus:outline-none appearance-none bg-transparent text-white"
-                    type="number"
-                    value={range[1]}
-                  />
-                </div>
+
+            <div className="w-[280px] bg-neutral-100 dark:bg-neutral-800 px-4 py-1.5 rounded-xl border border-transparent transition-all flex flex-col justify-center">
+              <div className="flex justify-between items-center text-xs text-neutral-500 dark:text-neutral-400 mb-1">
+                <span className="font-medium">Salary</span>
+                <span>
+                  ${range[0]} - ${range[1]}
+                </span>
               </div>
+              <Slider
+                value={range}
+                onChange={handleSliderChange}
+                valueLabelDisplay="auto"
+                min={0}
+                max={25000}
+                size="small"
+                sx={{
+                  padding: "5px 0",
+                  color: "#0164FC",
+                  "& .MuiSlider-rail": {
+                    backgroundColor: "#cbd5e1",
+                    opacity: 0.5,
+                  },
+                  "& .MuiSlider-track": { border: "none" },
+                  "& .MuiSlider-thumb": {
+                    width: 12,
+                    height: 12,
+                    backgroundColor: "#fff",
+                    border: "2px solid #0164FC",
+                    "&:focus, &:hover, &.Mui-active, &.Mui-focusVisible": {
+                      boxShadow: "inherit",
+                    },
+                  },
+                }}
+              />
             </div>
-            <Slider
-              value={range}
-              onChange={handleSliderChange}
-              valueLabelDisplay="auto"
-              min={0}
-              max={25000}
-              sx={{
-                "& .MuiSlider-rail": {
-                  backgroundColor: "rgba(255, 255, 255, 0.3)",
-                },
-                "& .MuiSlider-track": {
-                  backgroundColor: "#ffffff",
-                },
-                "& .MuiSlider-valueLabel": {
-                  backgroundColor: "#4299e1",
-                  color: "#fff",
-                },
-              }}
-            />
+          </div>
+          <div className="flex md:hidden items-center justify-between gap-3">
+            <button
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 rounded-xl font-medium active:scale-95 transition-transform"
+              onClick={() => setHeaderCollapsed(!headerCollapsed)}
+            >
+              <RiSearch2Line size={18} />
+              <span>Search</span>
+            </button>
+            <button
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#0164FC] text-white rounded-xl font-medium shadow-lg shadow-blue-500/20 active:scale-95 transition-transform"
+              onClick={() => setFilterSidebarOpen(true)}
+            >
+              <RiFilter3Line size={18} />
+              <span>Filters</span>
+            </button>
           </div>
         </div>
 
-        {/* Mobile Header (collapsed) */}
-        <div className="flex md:hidden items-center justify-between w-full max-w-7xl mx-auto">
-          <button
-            className="flex items-center gap-2 px-3 py-2 bg-blue-600 rounded-md hover:bg-blue-700 transition cursor-pointer"
-            onClick={() => setHeaderCollapsed(!headerCollapsed)}
-          >
-            <RiSearch2Line size={20} />
-            <span>Search Filters</span>
-          </button>
-          <button
-            className="flex items-center gap-2 px-3 py-2 bg-blue-600 rounded-md hover:bg-blue-700 transition cursor-pointer"
-            onClick={() => setFilterSidebarOpen(true)}
-          >
-            <RiFilter3Line size={20} />
-            <span>More Filters</span>
-          </button>
-        </div>
+        {headerCollapsed === false && (
+          <div className="md:hidden border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-4 py-4 space-y-3">
+            <div className="flex items-center gap-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg p-2.5 border border-neutral-200 dark:border-neutral-700">
+              <RiSearch2Line size={18} className="text-neutral-400" />
+              <input
+                className="w-full bg-transparent text-sm focus:outline-none text-neutral-900 dark:text-white placeholder-neutral-400"
+                type="text"
+                placeholder="Job Title"
+                value={titleQuery}
+                onChange={(e) => setTitleQuery(e.target.value)}
+              />
+            </div>
+            <div className="flex items-center gap-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg p-2.5 border border-neutral-200 dark:border-neutral-700">
+              <RiMapPin2Line size={18} className="text-neutral-400" />
+              <input
+                className="w-full bg-transparent text-sm focus:outline-none text-neutral-900 dark:text-white placeholder-neutral-400"
+                type="text"
+                placeholder="Location"
+                value={locationQuery}
+                onChange={(e) => setLocationQuery(e.target.value)}
+              />
+            </div>
+            <div className="flex gap-3">
+              <div className="flex-1 flex items-center gap-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg p-2.5 border border-neutral-200 dark:border-neutral-700">
+                <RiBriefcaseLine size={18} className="text-neutral-400" />
+                <input
+                  className="w-full bg-transparent text-sm focus:outline-none text-neutral-900 dark:text-white placeholder-neutral-400"
+                  type="text"
+                  placeholder="Type"
+                  value={typeQuery}
+                  onChange={(e) => setTypeQuery(e.target.value)}
+                />
+              </div>
+              <div className="flex-1 flex items-center gap-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg p-2.5 border border-neutral-200 dark:border-neutral-700">
+                <RiMedalLine size={18} className="text-neutral-400" />
+                <input
+                  className="w-full bg-transparent text-sm focus:outline-none text-neutral-900 dark:text-white placeholder-neutral-400"
+                  type="text"
+                  placeholder="Level"
+                  value={levelQuery}
+                  onChange={(e) => setLevelQuery(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-4 border border-neutral-200 dark:border-neutral-700">
+              <div className="flex justify-between items-center text-xs text-neutral-500 mb-2">
+                <span>Salary Range</span>
+                <span>
+                  ${range[0]} - ${range[1]}
+                </span>
+              </div>
+              <Slider
+                value={range}
+                onChange={handleSliderChange}
+                valueLabelDisplay="auto"
+                min={0}
+                max={25000}
+                size="small"
+                sx={{ color: "#0164FC" }}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Collapsible mobile search inputs */}
-      {headerCollapsed === false && (
-        <div className="md:hidden bg-gradient-to-r from-sky-700 to-blue-700 dark:bg-[#141414] dark:bg-none px-4 py-4 space-y-4 max-w-7xl mx-auto">
-          {/* Job input */}
-          <div className="flex items-center gap-3 border border-white/30 rounded-md p-2">
-            <RiSearch2Line size={18} className="text-white" />
-            <input
-              className="text-md pt-1 focus:outline-none w-full bg-transparent placeholder-white/70 text-white"
-              type="text"
-              placeholder="Job"
-              value={titleQuery}
-              onChange={(e) => setTitleQuery(e.target.value)}
-            />
-          </div>
-          {/* Location input */}
-          <div className="flex items-center gap-3 border border-white/30 rounded-md p-2">
-            <RiMapPin2Line size={18} className="text-white" />
-            <input
-              className="text-md pt-1 focus:outline-none w-full bg-transparent placeholder-white/70 text-white"
-              type="text"
-              placeholder="Location"
-              value={locationQuery}
-              onChange={(e) => setLocationQuery(e.target.value)}
-            />
-          </div>
-          {/* Type input */}
-          <div className="flex items-center gap-3 border border-white/30 rounded-md p-2">
-            <RiBriefcaseLine size={18} className="text-white" />
-            <input
-              className="text-md pt-1 focus:outline-none w-full bg-transparent placeholder-white/70 text-white"
-              type="text"
-              placeholder="Type"
-              value={typeQuery}
-              onChange={(e) => setTypeQuery(e.target.value)}
-            />
-          </div>
-          {/* Level input */}
-          <div className="flex items-center gap-3 border border-white/30 rounded-md p-2">
-            <RiMedalLine size={18} className="text-white" />
-            <input
-              className="text-md pt-1 focus:outline-none w-full bg-transparent placeholder-white/70 text-white"
-              type="text"
-              placeholder="Level"
-              value={levelQuery}
-              onChange={(e) => setLevelQuery(e.target.value)}
-            />
-          </div>
-          {/* Salary Range */}
-          <div className="flex flex-col gap-2">
-            <h3 className="text-md text-white">Salary Range</h3>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 justify-center">
-                <span className="text-xs pt-1 text-white">$</span>
-                <input
-                  onWheel={(e) => e.target.blur()}
-                  readOnly
-                  className="w-[50px] text-right text-sm pt-1 focus:outline-none appearance-none bg-transparent text-white"
-                  type="number"
-                  value={range[0]}
-                />
-              </div>
-              <span className="w-4 text-center px-1 text-white">–</span>
-              <div className="flex items-center gap-1 justify-center">
-                <span className="text-xs pt-1 text-white">$</span>
-                <input
-                  onWheel={(e) => e.target.blur()}
-                  readOnly
-                  className="w-[60px] text-left text-sm pt-1 focus:outline-none appearance-none bg-transparent text-white"
-                  type="number"
-                  value={range[1]}
-                />
-              </div>
-            </div>
-            <Slider
-              value={range}
-              onChange={handleSliderChange}
-              valueLabelDisplay="auto"
-              min={0}
-              max={25000}
-              sx={{
-                "& .MuiSlider-rail": {
-                  backgroundColor: "rgba(255, 255, 255, 0.3)",
-                },
-                "& .MuiSlider-track": {
-                  backgroundColor: "#ffffff",
-                },
-                "& .MuiSlider-valueLabel": {
-                  backgroundColor: "#4299e1",
-                  color: "#fff",
-                },
-              }}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Filter Sidebar Drawer for mobile */}
       {filterSidebarOpen && (
         <>
           <div
             onClick={() => setFilterSidebarOpen(false)}
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity"
           ></div>
-          <aside className="fixed top-0 right-0 w-72 h-full bg-white dark:bg-gray-900 dark:text-gray-300 shadow-lg z-50 p-4 flex flex-col overflow-y-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-medium">Filters</h3>
+          <aside className="fixed top-0 right-0 w-[80%] max-w-sm h-full bg-white dark:bg-neutral-900 shadow-2xl z-50 flex flex-col transform transition-transform duration-300">
+            <div className="flex items-center justify-between p-5 border-b border-neutral-100 dark:border-neutral-800">
+              <h3 className="text-lg font-bold text-neutral-900 dark:text-white">
+                Filters
+              </h3>
               <button
                 onClick={() => setFilterSidebarOpen(false)}
-                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer"
+                className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-full transition-colors"
               >
                 <RiCloseLine size={24} />
               </button>
             </div>
-            <button
-              onClick={() =>
-                setFilters({
-                  employmentType: [],
-                  type: [],
-                  level: [],
-                  department: [],
-                })
-              }
-              className="mb-4 text-sm text-blue-600 dark:text-blue-400 rounded-lg cursor-pointer transition"
-            >
-              Clear All
-            </button>
-            <CheckboxGroup
-              label="Employment Type"
-              options={employmentTypes}
-              name="employmentType"
-              selected={filters.employmentType}
-              onChange={handleCheckboxChange("employmentType")}
-            />
-            <CheckboxGroup
-              label="Work Mode"
-              options={workTypes}
-              name="type"
-              selected={filters.type}
-              onChange={handleCheckboxChange("type")}
-            />
-            <CheckboxGroup
-              label="Level"
-              options={levels}
-              name="level"
-              selected={filters.level}
-              onChange={handleCheckboxChange("level")}
-            />
-            <CheckboxGroup
-              label="Department"
-              options={departments}
-              name="department"
-              selected={filters.department}
-              onChange={handleCheckboxChange("department")}
-            />
+
+            <div className="flex-1 overflow-y-auto p-5 space-y-6">
+              <CheckboxGroup
+                label="Employment Type"
+                options={employmentTypes}
+                name="employmentType"
+                selected={filters.employmentType}
+                onChange={handleCheckboxChange("employmentType")}
+              />
+              <div className="w-full h-px bg-neutral-100 dark:bg-neutral-800"></div>
+              <CheckboxGroup
+                label="Work Mode"
+                options={workTypes}
+                name="type"
+                selected={filters.type}
+                onChange={handleCheckboxChange("type")}
+              />
+              <div className="w-full h-px bg-neutral-100 dark:bg-neutral-800"></div>
+              <CheckboxGroup
+                label="Level"
+                options={levels}
+                name="level"
+                selected={filters.level}
+                onChange={handleCheckboxChange("level")}
+              />
+              <div className="w-full h-px bg-neutral-100 dark:bg-neutral-800"></div>
+              <CheckboxGroup
+                label="Department"
+                options={departments}
+                name="department"
+                selected={filters.department}
+                onChange={handleCheckboxChange("department")}
+              />
+            </div>
+
+            <div className="p-5 border-t border-neutral-100 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50">
+              <button
+                onClick={() =>
+                  setFilters({
+                    employmentType: [],
+                    type: [],
+                    level: [],
+                    department: [],
+                  })
+                }
+                className="w-full py-3 mb-3 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
+              >
+                Reset Filters
+              </button>
+              <button
+                onClick={() => setFilterSidebarOpen(false)}
+                className="w-full py-3 bg-[#0164FC] text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 active:scale-[0.98] transition-all"
+              >
+                Show Results
+              </button>
+            </div>
           </aside>
         </>
       )}
 
-      {/* Main Content */}
-      <div className="w-full flex flex-col lg:flex-row gap-12 lg:pr-6 lg:pl-2 py-10">
-        {/* Desktop Filters Sidebar */}
-        <aside className="hidden lg:flex flex-col w-72 border-r border-gray-300 dark:border-gray-700 p-4 sticky top-20 gap-4 h-[calc(100vh-5rem)] overflow-y-auto">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-medium text-gray-900 dark:text-gray-300">
-              Filters
-            </h3>
-            <button
-              onClick={() =>
-                setFilters({
-                  employmentType: [],
-                  type: [],
-                  level: [],
-                  department: [],
-                })
-              }
-              className="text-sm text-blue-600 dark:text-blue-400 rounded-lg cursor-pointer transition"
-            >
-              Clear All
-            </button>
+      <div className="flex-1 max-w-7xl mx-auto w-full flex flex-col lg:flex-row gap-8 px-4 sm:px-6 py-8">
+        <aside className="hidden lg:block w-64 shrink-0">
+          <div className="sticky top-40 max-h-[calc(100vh-10rem)] overflow-y-auto pr-2 custom-scrollbar">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                <RiFilter3Line size={18} /> Filters
+              </h3>
+              <button
+                onClick={() =>
+                  setFilters({
+                    employmentType: [],
+                    type: [],
+                    level: [],
+                    department: [],
+                  })
+                }
+                className="text-xs font-semibold text-blue-600 hover:underline"
+              >
+                Clear All
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              <CheckboxGroup
+                label="Employment Type"
+                options={employmentTypes}
+                name="employmentType"
+                selected={filters.employmentType}
+                onChange={handleCheckboxChange("employmentType")}
+              />
+              <CheckboxGroup
+                label="Work Mode"
+                options={workTypes}
+                name="type"
+                selected={filters.type}
+                onChange={handleCheckboxChange("type")}
+              />
+              <CheckboxGroup
+                label="Level"
+                options={levels}
+                name="level"
+                selected={filters.level}
+                onChange={handleCheckboxChange("level")}
+              />
+              <CheckboxGroup
+                label="Department"
+                options={departments}
+                name="department"
+                selected={filters.department}
+                onChange={handleCheckboxChange("department")}
+              />
+            </div>
           </div>
-          <CheckboxGroup
-            label="Employment Type"
-            options={employmentTypes}
-            name="employmentType"
-            selected={filters.employmentType}
-            onChange={handleCheckboxChange("employmentType")}
-          />
-          <CheckboxGroup
-            label="Work Mode"
-            options={workTypes}
-            name="type"
-            selected={filters.type}
-            onChange={handleCheckboxChange("type")}
-          />
-          <CheckboxGroup
-            label="Level"
-            options={levels}
-            name="level"
-            selected={filters.level}
-            onChange={handleCheckboxChange("level")}
-          />
-          <CheckboxGroup
-            label="Department"
-            options={departments}
-            name="department"
-            selected={filters.department}
-            onChange={handleCheckboxChange("department")}
-          />
         </aside>
 
-        {/* Job Listings */}
-        <main className="w-full flex-1 flex flex-col px-4 sm:px-6 lg:px-12 pt-8 gap-6">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-300">
-              Recommended Jobs
-            </h2>
-            <p className="text-sm text-gray-600 dark:text-neutral-400 hidden lg:block">
-              Sort by:{" "}
-              <span className="text-black dark:text-gray-300 font-semibold">
-                Most recent
-              </span>
-            </p>
+        <main className="flex-1 flex flex-col">
+          <div className="flex justify-between items-end mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-white tracking-tight">
+                Recommended Jobs
+              </h2>
+              <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
+                Found {jobs.length} open positions based on your criteria
+              </p>
+            </div>
           </div>
+
           <div className="w-full flex items-center gap-4 flex-wrap justify-center lg:justify-start">
             {jobs.length > 0 ? (
               jobs.map((job) => <JobCard key={job._id} job={job} />)
             ) : (
-              <p className="text-lg text-gray-500 dark:text-gray-400">
-                No jobs found.
-              </p>
+              <div className="col-span-full py-20 flex flex-col items-center justify-center text-center border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-neutral-900/50">
+                <div className="p-4 bg-neutral-100 dark:bg-neutral-800 rounded-full mb-4">
+                  <RiBriefcaseLine size={32} className="text-neutral-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+                  No jobs found
+                </h3>
+                <p className="text-neutral-500 dark:text-neutral-400 mt-1 max-w-xs">
+                  Try adjusting your search terms or filters to find what you're
+                  looking for.
+                </p>
+              </div>
             )}
           </div>
+
+          {totalPages > 1 && (
+            <div className="mt-12 flex justify-center">
+              <div className="inline-flex items-center gap-2 p-1 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-sm">
+                <button
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
+                  disabled={currentPage === 1}
+                  className="p-2 text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  <RiArrowLeftSLine size={20} />
+                </button>
+                <span className="text-sm font-medium px-4 text-neutral-700 dark:text-neutral-300">
+                  Page{" "}
+                  <span className="text-neutral-900 dark:text-white font-bold">
+                    {currentPage}
+                  </span>{" "}
+                  of {totalPages}
+                </span>
+                <button
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  }
+                  disabled={currentPage === totalPages}
+                  className="p-2 text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  <RiArrowRightSLine size={20} />
+                </button>
+              </div>
+            </div>
+          )}
         </main>
       </div>
-      {totalPages >= 1 && (
-        <div className="w-full flex justify-center mt-12 mb-4 px-4">
-          <div className="inline-flex items-center gap-2 bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-600 rounded-lg px-4 py-2 shadow-sm">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-3 py-1.5 text-sm rounded-md font-medium transition-all bg-gray-100 dark:bg-neutral-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-neutral-600 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Prev
-            </button>
-            <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-              Page {currentPage} of {totalPages}
-            </span>
-            <button
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages}
-              className="px-3 py-1.5 text-sm rounded-md font-medium transition-all bg-gray-100 dark:bg-neutral-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-neutral-600 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      )}
 
       <Footer />
     </div>
