@@ -32,7 +32,7 @@ const CompaniesAndFeatures = () => {
   ];
 
   return (
-    <div className="w-full bg-neutral-50 dark:bg-neutral-950 transition-colors duration-500 overflow-hidden">
+    <div className="w-full transition-colors duration-500 overflow-hidden">
       <section className="py-20 border-y border-neutral-100 dark:border-white/5 bg-neutral-50/50 dark:bg-[#0B1120]/40 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 text-center mb-12">
           <p className="text-sm font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
