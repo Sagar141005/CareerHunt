@@ -88,7 +88,7 @@ const Home = () => {
 
           <motion.h1
             variants={itemVariants}
-            className="text-5xl md:text-6xl font-bold leading-[1.1] tracking-tight text-neutral-900 dark:text-white mb-6"
+            className="text-5xl font-bold leading-[1.1] tracking-tight text-neutral-900 dark:text-white mb-6"
           >
             Cut the Confusion. <br />
             <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-transparent bg-clip-text">
