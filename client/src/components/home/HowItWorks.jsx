@@ -54,7 +54,7 @@ const HowItWorks = () => {
         >
           <h3 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-6 leading-tight">
             From search to signature, <br />
-            <span className="text-neutral-400 dark:text-neutral-500">
+            <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-transparent bg-clip-text">
               simplified.
             </span>
           </h3>
@@ -71,7 +71,7 @@ const HowItWorks = () => {
           variants={fadeInUp}
           className="relative"
         >
-          <div className="grid grid-cols-1 md:grid-cols-3 border border-neutral-200 dark:border-white/10 rounded-3xl divide-y md:divide-y-0 md:divide-x divide-neutral-200 dark:divide-white/10 overflow-hidden bg-white dark:bg-[#0B1120]">
+          <div className="grid grid-cols-1 md:grid-cols-3 border border-neutral-200 dark:border-white/10 rounded-3xl divide-y md:divide-y-0 md:divide-x divide-neutral-200 dark:divide-white/10 overflow-hidden bg-white dark:bg-blue-900/10">
             {steps.map((step, idx) => (
               <motion.div
                 key={idx}
