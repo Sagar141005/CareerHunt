@@ -26,7 +26,7 @@ const TermsAndConditions = () => {
             to="/"
             className="flex items-center gap-2 text-sm font-medium text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors"
           >
-            <RiArrowLeftLine size={18} /> Back to Home
+            <RiArrowLeftLine size={20} /> Back to Home
           </Link>
         </div>
       </div>
