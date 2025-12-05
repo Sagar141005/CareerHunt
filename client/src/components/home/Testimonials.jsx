@@ -73,7 +73,7 @@ const TestimonialsCard = ({ name, role, img, text }) => (
 
 const TestimonialsSection = () => {
   return (
-    <section className="py-32 border-y border-neutral-200 dark:border-white/5 overflow-hidden">
+    <section className="max-w-7xl mx-auto py-32 border-y border-neutral-200 dark:border-white/5 overflow-hidden">
       <div className="max-w-3xl mx-auto px-6 text-center mb-16">
         <h3 className="text-3xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-6">
           Don't take our word for it.

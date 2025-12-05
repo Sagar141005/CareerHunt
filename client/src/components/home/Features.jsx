@@ -67,7 +67,7 @@ const CompaniesAndFeatures = () => {
         </div>
       </section>
 
-      <section className="relative py-32 px-6">
+      <section className="max-w-7xl mx-auto relative py-32 px-6">
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-neutral-50/0 via-neutral-100/40 to-neutral-200/70 dark:from-neutral-950 dark:via-neutral-900/80 dark:to-neutral-800/90" />
         <div className="max-w-7xl mx-auto">
           <motion.div

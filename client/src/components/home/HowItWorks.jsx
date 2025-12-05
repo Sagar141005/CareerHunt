@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { RiArticleLine, RiListCheck3, RiRocketLine } from "@remixicon/react";
 
 const fadeInUp = {
@@ -43,7 +43,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="py-32 px-6 transition-colors duration-500">
+    <section className="max-w-7xl mx-auto py-32 px-6 transition-colors duration-500">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
