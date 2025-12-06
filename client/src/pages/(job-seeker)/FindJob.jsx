@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import UserNavbar from "../components/job-seeker/UserNavbar";
+import UserNavbar from "../../components/job-seeker/UserNavbar";
 import {
   RiBriefcaseLine,
   RiMapPin2Line,
@@ -11,10 +11,10 @@ import {
   RiArrowLeftSLine,
 } from "@remixicon/react";
 import Slider from "@mui/material/Slider";
-import CheckboxGroup from "../components/CheckboxGroup";
-import api from "../api/axios";
-import JobCard from "../components/JobCard";
-import Footer from "../components/Footer";
+import CheckboxGroup from "../../components/CheckboxGroup";
+import api from "../../api/axios";
+import JobCard from "../../components/job-seeker/JobCard";
+import Footer from "../../components/Footer";
 import { toast } from "react-toastify";
 
 const FindJob = () => {
@@ -445,11 +445,15 @@ const FindJob = () => {
             </div>
           </div>
 
-          <div className="w-full flex items-center gap-4 flex-wrap justify-center lg:justify-start">
-            {jobs.length > 0 ? (
-              jobs.map((job) => <JobCard key={job._id} job={job} />)
-            ) : (
-              <div className="col-span-full py-20 flex flex-col items-center justify-center text-center border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-neutral-900/50">
+          {jobs.length > 0 ? (
+            <div className="w-full flex items-center gap-4 flex-wrap justify-center lg:justify-start">
+              {jobs.map((job) => (
+                <JobCard key={job._id} job={job} />
+              ))}
+            </div>
+          ) : (
+            <div className="w-full flex items-center justify-center py-20">
+              <div className="flex flex-col items-center text-center border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-neutral-900/50 p-8">
                 <div className="p-4 bg-neutral-100 dark:bg-neutral-800 rounded-full mb-4">
                   <RiBriefcaseLine size={32} className="text-neutral-400" />
                 </div>
@@ -461,8 +465,8 @@ const FindJob = () => {
                   looking for.
                 </p>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           {totalPages > 1 && (
             <div className="mt-12 flex justify-center">
