@@ -1,210 +1,243 @@
-import React, { useEffect } from 'react'
-import { useAuth } from '../context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
-import { RiArrowLeftLine, RiArrowRightLine } from '@remixicon/react';
+import React, { useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  RiMapPinLine,
+  RiBriefcaseLine,
+  RiBuildingLine,
+  RiGlobalLine,
+  RiSearchLine,
+  RiMagicLine,
+  RiPencilLine,
+  RiAddCircleLine,
+  RiGroupLine,
+  RiArrowRightLine,
+} from "@remixicon/react";
+import UserNavbar from "../components/job-seeker/UserNavbar";
+import Footer from "../components/Footer";
+import RecruiterPannel from "../components/RecruiterPannel";
 
 const Profile = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(!loading && !user) {
-      navigate('/login');
+    if (!loading && !user) {
+      navigate("/login");
     }
   }, [user, loading, navigate]);
 
-  if(loading) {
-    return <p>Loading...</p>
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-[#0164FC] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex flex-col justify-between text-gray-900 dark:text-gray-300 transition-colors duration-300">
+  const ActionCard = ({ to, title, desc, icon: Icon }) => (
+    <Link
+      to={to}
+      className="group relative flex flex-col justify-between min-h-[180px] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-none hover:border-blue-400 dark:hover:border-blue-600 transition-all duration-300"
+    >
       <div>
-        <div className="relative pb-28">
-          <img
-            className="h-64 w-full object-cover"
-            src="/Bg-graadient.png"
-            alt="background gradient"
-            loading='lazy'
+        <div className="flex justify-between items-start mb-4">
+          <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800 text-[#0164FC] group-hover:bg-[#0164FC] group-hover:text-white transition-colors duration-300">
+            <Icon size={24} />
+          </div>
+          <RiArrowRightLine
+            className="text-neutral-300 group-hover:text-[#0164FC] transition-colors"
+            size={24}
           />
-          <Link
-            to="/dashboard"
-            className="absolute top-4 left-4 flex items-center justify-center h-12 w-12 rounded-full bg-white dark:bg-gray-800 shadow-lg cursor-pointer text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200">
-            <RiArrowLeftLine size={30} />
-          </Link>
-
-          <div className="absolute w-50 h-50 rounded-full bg-gray-300 dark:bg-gray-700 top-36 left-8 ring-8 ring-[#F9F9F9] dark:ring-gray-900 overflow-hidden">
-            <img
-              className="h-full w-full object-cover"
-              src={user.profilePic || '/Recruiter.jpg'}
-              alt={user.name}
-              loading='lazy'
-            />
-          </div>
         </div>
+        <h4 className="text-xl font-bold text-neutral-900 dark:text-white mb-2">
+          {title}
+        </h4>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+          {desc}
+        </p>
+      </div>
+    </Link>
+  );
 
-        <div className="flex flex-col md:flex-row justify-between px-6 md:px-12">
-          <div className="max-w-xl md:max-w-none">
-            <h1 className="text-4xl font-bold capitalize truncate">{user.name}</h1>
-            <h3 className="text-xl text-gray-700 dark:text-gray-400">{user.designation}</h3>
-            <h3 className="text-xl text-gray-600 dark:text-gray-500">{user.location || ''}</h3>
-            <h4 className="text-lg mt-2">{user.bio || ''}</h4>
-            <div className="flex flex-wrap items-center gap-4 mt-6">
-              <Link
-                to="/profile/edit"
-                className="bg-blue-600 text-white py-3 px-8 rounded-full text-lg font-medium border-2 border-blue-600 cursor-pointer hover:text-blue-600 hover:bg-transparent transition-all duration-200">
-                Edit Profile
-              </Link>
-              <Link
-                to="/setting"
-                className="py-3 px-8 rounded-full text-lg font-medium border-2 border-blue-600 cursor-pointer hover:text-white hover:bg-blue-600 transition-all duration-200">
-                Settings
-              </Link>
+  return (
+    <div
+      className={`min-h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300 
+      ${user.role === "recruiter" ? "pl-56" : ""}`}
+    >
+      {user.role === "recruiter" ? <RecruiterPannel /> : <UserNavbar />}
+
+      <main className="pb-20">
+        <div className="bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 mb-8">
+          <div className="relative max-w-7xl mx-auto">
+            <div className="h-64 w-full bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 relative overflow-hidden">
+              <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
             </div>
-          </div>
 
-          <div className="md:mr-20 mt-10 md:mt-0 max-w-sm md:max-w-none">
-            {user.role === 'recruiter' && user.company && (
-              <>
-                <h3 className="text-xl font-medium">Company</h3>
-                <div className="flex items-start gap-6 mt-2">
-                  {user.company.logoUrl && (
+            <div className="px-6 md:px-12 pb-8">
+              <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-start">
+                <div className="relative -mt-20 shrink-0">
+                  <div className="w-40 h-40 rounded-full border-[6px] border-white dark:border-neutral-900 bg-white dark:bg-neutral-800 shadow-lg overflow-hidden">
                     <img
-                      className="w-20 h-20 rounded-lg object-cover"
-                      src={user.company.logoUrl}
-                      alt="Company Logo"
-                      loading='lazy'
+                      className="w-full h-full object-cover"
+                      src={
+                        user.profilePic ||
+                        `https://ui-avatars.com/api/?name=${user.name}&background=0164FC&color=fff`
+                      }
+                      alt={user.name}
                     />
-                  )}
-                  <div>
-                    <h4 className="text-xl font-semibold">{user.company.name}</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{user.company.location}</p>
-                    {user.company.website && (
-                      <a
-                        className="text-blue-600 dark:text-blue-400 text-sm break-all hover:underline"
-                        href={user.company.website}
-                        target="_blank"
-                        rel="noreferrer">
-                        {user.company.website}
-                      </a>
-                    )}
                   </div>
                 </div>
-              </>
-            )}
+
+                <div className="flex-1 mt-2 md:mt-4 w-full">
+                  <div className="flex flex-col md:flex-row justify-between items-start gap-4">
+                    <div>
+                      <h1 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white capitalize mb-1">
+                        {user.name}
+                      </h1>
+                      <p className="text-lg font-medium text-neutral-500 dark:text-neutral-400">
+                        {user.designation ||
+                          (user.role === "recruiter"
+                            ? "Recruiter"
+                            : "Job Seeker")}
+                      </p>
+
+                      <div className="flex flex-wrap gap-4 mt-3 text-sm text-neutral-600 dark:text-neutral-400">
+                        {user.location && (
+                          <div className="flex items-center gap-1.5">
+                            <RiMapPinLine
+                              size={16}
+                              className="text-neutral-400"
+                            />
+                            {user.location}
+                          </div>
+                        )}
+                        <div className="flex items-center gap-1.5 capitalize">
+                          <RiBriefcaseLine
+                            size={16}
+                            className="text-neutral-400"
+                          />
+                          {user.role} Account
+                        </div>
+                      </div>
+
+                      {user.bio && (
+                        <p className="mt-4 text-neutral-600 dark:text-neutral-300 max-w-2xl leading-relaxed">
+                          {user.bio}
+                        </p>
+                      )}
+                    </div>
+
+                    <Link
+                      to="/profile/edit"
+                      className="flex items-center gap-2 px-5 py-2.5 bg-[#0164FC] text-white rounded-xl font-semibold shadow-lg shadow-blue-500/20 hover:bg-blue-600 transition-all active:scale-95"
+                    >
+                      <RiPencilLine size={18} /> Edit Profile
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {user.role === 'recruiter' ? (
-        <div className="mx-8 mt-8 pb-4 flex flex-wrap gap-6 justify-between">
-          <Link
-            to="/post/job"
-            className="flex-1 min-w-[300px] h-44 bg-blue-100 dark:bg-gray-700 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200">
-            <div>
-              <h4 className="text-2xl font-semibold pb-4 text-gray-900 dark:text-gray-100">Post a Job</h4>
-              <p className="text-gray-700 dark:text-gray-300">
-                Create and publish new job listings to find the right talent quickly for your open roles.
-              </p>
-            </div>
-            <div className="w-1/3 flex flex-col justify-center items-end pr-6">
-              <RiArrowRightLine
-                className="text-blue-600 border-2 p-2 rounded-full border-blue-600 group-hover:text-white group-hover:bg-blue-600 transition-all duration-300 shadow-sm"
-                size={40}
-              />
-            </div>
-          </Link>
+        <div className="max-w-7xl mx-auto px-6 md:px-12 space-y-10">
+          {user.role === "recruiter" && user.company && (
+            <section>
+              <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-4 flex items-center gap-2">
+                <RiBuildingLine className="text-[#0164FC]" size={20} /> Company
+                Details
+              </h3>
+              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 flex flex-col md:flex-row items-start gap-6 shadow-sm">
+                <div className="w-16 h-16 rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-100 dark:border-neutral-700 p-2 flex items-center justify-center shrink-0">
+                  <img
+                    className="max-w-full max-h-full object-contain"
+                    src={
+                      user.company.logoUrl || "https://via.placeholder.com/64"
+                    }
+                    alt="Company Logo"
+                  />
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-neutral-900 dark:text-white">
+                    {user.company.name}
+                  </h4>
+                  <p className="text-neutral-500 dark:text-neutral-400 mt-1 mb-3">
+                    {user.company.location}
+                  </p>
+                  {user.company.website && (
+                    <a
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0164FC] hover:underline"
+                      href={user.company.website}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <RiGlobalLine size={16} />{" "}
+                      {user.company.website.replace(/^https?:\/\//, "")}
+                    </a>
+                  )}
+                </div>
+              </div>
+            </section>
+          )}
 
-          <Link
-            to="/applications"
-            className="flex-1 min-w-[300px] h-44 bg-blue-100 dark:bg-gray-700 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200">
-            <div>
-              <h4 className="text-2xl font-semibold pb-4 text-gray-900 dark:text-gray-100">View Applicants</h4>
-              <p className="text-gray-700 dark:text-gray-300">
-                Review applications, filter top candidates, and manage your hiring pipeline with ease.
-              </p>
-            </div>
-            <div className="w-1/3 flex flex-col justify-center items-end">
-              <RiArrowRightLine
-                className="text-blue-600 border-2 p-2 rounded-full border-blue-600 group-hover:text-white group-hover:bg-blue-600 transition-all duration-300 shadow-sm"
-                size={40}
-              />
-            </div>
-          </Link>
+          <section>
+            <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-4">
+              Quick Actions
+            </h3>
 
-          <Link
-            to="/profile/edit"
-            className="flex-1 min-w-[300px] h-44 bg-blue-100 dark:bg-gray-700 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200">
-            <div>
-              <h4 className="text-2xl font-semibold pb-4 text-gray-900 dark:text-gray-100">Update</h4>
-              <p className="text-gray-700 dark:text-gray-300">
-                Edit your company details, and recruiter info to keep your profile up to date and relevant.
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {user.role === "recruiter" ? (
+                <>
+                  <ActionCard
+                    to="/post/job"
+                    title="Post a Job"
+                    desc="Create and publish new job listings to find the right talent quickly."
+                    icon={RiAddCircleLine}
+                  />
+                  <ActionCard
+                    to="/applications"
+                    title="View Applicants"
+                    desc="Review applications, filter candidates, and manage your pipeline."
+                    icon={RiGroupLine}
+                  />
+                  <ActionCard
+                    to="/profile/edit"
+                    title="Update Company"
+                    desc="Edit company details and branding to attract better candidates."
+                    icon={RiBuildingLine}
+                  />
+                </>
+              ) : (
+                <>
+                  <ActionCard
+                    to="/jobs"
+                    title="Find Jobs"
+                    desc="Browse and apply to top job opportunities matching your skills."
+                    icon={RiSearchLine}
+                  />
+                  <ActionCard
+                    to="/resume"
+                    title="Resume Builder"
+                    desc="Use our AI tools to optimize your resume and get hired faster."
+                    icon={RiMagicLine}
+                  />
+                  <ActionCard
+                    to="/profile/edit"
+                    title="Update Profile"
+                    desc="Keep your skills and experience up to date for recruiters."
+                    icon={RiPencilLine}
+                  />
+                </>
+              )}
             </div>
-            <div className="w-1/3 flex flex-col justify-center items-end">
-              <RiArrowRightLine
-                className="text-blue-600 border-2 p-2 rounded-full border-blue-600 group-hover:text-white group-hover:bg-blue-600 transition-all duration-300 shadow-sm"
-                size={40}
-              />
-            </div>
-          </Link>
+          </section>
         </div>
-      ) : (
-        <div className="mx-8 mt-8 pb-4 flex flex-wrap gap-6 justify-between">
-          <Link
-            to="/jobs"
-            className="flex-1 min-w-[300px] h-44 bg-blue-100 dark:bg-gray-700 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200">
-            <div>
-              <h4 className="text-2xl font-semibold pb-4 text-gray-900 dark:text-gray-100">Find Your Dream Job</h4>
-              <p className="text-gray-700 dark:text-gray-300">
-                Browse and apply to top job opportunities that match your skills and goals.
-              </p>
-            </div>
-            <div className="w-1/3 flex flex-col justify-center items-end pr-6">
-              <RiArrowRightLine
-                className="text-blue-600 border-2 p-2 rounded-full border-blue-600 group-hover:text-white group-hover:bg-blue-600 transition-all duration-300 shadow-sm"
-                size={40}
-              />
-            </div>
-          </Link>
+      </main>
 
-          <Link
-            to="/resume"
-            className="flex-1 min-w-[300px] h-44 bg-blue-100 dark:bg-gray-700 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200">
-            <div>
-              <h4 className="text-2xl font-semibold pb-4 text-gray-900 dark:text-gray-100">Get hired with AI</h4>
-              <p className="text-gray-700 dark:text-gray-300">
-                Let AI help optimize your resume and stand out to potential employers.
-              </p>
-            </div>
-            <div className="w-1/3 flex flex-col justify-center items-end">
-              <RiArrowRightLine
-                className="text-blue-600 border-2 p-2 rounded-full border-blue-600 group-hover:text-white group-hover:bg-blue-600 transition-all duration-300 shadow-sm"
-                size={40}
-              />
-            </div>
-          </Link>
-
-          <Link
-            to="/profile/edit"
-            className="flex-1 min-w-[300px] h-44 bg-blue-100 dark:bg-gray-700 rounded-4xl p-6 flex justify-between group hover:shadow-lg cursor-pointer transition-all duration-200">
-            <div>
-              <h4 className="text-2xl font-semibold pb-4 text-gray-900 dark:text-gray-100">Update</h4>
-              <p className="text-gray-700 dark:text-gray-300">
-                Keep your profile updated so that recruiters know you better.
-              </p>
-            </div>
-            <div className="w-1/3 flex flex-col justify-center items-end">
-              <RiArrowRightLine
-                className="text-blue-600 border-2 p-2 rounded-full border-blue-600 group-hover:text-white group-hover:bg-blue-600 transition-all duration-300 shadow-sm"
-                size={40}
-              />
-            </div>
-          </Link>
-        </div>
-      )}
+      {user.role === "recruiter" ? "" : <Footer />}
     </div>
   );
-}
+};
 
 export default Profile;
