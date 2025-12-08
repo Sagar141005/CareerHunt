@@ -43,7 +43,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === "production", // Required for Vercel + Render
+      secure: process.env.NODE_ENV === "production",
       sameSite: "None",
       httpOnly: true,
     },
@@ -58,7 +58,7 @@ if (process.env.NODE_ENV === "development") {
 app.use("/api/auth", userRoutes);
 app.use("/api/applications", jobApplyRoutes);
 app.use("/api/job-posts", jobPostRoutes);
-app.use("/api/ai", resumeRoutes);
+app.use("/api/ai/resume", resumeRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
