@@ -1,73 +1,65 @@
 import mongoose from "mongoose";
 
-const ResumeSchema = new mongoose.Schema({
+const ExperienceSchema = new mongoose.Schema({
+  id: { type: Number },
+  role: { type: String, default: "" },
+  company: { type: String, default: "" },
+  duration: { type: String, default: "" },
+  details: { type: String, default: "" },
+});
+
+const EducationSchema = new mongoose.Schema({
+  id: { type: Number },
+  degree: { type: String, default: "" },
+  school: { type: String, default: "" },
+  year: { type: String, default: "" },
+});
+
+const ProjectSchema = new mongoose.Schema({
+  id: { type: Number },
+  title: { type: String, default: "" },
+  link: { type: String, default: "" },
+  description: { type: String, default: "" },
+  technologies: { type: String, default: "" },
+});
+
+const ResumeSchema = new mongoose.Schema(
+  {
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     title: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      default: "Untitled Resume",
     },
-    fileUrl: {
-        type: String,
-        required: true
+    theme: {
+      type: String,
+      default: "modern",
     },
-    content: {
-        type: String,
-        required: true
+    color: {
+      type: String,
+      default: "#2563eb",
     },
-    versions: [
-        {
-            versionNumber: {
-                type: Number,
-                required: true,
-            },
-            content: {
-                type: String,
-                required: true
-            },
-            type: {
-                type: String,
-                enum: ['generalImproved', 'jobSpecific'],
-                required: true
-            },
-            job: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'JobPost',
-                required: false
-            }, 
-            createdAt : {
-                type: Date,
-                default: Date.now
-            }
-        }
-    ],
-    coverLetters: [
-        {
-            versionNumber: {
-                type: Number,
-                required: true
-            }, 
-            content: {
-                type: String, 
-                required: true
-            },
-            job: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'JobPost',
-                required: false
-            }, 
-            createdAt : {
-                type: Date,
-                default: Date.now
-            }
-        }
-    ]
-}, { timestamps: true });
+    personal: {
+      fullName: { type: String, default: "" },
+      email: { type: String, default: "" },
+      phone: { type: String, default: "" },
+      profession: { type: String, default: "" },
+      location: { type: String, default: "" },
+      linkedin: { type: String, default: "" },
+      website: { type: String, default: "" },
+      imageUrl: { type: String, default: "" },
+      summary: { type: String, default: "" },
+    },
+    experience: [ExperienceSchema],
+    education: [EducationSchema],
+    projects: [ProjectSchema],
+    skills: { type: String, default: "" },
+  },
+  { timestamps: true }
+);
 
-
-const Resume = mongoose.model('Resume', ResumeSchema);
+const Resume = mongoose.model("Resume", ResumeSchema);
 export default Resume;
