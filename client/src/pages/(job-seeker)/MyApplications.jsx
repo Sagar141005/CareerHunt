@@ -9,9 +9,9 @@ import {
   RiBriefcaseLine,
   RiSearchLine,
   RiFilter3Line,
-  RiFileList3Line,
   RiTrophyLine,
 } from "@remixicon/react";
+import Button from "../../components/ui/Button";
 
 const MyApplications = () => {
   const [applications, setApplications] = useState([]);
@@ -70,11 +70,10 @@ const MyApplications = () => {
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
           <div className="flex flex-col items-center md:items-baseline">
-            <h1 className="text-3xl font-bold text-neutral-900 dark:text-white tracking-tight flex items-center gap-3">
-              <RiFileList3Line className="text-neutral-400" size={32} />
+            <h1 className="text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
               My Applications
             </h1>
-            <p className="text-neutral-500 dark:text-neutral-400 mt-2">
+            <p className="text-neutral-500 dark:text-neutral-400 text-sm sm:text-base max-w-xl">
               Manage and track your{" "}
               <span className="font-semibold text-neutral-900 dark:text-white">
                 {applications.length}
@@ -180,12 +179,9 @@ const MyApplications = () => {
             </p>
 
             {activeTab === "all" && !searchQuery && (
-              <Link
-                to="/jobs"
-                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 transition-all active:scale-95 flex items-center gap-2"
-              >
-                <RiSearchLine size={20} /> Browse Jobs
-              </Link>
+              <Button icon={RiSearchLine}>
+                <Link to="/jobs">Browse Jobs</Link>
+              </Button>
             )}
 
             {(activeTab !== "all" || searchQuery) && (
@@ -194,7 +190,7 @@ const MyApplications = () => {
                   setActiveTab("all");
                   setSearchQuery("");
                 }}
-                className="text-blue-600 font-medium hover:underline"
+                className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
               >
                 Clear filters
               </button>

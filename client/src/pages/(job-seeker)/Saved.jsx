@@ -5,14 +5,13 @@ import JobCard from "../../components/job-seeker/JobCard";
 import Footer from "../../components/Footer";
 import { Link } from "react-router-dom";
 import {
-  RiBookmark3Line,
   RiArrowRightLine,
   RiArrowLeftSLine,
   RiArrowRightSLine,
   RiSearchLine,
   RiFileListLine,
-  RiFilter3Line,
 } from "@remixicon/react";
+import Button from "../../components/ui/Button";
 
 const Saved = () => {
   const [jobs, setJobs] = useState([]);
@@ -50,16 +49,11 @@ const Saved = () => {
       <UserNavbar />
 
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-10 border-b border-neutral-200 dark:border-neutral-800 pb-6">
+        <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-8">
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-blue-600">
-                <RiBookmark3Line size={24} />
-              </div>
-              <h1 className="text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
-                Saved Jobs
-              </h1>
-            </div>
+            <h1 className="text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
+              Saved Jobs
+            </h1>
             <p className="text-neutral-500 dark:text-neutral-400 text-sm sm:text-base max-w-xl">
               You have{" "}
               <span className="font-bold text-neutral-900 dark:text-white">
@@ -70,12 +64,11 @@ const Saved = () => {
           </div>
 
           {jobs.length > 0 && (
-            <Link
-              to="/jobs"
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-sm shadow-blue-500/20 transition-all active:scale-95"
-            >
-              Find more <RiArrowRightLine size={16} />
-            </Link>
+            <Button icon={RiArrowRightLine}>
+              <Link to="/jobs" className="items-end">
+                Find more
+              </Link>
+            </Button>
           )}
         </div>
 
@@ -142,12 +135,9 @@ const Saved = () => {
               Jobs you bookmark will appear here. Save interesting roles to
               compare and apply later.
             </p>
-            <Link
-              to="/jobs"
-              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 transition-all active:scale-95 flex items-center gap-2"
-            >
-              <RiSearchLine size={20} /> Browse Jobs
-            </Link>
+            <Button icon={RiSearchLine}>
+              <Link to="/jobs">Browse Jobs</Link>
+            </Button>
           </div>
         )}
       </main>

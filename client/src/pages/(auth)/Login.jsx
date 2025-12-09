@@ -15,6 +15,7 @@ import {
   RiArrowLeftLine,
   RiSparkling2Fill,
 } from "@remixicon/react";
+import Button from "../../components/ui/Button";
 
 const Login = () => {
   const { user, setUser } = useAuth();
@@ -174,10 +175,10 @@ const Login = () => {
             )}
           </div>
 
-          <button
+          <Button
             type="submit"
             disabled={!!passwordError || isLoading}
-            className={`w-full py-2.5 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2
+            className={`w-full
               ${
                 !!passwordError || isLoading
                   ? "opacity-70 cursor-not-allowed"
@@ -189,7 +190,7 @@ const Login = () => {
             ) : (
               "Sign in"
             )}
-          </button>
+          </Button>
         </form>
 
         <div className="relative my-8">

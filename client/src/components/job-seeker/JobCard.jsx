@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import api from "../../api/axios";
 import { toast } from "react-toastify";
+import Button from "../ui/Button";
 
 const JobCard = ({ job }) => {
   const [saved, setSaved] = useState(job?.isSaved || false);
@@ -180,12 +181,9 @@ const JobCard = ({ job }) => {
         {applicationStatus ? (
           getStatusBadge(applicationStatus)
         ) : (
-          <Link
-            to={`/apply/${job._id}`}
-            className="flex items-center gap-1 bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-200 text-white dark:text-neutral-900 px-4 py-2 rounded-lg text-sm font-bold shadow-sm transition-all active:scale-95"
-          >
-            Apply <RiArrowRightLine size={16} />
-          </Link>
+          <Button icon={RiArrowRightLine} variant="black">
+            <Link to={`/apply/${job._id}`}>Apply</Link>
+          </Button>
         )}
       </div>
     </div>

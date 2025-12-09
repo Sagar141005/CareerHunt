@@ -14,9 +14,13 @@ import {
 } from "@remixicon/react";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
+import Button from "../components/ui/Button";
+import InputField from "../components/ui/InputField";
+import { useTheme } from "@emotion/react";
 
 const EditProfile = () => {
   const { user, loading } = useAuth();
+  const { theme } = useTheme();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -123,33 +127,6 @@ const EditProfile = () => {
     }
   };
 
-  const InputField = ({
-    label,
-    icon: Icon,
-    name,
-    value,
-    onChange,
-    placeholder,
-  }) => (
-    <div className="space-y-1.5">
-      <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-        {label}
-      </label>
-      <div className="relative group">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-neutral-400 group-focus-within:text-[#0164FC] transition-colors">
-          <Icon size={18} />
-        </div>
-        <input
-          type="text"
-          name={name}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          className="block w-full pl-10 pr-3 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#0164FC] transition-all text-sm"
-        />
-      </div>
-    </div>
-  );
   const ImageUploader = ({ label, image, name, onChange, isRound = false }) => (
     <div className="flex flex-col gap-3">
       <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
@@ -259,7 +236,10 @@ const EditProfile = () => {
                 <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
                   Bio
                 </label>
-                <div className="border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden">
+                <div
+                  className="border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden"
+                  data-color-mode={theme}
+                >
                   <Suspense fallback={<Loader />}>
                     <MDEditor
                       value={formData.bio}
@@ -331,16 +311,11 @@ const EditProfile = () => {
           <div className="flex justify-end items-center gap-4 pt-4">
             <Link
               to="/profile"
-              className="px-5 py-2.5 text-sm font-semibold text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors"
+              className="px-4 py-2 text-sm font-medium rounded-lg text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 hover:text-neutral-900 dark:hover:text-white dark:hover:bg-neutral-800 transition-colors"
             >
               Cancel
             </Link>
-            <button
-              type="submit"
-              className="px-6 py-2.5 bg-[#0164FC] hover:bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
-            >
-              Save Changes
-            </button>
+            <Button type="submit">Save Changes</Button>
           </div>
         </form>
       </div>

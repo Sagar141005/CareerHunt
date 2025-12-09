@@ -16,6 +16,7 @@ import api from "../../api/axios";
 import JobCard from "../../components/job-seeker/JobCard";
 import Footer from "../../components/Footer";
 import { toast } from "react-toastify";
+import InputField from "../../components/ui/InputField";
 
 const FindJob = () => {
   const [jobs, setJobs] = useState([]);
@@ -135,54 +136,51 @@ const FindJob = () => {
       <div className="sticky top-16 z-30 bg-white/80 dark:bg-neutral-950/80 border-b border-neutral-200 dark:border-neutral-800 shadow-sm transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="hidden md:flex items-center gap-3 w-full">
-            <div className="flex-1 flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800 px-3 py-2.5 rounded-xl border border-transparent focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
-              <RiSearch2Line size={18} className="text-neutral-400 shrink-0" />
-              <input
-                className="flex-1 bg-transparent text-sm font-medium text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-none"
-                type="text"
-                placeholder="Search job title..."
+            <div className="flex-1">
+              <InputField
+                label=""
+                name="titleQuery"
                 value={titleQuery}
                 onChange={(e) => setTitleQuery(e.target.value)}
+                placeholder="Search job title..."
+                icon={RiSearch2Line}
               />
             </div>
 
-            <div className="flex-1 flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800 px-3 py-2.5 rounded-xl border border-transparent focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
-              <RiMapPin2Line size={18} className="text-neutral-400 shrink-0" />
-              <input
-                className="flex-1 bg-transparent text-sm font-medium text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-none"
-                type="text"
-                placeholder="City or Remote"
+            <div className="flex-1">
+              <InputField
+                label=""
+                name="locationQuery"
                 value={locationQuery}
                 onChange={(e) => setLocationQuery(e.target.value)}
+                placeholder="City or Remote"
+                icon={RiMapPin2Line}
               />
             </div>
 
-            <div className="w-[140px] flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800 px-3 py-2.5 rounded-xl border border-transparent focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
-              <RiBriefcaseLine
-                size={18}
-                className="text-neutral-400 shrink-0"
-              />
-              <input
-                className="flex-1 bg-transparent text-sm font-medium text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-none"
-                type="text"
-                placeholder="Type"
+            <div className="w-[140px]">
+              <InputField
+                label=""
+                name="typeQuery"
                 value={typeQuery}
                 onChange={(e) => setTypeQuery(e.target.value)}
+                placeholder="Type"
+                icon={RiBriefcaseLine}
               />
             </div>
 
-            <div className="w-[140px] flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800 px-3 py-2.5 rounded-xl border border-transparent focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
-              <RiMedalLine size={18} className="text-neutral-400 shrink-0" />
-              <input
-                className="flex-1 bg-transparent text-sm font-medium text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-none"
-                type="text"
-                placeholder="Level"
+            <div className="w-[140px]">
+              <InputField
+                label=""
+                name="levelQuery"
                 value={levelQuery}
                 onChange={(e) => setLevelQuery(e.target.value)}
+                placeholder="Level"
+                icon={RiMedalLine}
               />
             </div>
 
-            <div className="w-[280px] bg-neutral-100 dark:bg-neutral-800 px-4 py-1.5 rounded-xl border border-transparent transition-all flex flex-col justify-center">
+            <div className="w-[280px] bg-neutral-100 dark:bg-neutral-800 px-4 py-1.5 rounded-lg border border-transparent transition-all flex flex-col justify-center">
               <div className="flex justify-between items-center text-xs text-neutral-500 dark:text-neutral-400 mb-1">
                 <span className="font-medium">Salary</span>
                 <span>
@@ -237,48 +235,48 @@ const FindJob = () => {
 
         {headerCollapsed === false && (
           <div className="md:hidden border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-4 py-4 space-y-3">
-            <div className="flex items-center gap-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg p-2.5 border border-neutral-200 dark:border-neutral-700">
-              <RiSearch2Line size={18} className="text-neutral-400" />
-              <input
-                className="w-full bg-transparent text-sm focus:outline-none text-neutral-900 dark:text-white placeholder-neutral-400"
-                type="text"
-                placeholder="Job Title"
-                value={titleQuery}
-                onChange={(e) => setTitleQuery(e.target.value)}
-              />
-            </div>
-            <div className="flex items-center gap-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg p-2.5 border border-neutral-200 dark:border-neutral-700">
-              <RiMapPin2Line size={18} className="text-neutral-400" />
-              <input
-                className="w-full bg-transparent text-sm focus:outline-none text-neutral-900 dark:text-white placeholder-neutral-400"
-                type="text"
-                placeholder="Location"
-                value={locationQuery}
-                onChange={(e) => setLocationQuery(e.target.value)}
-              />
-            </div>
+            <InputField
+              label=""
+              name="titleQuery"
+              value={titleQuery}
+              onChange={(e) => setTitleQuery(e.target.value)}
+              placeholder="Job Title"
+              icon={RiSearch2Line}
+            />
+
+            <InputField
+              label=""
+              name="locationQuery"
+              value={locationQuery}
+              onChange={(e) => setLocationQuery(e.target.value)}
+              placeholder="Location"
+              icon={RiMapPin2Line}
+            />
+
             <div className="flex gap-3">
-              <div className="flex-1 flex items-center gap-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg p-2.5 border border-neutral-200 dark:border-neutral-700">
-                <RiBriefcaseLine size={18} className="text-neutral-400" />
-                <input
-                  className="w-full bg-transparent text-sm focus:outline-none text-neutral-900 dark:text-white placeholder-neutral-400"
-                  type="text"
-                  placeholder="Type"
+              <div className="flex-1">
+                <InputField
+                  label=""
+                  name="typeQuery"
                   value={typeQuery}
                   onChange={(e) => setTypeQuery(e.target.value)}
+                  placeholder="Type"
+                  icon={RiBriefcaseLine}
                 />
               </div>
-              <div className="flex-1 flex items-center gap-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg p-2.5 border border-neutral-200 dark:border-neutral-700">
-                <RiMedalLine size={18} className="text-neutral-400" />
-                <input
-                  className="w-full bg-transparent text-sm focus:outline-none text-neutral-900 dark:text-white placeholder-neutral-400"
-                  type="text"
-                  placeholder="Level"
+
+              <div className="flex-1">
+                <InputField
+                  label=""
+                  name="levelQuery"
                   value={levelQuery}
                   onChange={(e) => setLevelQuery(e.target.value)}
+                  placeholder="Level"
+                  icon={RiMedalLine}
                 />
               </div>
             </div>
+
             <div className="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-4 border border-neutral-200 dark:border-neutral-700">
               <div className="flex justify-between items-center text-xs text-neutral-500 mb-2">
                 <span>Salary Range</span>
@@ -436,11 +434,15 @@ const FindJob = () => {
         <main className="flex-1 flex flex-col">
           <div className="flex justify-between items-end mb-6">
             <div>
-              <h2 className="text-2xl font-bold text-neutral-900 dark:text-white tracking-tight">
+              <h2 className="text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
                 Recommended Jobs
               </h2>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
-                Found {jobs.length} open positions based on your criteria
+              <p className="text-neutral-500 dark:text-neutral-400 text-sm sm:text-base max-w-xl">
+                Found{" "}
+                <span className="font-bold text-neutral-900 dark:text-white">
+                  {jobs.length}
+                </span>{" "}
+                open positions based on your criteria
               </p>
             </div>
           </div>
