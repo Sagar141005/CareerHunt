@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -16,9 +16,13 @@ import {
 import UserNavbar from "../components/job-seeker/UserNavbar";
 import Footer from "../components/Footer";
 import RecruiterPannel from "../components/RecruiterPannel";
+import Button from "../components/ui/Button";
+import MDEditor from "@uiw/react-md-editor";
+import { useTheme } from "@emotion/react";
 
 const Profile = () => {
   const { user, loading } = useAuth();
+  const { theme } = useTheme();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -122,18 +126,23 @@ const Profile = () => {
                       </div>
 
                       {user.bio && (
-                        <p className="mt-4 text-neutral-600 dark:text-neutral-300 max-w-2xl leading-relaxed">
-                          {user.bio}
-                        </p>
+                        <div className="mt-4 max-w-2xl" data-color-mode={theme}>
+                          <MDEditor.Markdown
+                            source={user.bio}
+                            style={{
+                              backgroundColor: "transparent",
+                              color: "inherit",
+                              fontSize: "1rem",
+                            }}
+                            className="!text-neutral-600 dark:!text-neutral-300"
+                          />
+                        </div>
                       )}
                     </div>
 
-                    <Link
-                      to="/profile/edit"
-                      className="flex items-center gap-2 px-5 py-2.5 bg-[#0164FC] text-white rounded-xl font-semibold shadow-lg shadow-blue-500/20 hover:bg-blue-600 transition-all active:scale-95"
-                    >
-                      <RiPencilLine size={18} /> Edit Profile
-                    </Link>
+                    <Button icon={RiPencilLine}>
+                      <Link to="/profile/edit">Edit Profile</Link>
+                    </Button>
                   </div>
                 </div>
               </div>
