@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UserNavbar from "../../components/job-seeker/UserNavbar";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import api from "../../api/axios";
 import {
@@ -16,7 +16,8 @@ import {
 } from "@remixicon/react";
 import Footer from "../../components/Footer";
 import { toast } from "react-toastify";
-import { motion, AnimatePresence } from "framer-motion";
+import Button from "../../components/ui/Button";
+import ConfirmModal from "../../components/ConfirmModal";
 
 const JobDetails = () => {
   const { id } = useParams();
@@ -229,30 +230,27 @@ const JobDetails = () => {
               </div>
               {hasApplied && (
                 <div className="space-y-3">
-                  <div className="flex items-center justify-center gap-2 p-3 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-xl text-sm font-medium">
+                  <div className="flex items-center justify-center gap-2 px-4 py-2 text-sm bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-lg font-medium">
                     <RiCheckLine size={18} /> Applied on{" "}
                     {new Date(job.createdAt).toLocaleDateString()}
                   </div>
                   <button
                     onClick={() => setShowWithdrawConfirm(true)}
-                    className="w-full py-3 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl font-medium transition-colors text-sm"
+                    className="w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg font-medium transition-colors"
                   >
                     Withdraw Application
                   </button>
                 </div>
               )}
               {hasWithdrawn && (
-                <div className="p-4 bg-neutral-100 dark:bg-neutral-800 text-neutral-500 text-center rounded-xl text-sm font-medium">
+                <div className="px-4 py-2 bg-neutral-100 dark:bg-neutral-800 text-neutral-500 text-center rounded-lg text-sm font-medium">
                   Application Withdrawn
                 </div>
               )}{" "}
               {notApplied && (
-                <Link
-                  to={`/apply/${jobPost._id}`}
-                  className="block w-full py-3.5 bg-[#0164FC] hover:bg-blue-600 text-white text-center font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all active:scale-95"
-                >
-                  Apply Now
-                </Link>
+                <Button className="w-full mx-auto">
+                  <Link to={`/apply/${jobPost._id}`}>Apply Now</Link>
+                </Button>
               )}
             </div>
 
@@ -278,47 +276,16 @@ const JobDetails = () => {
       </main>
 
       <Footer />
-      <AnimatePresence>
-        {showWithdrawConfirm && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-              onClick={() => setShowWithdrawConfirm(false)}
-            />
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="relative bg-white dark:bg-neutral-900 rounded-2xl p-6 shadow-2xl max-w-sm w-full border border-neutral-200 dark:border-neutral-800"
-            >
-              <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-2">
-                Withdraw Application?
-              </h3>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-6">
-                Are you sure? This action cannot be undone and you may not be
-                able to apply again.
-              </p>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setShowWithdrawConfirm(false)}
-                  className="flex-1 py-2.5 text-sm font-semibold text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleWithdraw}
-                  className="flex-1 py-2.5 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl shadow-md transition-colors"
-                >
-                  Withdraw
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      <ConfirmModal
+        show={showWithdrawConfirm}
+        onClose={() => setShowWithdrawConfirm(false)}
+        onConfirm={handleWithdraw}
+        title="Withdraw Application?"
+        message="Are you sure? This action cannot be undone and you may not be able
+        to apply again."
+        confirmText="Withdraw"
+        danger={true}
+      />
     </div>
   );
 };
