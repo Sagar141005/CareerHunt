@@ -83,18 +83,18 @@ const Home = () => {
             </p>
           </motion.div>
 
-          <motion.h1 variants={itemVariants}>
+          <motion.div variants={itemVariants}>
             <Heading gradientText size="hero">
               Cut the Confusion.::Claim Your Career.
             </Heading>
-          </motion.h1>
+          </motion.div>
 
-          <motion.p variants={itemVariants}>
+          <motion.div variants={itemVariants}>
             <Paragraph size="hero">
               AI-powered tools for candidates and recruiters. We stripped away
               the noise so you can focus on the offer.
             </Paragraph>
-          </motion.p>
+          </motion.div>
 
           <motion.div
             variants={itemVariants}
