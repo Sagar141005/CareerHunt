@@ -6,7 +6,7 @@ import { RiArrowRightLine, RiBriefcase2Line } from "@remixicon/react";
 const CTASection = () => {
   return (
     <section className="py-24 px-4 transition-colors duration-500">
-      <div className="max-w-5xl mx-auto relative overflow-hidden rounded-[2.5rem] bg-[#0164FC] dark:bg-blue-700 shadow-2xl shadow-blue-900/20">
+      <div className="max-w-5xl mx-auto relative overflow-hidden rounded-[2.5rem] bg-blue-600 dark:bg-blue-700 shadow-2xl shadow-blue-900/20">
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full border-[40px] border-white/5 pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full border-[40px] border-white/5 pointer-events-none"></div>
 
@@ -21,21 +21,21 @@ const CTASection = () => {
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
               Ready to find your match?
             </h2>
-            <p className="text-lg text-blue-100 mb-10 max-w-xl mx-auto leading-relaxed font-medium">
+            <p className="text-lg text-blue-100 mb-10 max-w-xl mx-auto leading-relaxed">
               Join a platform where real talent meets real opportunity. No
               noise, just connections.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
               <Link
                 to="/signup"
-                className="px-6 py-3 rounded-xl text-blue-600 bg-white font-semibold text-md border border-white shadow-xl shadow-blue-500/20 flex items-center justify-center gap-2 hover:scale-[1.02] transition-all"
+                className="px-4 py-2 text-sm font-semibold rounded-lg text-blue-600 bg-white border border-white shadow-xl shadow-blue-500/20 flex items-center justify-center gap-2 hover:scale-[1.02] transition-all"
               >
                 Start Looking <RiArrowRightLine size={20} />
               </Link>
 
               <Link
                 to="/signup?role=recruiter"
-                className="px-6 py-3 rounded-xl bg-transparent text-white font-semibold text-md border border-neutral-100 flex items-center justify-center gap-2 hover:scale-[1.02] transition-all shadow-sm"
+                className="px-4 py-2 text-sm font-semibold rounded-lg bg-transparent text-white border border-neutral-100 flex items-center justify-center gap-2 hover:scale-[1.02] transition-all shadow-sm"
               >
                 Post a Job <RiBriefcase2Line size={20} />
               </Link>

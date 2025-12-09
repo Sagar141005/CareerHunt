@@ -8,6 +8,8 @@ import {
   RiFlashlightLine,
   RiTeamLine,
 } from "@remixicon/react";
+import Heading from "../ui/Heading";
+import Paragraph from "../ui/SubHeading";
 
 const WhyChooseUs = () => {
   const features = [
@@ -83,16 +85,13 @@ const WhyChooseUs = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-4xl md:text-5xl font-extrabold text-neutral-900 dark:text-white mb-6">
-              Why top talent{" "}
-              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-transparent bg-clip-text">
-                Chooses Us.
-              </span>
-            </h3>
-            <p className="text-lg text-neutral-600 dark:text-neutral-400">
+            <Heading gradientText size="xl">
+              Why top talent ::Chooses Us.
+            </Heading>
+            <Paragraph>
               We've engineered the perfect toolkit to give you an unfair
               advantage in the job market.
-            </p>
+            </Paragraph>
           </motion.div>
         </div>
 

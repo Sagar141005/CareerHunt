@@ -9,6 +9,9 @@ import Testimonials from "../components/home/Testimonials";
 import WhyChooseUs from "../components/home/WhyChoseUs";
 import CTA from "../components/home/CTA";
 import { RiBriefcase2Line, RiUserSearchLine } from "@remixicon/react";
+import Button from "../components/ui/Button";
+import Heading from "../components/ui/Heading";
+import Paragraph from "../components/ui/SubHeading";
 
 const Home = () => {
   const { user } = useAuth();
@@ -50,20 +53,14 @@ const Home = () => {
               >
                 Log in
               </Link>
-              <Link
-                to="/signup"
-                className="px-4 py-2 text-sm font-medium text-white bg-neutral-900 dark:bg-white dark:text-neutral-900 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors shadow-sm"
-              >
-                Register
-              </Link>
+              <Button variant="black">
+                <Link to="/signup">Register</Link>
+              </Button>
             </>
           ) : (
-            <Link
-              to="/dashboard"
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-sm shadow-blue-500/20"
-            >
-              Dashboard
-            </Link>
+            <Button>
+              <Link to="/dashboard">Dashboard</Link>
+            </Button>
           )}
         </div>
 
@@ -86,49 +83,33 @@ const Home = () => {
             </p>
           </motion.div>
 
-          <motion.h1
-            variants={itemVariants}
-            className="text-5xl font-bold leading-[1.1] tracking-tight text-neutral-900 dark:text-white mb-6"
-          >
-            Cut the Confusion. <br />
-            <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-transparent bg-clip-text">
-              Claim Your Career.
-            </span>
+          <motion.h1 variants={itemVariants}>
+            <Heading gradientText size="hero">
+              Cut the Confusion.::Claim Your Career.
+            </Heading>
           </motion.h1>
 
-          <motion.p
-            variants={itemVariants}
-            className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl leading-relaxed mb-10"
-          >
-            AI-powered tools for candidates and recruiters. We stripped away the
-            noise so you can focus on the offer.
+          <motion.p variants={itemVariants}>
+            <Paragraph size="hero">
+              AI-powered tools for candidates and recruiters. We stripped away
+              the noise so you can focus on the offer.
+            </Paragraph>
           </motion.p>
 
           <motion.div
             variants={itemVariants}
             className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center"
           >
-            <Link
-              to="/signup"
-              className="max-w-fit mx-auto group px-8 py-3.5 flex items-center justify-center gap-2 text-base font-semibold text-white bg-blue-600 rounded-xl shadow-lg shadow-blue-500/20 hover:bg-blue-700 hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all duration-200"
+            <Button icon={RiBriefcase2Line} className="w-fit mx-auto">
+              <Link to="/signup">I’m a Job Seeker</Link>
+            </Button>
+            <Button
+              icon={RiUserSearchLine}
+              className="w-fit mx-auto"
+              variant="secondary"
             >
-              I’m a Job Seeker
-              <RiBriefcase2Line
-                size={20}
-                className="text-blue-100 group-hover:text-white transition-colors"
-              />
-            </Link>
-
-            <Link
-              to="/signup?role=recruiter"
-              className="max-w-fit mx-auto group px-8 py-3.5 flex items-center justify-center gap-2 text-base font-semibold text-neutral-700 dark:text-neutral-200 bg-white dark:bg-transparent border border-neutral-200 dark:border-neutral-700 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-600 hover:-translate-y-0.5 transition-all duration-200 shadow-sm"
-            >
-              I’m a Recruiter
-              <RiUserSearchLine
-                size={20}
-                className="text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-white transition-colors"
-              />
-            </Link>
+              <Link to="/signup">I’m a Recruiter</Link>
+            </Button>
           </motion.div>
         </motion.div>
 

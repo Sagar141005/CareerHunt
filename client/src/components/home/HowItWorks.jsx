@@ -1,6 +1,8 @@
 import React from "react";
 import { motion } from "motion/react";
 import { RiArticleLine, RiListCheck3, RiRocketLine } from "@remixicon/react";
+import Heading from "../ui/Heading";
+import Paragraph from "../ui/SubHeading";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -52,16 +54,13 @@ const HowItWorks = () => {
           variants={fadeInUp}
           className="max-w-3xl mb-16"
         >
-          <h3 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-6 leading-tight">
-            From search to signature, <br />
-            <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-transparent bg-clip-text">
-              simplified.
-            </span>
-          </h3>
-          <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-xl">
+          <Heading gradientText size="xl">
+            From search to signature,:: simplified.
+          </Heading>
+          <Paragraph className="max-w-xl">
             We stripped away the noise of traditional job boards to focus on
             what actually gets you hired: Speed and Visibility.
-          </p>
+          </Paragraph>
         </motion.div>
 
         <motion.div

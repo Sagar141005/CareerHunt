@@ -1,6 +1,8 @@
 import React from "react";
 import { motion } from "motion/react";
 import { RiStarFill, RiDoubleQuotesL } from "@remixicon/react";
+import Heading from "../ui/Heading";
+import Paragraph from "../ui/SubHeading";
 
 const testimonials = [
   {
@@ -75,17 +77,15 @@ const TestimonialsSection = () => {
   return (
     <section className="max-w-7xl mx-auto py-32 border-y border-neutral-200 dark:border-white/5 overflow-hidden">
       <div className="max-w-3xl mx-auto px-6 text-center mb-16">
-        <h3 className="text-3xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-6">
-          Don't take our word for it.
-        </h3>
-        <p className="text-lg text-neutral-600 dark:text-neutral-400">
+        <Heading size="xl">Don't take our word for it.</Heading>
+        <Paragraph>
           Join thousands of professionals who found their dream jobs faster.
-        </p>
+        </Paragraph>
       </div>
 
       <div className="relative w-full">
-        <div className="absolute inset-y-0 left-0 w-32 md:w-64 bg-gradient-to-r from-neutral-50 dark:from-[#020617] to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-32 md:w-64 bg-gradient-to-l from-neutral-50 dark:from-[#020617] to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 left-0 w-32 md:w-64 bg-gradient-to-r from-neutral-50 dark:from-neutral-950 to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-32 md:w-64 bg-gradient-to-l from-neutral-50 dark:from-neutral-950 to-transparent z-10 pointer-events-none" />
 
         <motion.div
           className="flex"

@@ -13,6 +13,7 @@ import {
   RiTimeLine,
   RiCheckDoubleLine,
 } from "@remixicon/react";
+import Button from "../ui/Button";
 
 const UserDashboard = () => {
   const { user } = useAuth();
@@ -35,7 +36,7 @@ const UserDashboard = () => {
       case "Hired":
         return "bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800";
       default:
-        return null;
+        return "bg-neutral-50 text-neutral-700 border-neutral-200 dark:bg-neutral-900/30 dark:text-neutral-300 dark:border-neutral-800";
     }
   };
 
@@ -94,18 +95,12 @@ const UserDashboard = () => {
               </p>
             </div>
             <div className="flex gap-3">
-              <Link
-                to="/jobs"
-                className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors flex items-center gap-2"
-              >
-                <RiBriefcase2Line size={14} className="mb-1" /> Find Jobs
-              </Link>
-              <Link
-                to="/resume"
-                className="px-4 py-2 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-200 text-sm font-semibold rounded-lg transition-colors flex items-center gap-2"
-              >
-                <RiFileTextLine size={14} className="mb-1" /> Resume
-              </Link>
+              <Button icon={RiBriefcase2Line}>
+                <Link to="/jobs">Find Jobs</Link>
+              </Button>
+              <Button icon={RiFileTextLine} variant="secondary">
+                <Link to="/resume">Resume</Link>
+              </Button>
             </div>
           </div>
         </section>
@@ -145,14 +140,14 @@ const UserDashboard = () => {
                   {saved.length}
                 </h3>
               </div>
-              <div className="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg text-purple-600 dark:text-purple-400">
+              <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-blue-600 dark:text-blue-400">
                 <RiBookmark3Line size={20} />
               </div>
             </div>
             <div className="mt-4 pt-4 border-t border-neutral-100 dark:border-neutral-800">
               <Link
                 to="/saved"
-                className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline flex items-center gap-1"
+                className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
               >
                 View saved jobs <RiArrowRightLine size={14} />
               </Link>
@@ -256,7 +251,7 @@ const UserDashboard = () => {
             <div className="bg-neutral-50 dark:bg-neutral-900/30 px-6 py-3 border-t border-neutral-200 dark:border-neutral-800">
               <Link
                 to="/my-applications"
-                className="w-fit mx-auto flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+                className="w-fit mx-auto text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
               >
                 View all history <RiArrowRightLine size={14} />
               </Link>

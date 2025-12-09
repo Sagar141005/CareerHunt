@@ -7,6 +7,8 @@ import {
   RiCheckboxCircleFill,
 } from "@remixicon/react";
 import { Link } from "react-router-dom";
+import Heading from "../ui/Heading";
+import Paragraph from "../ui/SubHeading";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
@@ -33,7 +35,7 @@ const CompaniesAndFeatures = () => {
 
   return (
     <div className="w-full bg-neutral-50 dark:bg-neutral-950 transition-colors duration-500 overflow-hidden">
-      <section className="py-20 border-y border-neutral-100 dark:border-white/5 bg-neutral-50/50 dark:bg-[#0B1120]/40 overflow-hidden">
+      <section className="py-20 border-y border-neutral-100 dark:border-white/5 bg-neutral-50/50 dark:bg-neutral-900/40 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 text-center mb-12">
           <p className="text-sm font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
             Trusted by top talent from
@@ -77,17 +79,13 @@ const CompaniesAndFeatures = () => {
             variants={fadeInUp}
             className="text-center mb-24"
           >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-900 dark:text-white tracking-tight mb-6">
-              Everything you need to <br />
-              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 text-transparent bg-clip-text">
-                Land the Offer.
-              </span>
-            </h2>
-
-            <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+            <Heading gradientText size="xl">
+              Everything you need to::Land the Offer.
+            </Heading>
+            <Paragraph className="max-w-2xl mx-auto">
               Stop relying on luck. We provide the science and tools to make
               your job search predictable.
-            </p>
+            </Paragraph>
           </motion.div>
 
           <div className="flex flex-col lg:flex-row items-center gap-16 mb-32">
@@ -99,10 +97,10 @@ const CompaniesAndFeatures = () => {
               className="w-full lg:w-1/2"
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-2.5 rounded-xl bg-[#009854]/10 text-[#009854]">
+                <div className="p-2.5 rounded-xl bg-blue-600/10 text-blue-600">
                   <RiArticleLine size={24} />
                 </div>
-                <h3 className="text-xl font-bold text-[#009854]">
+                <h3 className="text-xl font-bold text-blue-600">
                   AI Resume Helper
                 </h3>
               </div>
@@ -110,16 +108,16 @@ const CompaniesAndFeatures = () => {
               <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-neutral-900 dark:text-white leading-tight">
                 Build a resume that <br />
                 beats the{" "}
-                <span className="underline decoration-[#009854] decoration-4 underline-offset-4">
+                <span className="underline decoration-blue-600 decoration-4 underline-offset-4">
                   ATS bots.
                 </span>
               </h2>
 
-              <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+              <Paragraph>
                 Stop guessing keywords. Our AI analyzes job descriptions and
                 generates tailored, ATS-friendly bullets that highlight your
                 best skills automatically.
-              </p>
+              </Paragraph>
 
               <ul className="space-y-3 mb-8">
                 {[
@@ -131,10 +129,7 @@ const CompaniesAndFeatures = () => {
                     key={i}
                     className="flex items-center gap-3 text-neutral-700 dark:text-neutral-300 font-medium"
                   >
-                    <RiCheckboxCircleFill
-                      className="text-[#009854]"
-                      size={20}
-                    />{" "}
+                    <RiCheckboxCircleFill className="text-blue-600" size={20} />{" "}
                     {item}
                   </li>
                 ))}
@@ -142,11 +137,11 @@ const CompaniesAndFeatures = () => {
 
               <Link
                 to="/resume"
-                className="w-fit group text-neutral-900 dark:text-white font-bold flex items-center gap-2 border-b-2 border-neutral-200 dark:border-neutral-700 pb-1 hover:border-[#009854] transition-colors"
+                className="w-fit group text-neutral-900 dark:text-white font-bold flex items-center gap-2 border-b-2 border-neutral-200 dark:border-neutral-700 pb-1 hover:border-blue-600 transition-colors"
               >
                 Try Resume Builder
                 <motion.span variants={{ hover: { x: 5 } }}>
-                  <RiArrowRightLine size={18} className="text-[#009854]" />
+                  <RiArrowRightLine size={18} className="text-blue-600" />
                 </motion.span>
               </Link>
             </motion.div>
@@ -186,10 +181,10 @@ const CompaniesAndFeatures = () => {
               className="w-full lg:w-1/2"
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-2.5 rounded-xl bg-[#DD258F]/10 text-[#DD258F]">
+                <div className="p-2.5 rounded-xl bg-blue-600/10 text-blue-600">
                   <RiListCheck3 size={24} />
                 </div>
-                <h3 className="text-xl font-bold text-[#DD258F]">
+                <h3 className="text-xl font-bold text-blue-600">
                   Smart Job Tracker
                 </h3>
               </div>
@@ -197,16 +192,16 @@ const CompaniesAndFeatures = () => {
               <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-neutral-900 dark:text-white leading-tight">
                 Never lose track of <br />
                 an{" "}
-                <span className="underline decoration-[#DD258F] decoration-4 underline-offset-4">
+                <span className="underline decoration-blue-600 decoration-4 underline-offset-4">
                   opportunity.
                 </span>
               </h2>
 
-              <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+              <Paragraph>
                 No more tabs, notes, or scattered documents. Keep all your
                 applications, statuses, and essential details in one clean,
                 centralized workspace designed for clarity and momentum.
-              </p>
+              </Paragraph>
 
               <ul className="space-y-3 mb-8">
                 {[
@@ -218,10 +213,7 @@ const CompaniesAndFeatures = () => {
                     key={i}
                     className="flex items-center gap-3 text-neutral-700 dark:text-neutral-300 font-medium"
                   >
-                    <RiCheckboxCircleFill
-                      className="text-[#DD258F]"
-                      size={20}
-                    />{" "}
+                    <RiCheckboxCircleFill className="text-blue-600" size={20} />{" "}
                     {item}
                   </li>
                 ))}
@@ -229,11 +221,11 @@ const CompaniesAndFeatures = () => {
 
               <Link
                 to="/applications"
-                className="w-fit group text-neutral-900 dark:text-white font-bold flex items-center gap-2 border-b-2 border-neutral-200 dark:border-neutral-700 pb-1 hover:border-[#DD258F] transition-colors"
+                className="w-fit group text-neutral-900 dark:text-white font-bold flex items-center gap-2 border-b-2 border-neutral-200 dark:border-neutral-700 pb-1 hover:border-blue-600 transition-colors"
               >
                 Start Tracking Free
                 <motion.span variants={{ hover: { x: 5 } }}>
-                  <RiArrowRightLine size={18} className="text-[#DD258F]" />
+                  <RiArrowRightLine size={18} className="text-blue-600" />
                 </motion.span>
               </Link>
             </motion.div>
