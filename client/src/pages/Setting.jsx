@@ -1,181 +1,237 @@
-import React, { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
-import api from '../api/axios';
-import RecruiterPannel from '../components/RecruiterPannel';
-import { RiCloseLine, RiMoonClearFill, RiSunFill } from '@remixicon/react';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
+
+import { useNavigate } from "react-router-dom";
+import api from "../api/axios";
+import RecruiterPannel from "../components/RecruiterPannel";
+import UserNavbar from "../components/job-seeker/UserNavbar";
+import {
+  RiMoonClearLine,
+  RiSunLine,
+  RiLogoutBoxRLine,
+  RiDeleteBin6Line,
+  RiKeyLine,
+  RiLock2Line,
+} from "@remixicon/react";
+import { toast } from "react-toastify";
+import Button from "../components/ui/Button";
+import ConfirmModal from "../components/ConfirmModal";
+import { useTheme } from "../context/ThemeContext";
+import InputField from "../components/ui/InputField";
+
+const Layout = React.memo(({ children, user }) => {
+  if (user.role === "recruiter") {
+    return (
+      <div className="flex h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300">
+        <RecruiterPannel />
+        <div className="flex-1 overflow-y-auto p-8">{children}</div>
+      </div>
+    );
+  }
+  return (
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300">
+      <UserNavbar />
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">{children}</div>
+    </div>
+  );
+});
+
+const SectionHeader = ({ title }) => (
+  <h4 className="text-xs font-medium text-neutral-900 dark:text-white uppercase tracking-wide mb-2">
+    {title}
+  </h4>
+);
 
 const Settings = () => {
   const { user, logout } = useAuth();
+  const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
 
-  const getInitialTheme = () => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) return savedTheme === "dark";
-  
-    // Default to system preference
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  };
-  const [darkMode, setDarkMode] = useState(getInitialTheme);
-
-  const [passwords, setPasswords] = useState({ oldPassword: '', newPassword: '' });
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [darkMode]);
-  
 
   const handleLogout = async () => {
     try {
       await logout();
-      navigate('/login');
+      navigate("/login");
     } catch (error) {
-      toast.error(error.message || 'Logout failed. Please try again.');
+      toast.error(error.message || "Logout failed.");
     }
   };
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
+    if (!oldPassword || !newPassword) return;
+
     try {
-      await api.patch('/auth/change-password', passwords);
-      toast.success('Password updated successfully!');
-      setPasswords({ oldPassword: '', newPassword: '' });
+      await api.patch("/auth/change-password", oldPassword, newPassword);
+      toast.success("Password updated successfully!");
+      setOldPassword("");
+      setNewPassword("");
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to update password.');
+      toast.error(
+        error.response?.data?.message || "Failed to update password."
+      );
     }
   };
 
   const handleDeleteAccount = async () => {
     try {
-      await api.delete('/auth/delete');
+      await api.delete("/auth/delete");
       await logout();
-      toast.success('Account deleted. Redirecting to signup.');
-      navigate('/signup');
+      toast.success("Account deleted.");
+      navigate("/signup");
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Could not delete account.');
+      toast.error(error.response?.data?.message || "Could not delete account.");
     }
   };
 
+  const handleOldPasswordChange = (e) => setOldPassword(e.target.value);
+  const handleNewPasswordChange = (e) => setNewPassword(e.target.value);
+
   return (
-    <div className="w-full h-screen flex flex-col sm:flex-row bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
-      {
-        user.role === 'recruiter' ? 
-          <RecruiterPannel /> 
-            :  
-          <Link
-            to="/jobs"
-            className="hidden sm:flex items-center justify-center h-12 w-12 rounded-full bg-white dark:bg-gray-800 top-4 right-4 shadow-lg cursor-pointer text-gray-400 hover:text-black dark:hover:text-white transition absolute">
-            <RiCloseLine size={28} />
-          </Link>
-      }
+    <Layout user={user}>
+      <div className="mb-10">
+        <h1 className="text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
+          Settings
+        </h1>
+        <p className="text-neutral-500 dark:text-neutral-400 text-sm sm:text-base">
+          Manage your account preferences and security.
+        </p>
+      </div>
 
-      <div className="flex-1 flex flex-col justify-between p-6 sm:p-8 overflow-auto">
-        <div className="space-y-12">
-          <div>
-            <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">Settings</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Manage your preferences</p>
+      <div className="space-y-10">
+        <section>
+          <SectionHeader title="Appearance" />
+          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-1 shadow-sm flex items-center">
+            <button
+              onClick={() => setTheme("light")}
+              className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-all ${
+                theme === "light"
+                  ? "bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm"
+                  : "text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+              }`}
+            >
+              <RiSunLine size={18} /> Light
+            </button>
+
+            <button
+              onClick={() => setTheme("dark")}
+              className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-all ${
+                theme === "dark"
+                  ? "bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm"
+                  : "text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+              }`}
+            >
+              <RiMoonClearLine size={18} /> Dark
+            </button>
           </div>
+        </section>
 
-          {/* Theme Toggle */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Theme</h3>
-            <div className="flex items-center justify-between p-4 bg-white dark:bg-neutral-800 rounded-lg border border-gray-200 dark:border-neutral-700 transition">
-              <span className="text-gray-700 flex items-center justify-center gap-3 dark:text-gray-200">
-                {darkMode ? <><RiMoonClearFill color='#4F46E5' /> Dark Mode</> : <><RiSunFill color='#FBBF24' /> Light Mode</>}
-              </span>
-              <label htmlFor="toggle" className="relative inline-block w-14 h-8 cursor-pointer">
-                <input
-                  id="toggle"
-                  type="checkbox"
-                  className="peer opacity-0 w-0 h-0"
-                  checked={darkMode}
-                  onChange={() => setDarkMode(!darkMode)}
-                />
-                <span className="absolute left-0 top-0 w-14 h-8 bg-gray-300 dark:bg-neutral-700 rounded-full transition-colors peer-checked:bg-blue-600"></span>
-                <span className="absolute left-1 top-1 w-6 h-6 bg-white dark:bg-neutral-300 rounded-full shadow-md transition-transform peer-checked:translate-x-6"></span>
-              </label>
+        <section>
+          <SectionHeader title="Security" />
+          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-6 shadow-sm">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-blue-600 dark:text-blue-400">
+                <RiLock2Line size={20} />
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-neutral-900 dark:text-white">
+                  Change Password
+                </h4>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                  Ensure your account is using a strong password.
+                </p>
+              </div>
             </div>
-          </div>
 
-          {/* Password Change Form */}
-          <form onSubmit={handlePasswordChange}>
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Change Password</h3>
-            <div className="space-y-4">
-              <input
-                type="password"
-                placeholder="Current Password"
-                value={passwords.oldPassword}
-                onChange={(e) => setPasswords({ ...passwords, oldPassword: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-gray-800 dark:text-gray-100 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                type="password"
-                placeholder="New Password"
-                value={passwords.newPassword}
-                onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-gray-800 dark:text-gray-100 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
-              />
-              <p className="text-xs text-gray-400 dark:text-gray-500">Make sure it’s at least 8 characters.</p>
+            <form onSubmit={handlePasswordChange} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <InputField
+                  label="Current Password"
+                  type="password"
+                  value={oldPassword}
+                  onChange={handleOldPasswordChange}
+                  placeholder="••••••••"
+                  icon={RiKeyLine}
+                />
+
+                <InputField
+                  label="New Password"
+                  type="password"
+                  value={newPassword}
+                  onChange={handleNewPasswordChange}
+                  placeholder="Min 8 chars"
+                  icon={RiKeyLine}
+                />
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <Button type="submit" disabled={!oldPassword || !newPassword}>
+                  Update Password
+                </Button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section>
+          <SectionHeader title="Account" />
+          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl overflow-hidden shadow-sm">
+            <div className="flex items-center justify-between p-4 border-b border-neutral-100 dark:border-neutral-800">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-neutral-50 dark:bg-neutral-900/20 rounded-lg text-neutral-600 dark:text-neutral-400">
+                  <RiLogoutBoxRLine size={20} />
+                </div>
+                <span className="text-sm font-medium text-neutral-700 dark:text-neutral-200">
+                  Log out of session
+                </span>
+              </div>
               <button
-                type="submit"
-                className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer">
-                Update Password
+                onClick={handleLogout}
+                className="px-4 py-2 text-sm font-semibold bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors shadow-sm"
+              >
+                Log out
               </button>
             </div>
-          </form>
-        </div>
 
-        {/* Footer Actions */}
-        <div className="space-y-6 pt-6 border-t border-gray-200 dark:border-neutral-700 mt-8">
-          <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Need a break?</p>
-            <button
-              onClick={handleLogout}
-              className="px-5 py-2 bg-gray-100 dark:bg-neutral-900 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-200 dark:hover:bg-neutral-700 transition cursor-pointer">
-              Logout
-            </button>
-          </div>
-
-          <div className="pt-6 border-t border-gray-200 dark:border-neutral-700">
-            <button
-              onClick={() => setShowDeleteConfirm(true)}
-              className="text-red-600 hover:underline cursor-pointer">
-              Delete your account
-            </button>
-
-            {showDeleteConfirm && (
-              <div className="fixed inset-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-4 sm:px-0">
-                <div className="bg-red-50 dark:bg-neutral-800 p-6 rounded-lg border border-red-200 dark:border-red-500 max-w-sm w-full shadow-xl transition-colors">
-                  <p className="text-sm text-red-600 dark:text-red-400 mb-4 font-semibold">
-                    This action is irreversible.
+            <div className="flex items-center justify-between p-4 bg-red-50/30 dark:bg-red-900/5">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg text-red-600 dark:text-red-400">
+                  <RiDeleteBin6Line size={20} />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-neutral-700 dark:text-neutral-200">
+                    Delete Account
                   </p>
-                  <div className="flex justify-end gap-4">
-                    <button
-                      onClick={() => setShowDeleteConfirm(false)}
-                      className="px-4 py-2 text-sm text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-neutral-700 transition cursor-pointer">
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleDeleteAccount}
-                      className="px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700 transition cursor-pointer">
-                      Confirm Delete
-                    </button>
-                  </div>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                    Permanently remove your data
+                  </p>
                 </div>
               </div>
-            )}
+              <Button
+                variant="danger"
+                onClick={() => setShowDeleteConfirm(true)}
+              >
+                Delete
+              </Button>
+            </div>
           </div>
-        </div>
+        </section>
       </div>
-    </div>
+
+      <ConfirmModal
+        show={showDeleteConfirm}
+        title="Delete Account?"
+        message="This action is irreversible. All your data including applications and saved jobs will be permanently removed."
+        confirmText="Delete Account"
+        cancelText="Cancel"
+        danger={true}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleDeleteAccount}
+      />
+    </Layout>
   );
 };
 
