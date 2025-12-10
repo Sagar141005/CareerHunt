@@ -137,7 +137,9 @@ const ModernLayout = ({ data }) => {
                   <div className="text-[10px] font-bold text-neutral-500 mb-1 uppercase">
                     {proj.technologies}
                   </div>
-                  <p className="text-neutral-700 text-xs">{proj.description}</p>
+                  <p className="text-neutral-700 whitespace-pre-line text-xs">
+                    {proj.description}
+                  </p>
                 </div>
               ))}
             </div>
@@ -313,7 +315,7 @@ const ProfessionalLayout = ({ data }) => {
                 <div className="text-[10px] text-gray-600 mb-1">
                   {proj.technologies}
                 </div>
-                <p className="text-xs text-gray-800 leading-tight">
+                <p className="text-xs text-gray-800 whitespace-pre-line leading-tight">
                   {proj.description}
                 </p>
               </div>
@@ -487,7 +489,7 @@ const CreativeLayout = ({ data }) => {
                   >
                     {exp.company}
                   </div>
-                  <p className="text-xs text-neutral-600 leading-relaxed">
+                  <p className="text-xs text-neutral-600 whitespace-pre-line leading-relaxed">
                     {exp.details}
                   </p>
                 </div>
@@ -497,7 +499,7 @@ const CreativeLayout = ({ data }) => {
         )}
 
         {data.projects.length > 0 && (
-          <section>
+          <section className="mb-6">
             <h3
               className="text-lg font-bold uppercase mb-4"
               style={{ color: accentColor }}
@@ -533,9 +535,33 @@ const CreativeLayout = ({ data }) => {
                   >
                     {proj.technologies}
                   </div>
-                  <p className="text-[10px] text-neutral-600 leading-tight">
+                  <p className="text-[10px] text-neutral-600 whitespace-pre-line leading-tight">
                     {proj.description}
                   </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {data.education.length > 0 && (
+          <section className="mb-6">
+            <h3
+              className="text-lg font-bold uppercase mb-4"
+              style={{ color: accentColor }}
+            >
+              Education
+            </h3>
+            <div className="space-y-2">
+              {data.education.map((edu) => (
+                <div key={edu.id}>
+                  <div className="font-bold text-sm text-neutral-900">
+                    {edu.school}
+                  </div>
+                  <div className="text-xs text-neutral-600">{edu.degree}</div>
+                  <div className="text-[10px] italic text-neutral-500">
+                    {formatDate(edu.endDate)}
+                  </div>
                 </div>
               ))}
             </div>
@@ -571,6 +597,9 @@ const ResumePreview = ({ data }) => {
       <style>{`
         @media print {
           @page { margin: 0; size: auto; }
+          section {
+            page-break-inside: avoid;
+          }
           body { background: white; }
           body * { visibility: hidden; }
           #resume-preview, #resume-preview * { visibility: visible; }
