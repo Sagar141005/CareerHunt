@@ -9,7 +9,7 @@ export default function Button({
   ...props
 }) {
   const baseStyles =
-    "px-4 py-2 text-sm font-semibold rounded-lg transition-colors flex items-center gap-2 justify-center hover:scale-[1.02] transition-all cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed";
+    "px-4 py-2 text-sm font-semibold rounded-lg transition-colors flex items-center gap-2 justify-center hover:scale-[1.02] transition-all group cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed";
 
   const variants = {
     primary: "bg-blue-600 text-white hover:bg-blue-700",
