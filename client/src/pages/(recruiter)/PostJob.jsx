@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
 import {
@@ -21,7 +21,6 @@ import { useAuth } from "../../context/AuthContext";
 import Button from "../../components/ui/Button";
 import { useTheme } from "../../context/ThemeContext";
 import { toast } from "react-toastify";
-import Loader from "../../components/Loader";
 import InputField from "../../components/ui/InputField";
 import SelectField from "../../components/ui/SelectField";
 
@@ -29,7 +28,6 @@ const PostJob = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { theme } = useTheme();
-  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -61,7 +59,6 @@ const PostJob = () => {
     formDataUpload.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
 
     try {
-      setLoading(true);
       const res = await fetch(import.meta.env.VITE_CLOUDINARY_URL, {
         method: "POST",
         body: formDataUpload,
@@ -74,14 +71,11 @@ const PostJob = () => {
         error.message ||
         "Logo upload failed.";
       toast.error(`Error: ${msg}`);
-    } finally {
-      setLoading(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
       await api.post("/job-posts/create", {
         ...formData,
@@ -97,8 +91,6 @@ const PostJob = () => {
       const msg =
         error.response?.data?.message || error.message || "Failed to post job.";
       toast.error(`Error: ${msg}`);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -112,13 +104,6 @@ const PostJob = () => {
       }));
     }
   }, [user]);
-
-  if (loading)
-    return (
-      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
 
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300">
@@ -169,20 +154,18 @@ const PostJob = () => {
                   className="border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden"
                   data-color-mode={theme}
                 >
-                  <Suspense fallback={<Loader />}>
-                    <MDEditor
-                      value={formData.description}
-                      onChange={(value) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          description: value || "",
-                        }))
-                      }
-                      height={280}
-                      preview="edit"
-                      className="!border-none"
-                    />
-                  </Suspense>
+                  <MDEditor
+                    value={formData.description}
+                    onChange={(value) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        description: value || "",
+                      }))
+                    }
+                    height={280}
+                    preview="edit"
+                    className="!border-none"
+                  />
                 </div>
               </div>
 

@@ -4,7 +4,6 @@ import api from "../../api/axios";
 import RecruiterPannel from "../../components/recruiter/RecruiterPannel";
 import CurrentDate from "../../components/recruiter/CurrentDate";
 import ResumePreview from "../../components/resume/ResumePreview";
-import { MoonLoader } from "react-spinners";
 import {
   RiPagesLine,
   RiDownloadLine,
@@ -39,7 +38,6 @@ const ApplicantDetail = () => {
   const [appliedCoverLetter, setAppliedCoverLetter] = useState("");
   const [status, setStatus] = useState("");
   const [interactionHistory, setInteractionHistory] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const [isStatusMenuOpen, setIsStatusMenuOpen] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
@@ -58,8 +56,6 @@ const ApplicantDetail = () => {
         setInteractionHistory(res.data.interactionHistory);
       } catch (error) {
         toast.error("Failed to fetch applicant details");
-      } finally {
-        setLoading(false);
       }
     };
     fetchData();
@@ -165,12 +161,6 @@ const ApplicantDetail = () => {
     };
   }, [appliedResume]);
 
-  if (loading)
-    return (
-      <div className="h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-950">
-        <MoonLoader color="#0164FC" size={30} />
-      </div>
-    );
   if (!applicant)
     return <p className="text-center mt-10">Applicant not found.</p>;
 

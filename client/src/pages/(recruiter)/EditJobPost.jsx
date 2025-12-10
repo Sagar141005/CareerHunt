@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
 import api from "../../api/axios";
@@ -21,7 +21,6 @@ import {
 } from "@remixicon/react";
 import Button from "../../components/ui/Button";
 import { useTheme } from "../../context/ThemeContext";
-import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 import InputField from "../../components/ui/InputField";
 import ConfirmModal from "../../components/ConfirmModal";
@@ -153,13 +152,6 @@ const EditJobPost = () => {
     }
   };
 
-  if (loading)
-    return (
-      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300">
       <div className="sticky top-0 z-30 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800">
@@ -221,20 +213,18 @@ const EditJobPost = () => {
                   className="border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden"
                   data-color-mode={theme}
                 >
-                  <Suspense fallback={<Loader />}>
-                    <MDEditor
-                      value={formData.description}
-                      onChange={(value) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          description: value || "",
-                        }))
-                      }
-                      height={280}
-                      preview="edit"
-                      className="!border-none"
-                    />
-                  </Suspense>
+                  <MDEditor
+                    value={formData.description}
+                    onChange={(value) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        description: value || "",
+                      }))
+                    }
+                    height={280}
+                    preview="edit"
+                    className="!border-none"
+                  />
                 </div>
               </div>
 

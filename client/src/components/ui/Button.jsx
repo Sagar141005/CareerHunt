@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Button({
   children,
@@ -20,12 +21,25 @@ export default function Button({
     danger: "bg-red-600 text-white hover:bg-red-700",
   };
 
+  const classes = `${baseStyles} ${variants[variant]} ${className}`;
+
+  const isLinkChild =
+    React.isValidElement(children) &&
+    (children.type === Link || children.type === "a");
+
+  if (isLinkChild) {
+    return (
+      <div className={classes} {...props}>
+        {React.cloneElement(children, {
+          className: "w-full h-full flex items-center justify-center",
+        })}
+        {Icon && <Icon size={14} className="mb-[1px]" />}
+      </div>
+    );
+  }
+
   return (
-    <button
-      onClick={onClick}
-      className={`${baseStyles} ${variants[variant]} ${className}`}
-      {...props}
-    >
+    <button onClick={onClick} className={classes} {...props}>
       {children}
       {Icon && <Icon size={14} className="mb-[1px]" />}
     </button>

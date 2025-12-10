@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import api from "../api/axios";
@@ -18,7 +18,7 @@ import { useTheme } from "../context/ThemeContext";
 import ImageUploader from "../components/ui/ImageUploader";
 
 const EditProfile = () => {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const { theme } = useTheme();
   const navigate = useNavigate();
 
@@ -93,7 +93,7 @@ const EditProfile = () => {
   };
 
   useEffect(() => {
-    if (!loading && user) {
+    if (user) {
       setFormData({
         name: user.name || "",
         profilePic: user.profilePic || "",
@@ -108,8 +108,8 @@ const EditProfile = () => {
         },
       });
     }
-    if (!loading && !user) navigate("/login");
-  }, [user, loading, navigate]);
+    if (!user) navigate("/login");
+  }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -125,13 +125,6 @@ const EditProfile = () => {
       toast.error(msg);
     }
   };
-
-  if (loading)
-    return (
-      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
 
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300">

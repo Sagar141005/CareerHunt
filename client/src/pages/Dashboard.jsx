@@ -15,7 +15,7 @@ const Dashboard = () => {
   }, [user, loading, navigate]);
 
   if (loading || !user) {
-    return <p>Loading...</p>;
+    return null;
   }
 
   if (user.role === "jobseeker") {

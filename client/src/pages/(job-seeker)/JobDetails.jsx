@@ -27,7 +27,6 @@ const JobDetails = () => {
 
   const [job, setJob] = useState(null);
   const [jobPost, setJobPost] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [showWithdrawConfirm, setShowWithdrawConfirm] = useState(false);
 
   useEffect(() => {
@@ -42,8 +41,6 @@ const JobDetails = () => {
           err.message ||
           "Failed to fetch job details.";
         toast.error(msg);
-      } finally {
-        setLoading(false);
       }
     };
     fetchJob();
@@ -69,13 +66,6 @@ const JobDetails = () => {
   const hasWithdrawn = job?.status === "Withdrawn";
 
   const notApplied = !job?._id && job?.status === null;
-
-  if (loading)
-    return (
-      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
 
   if (!jobPost)
     return (

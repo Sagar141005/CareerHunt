@@ -66,7 +66,6 @@ const ResumeBuilder = () => {
 
   const [data, setData] = useState(initialResumeState);
   const [currentStep, setCurrentStep] = useState(0);
-  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [uploadingImg, setUploadingImg] = useState(false);
   const [aiLoading, setAiLoading] = useState({ section: null, id: null });
@@ -122,7 +121,6 @@ const ResumeBuilder = () => {
     const fetchResume = async () => {
       if (!isEditing) return;
       try {
-        setLoading(true);
         const response = await api.get(`/ai/resume/${id}`);
         if (response.data.success) {
           let fetchedData = response.data.resume;
@@ -144,8 +142,6 @@ const ResumeBuilder = () => {
       } catch (error) {
         toast.error("Failed to load resume.");
         navigate("/resume");
-      } finally {
-        setLoading(false);
       }
     };
     fetchResume();
@@ -300,13 +296,6 @@ const ResumeBuilder = () => {
   const handleColorChange = (colorHex) => {
     setData((prev) => ({ ...prev, color: colorHex }));
   };
-
-  if (loading)
-    return (
-      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center">
-        <RiLoader4Line className="w-10 h-10 animate-spin text-blue-600" />
-      </div>
-    );
 
   return (
     <div className="h-screen flex flex-col bg-neutral-50 dark:bg-neutral-950 overflow-hidden transition-colors duration-300">

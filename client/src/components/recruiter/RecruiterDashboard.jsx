@@ -63,7 +63,7 @@ const KPICard = ({ title, count, growth, color }) => (
 );
 
 const RecruiterDashboard = () => {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const all = useMonthlyGrowth("");
@@ -72,16 +72,9 @@ const RecruiterDashboard = () => {
   const hired = useMonthlyGrowth("Hired");
 
   useEffect(() => {
-    if (!loading && !user) navigate("/login");
+    if (!user) navigate("/login");
     if (user && user.role !== "recruiter") navigate("/dashboard");
-  }, [user, loading, navigate]);
-
-  if (loading)
-    return (
-      <div className="h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-950">
-        <MoonLoader color="#0164FC" size={30} />
-      </div>
-    );
+  }, [user, navigate]);
 
   return (
     <div className="flex h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300 overflow-hidden flex-col md:flex-row">
