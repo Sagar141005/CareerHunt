@@ -249,7 +249,7 @@ const CompaniesAndFeatures = () => {
                 <img
                   loading="lazy"
                   className="w-full h-auto object-cover"
-                  src="/AI_Resume.png"
+                  src="/Job_Tracker.png"
                   alt="Job Tracker Dashboard"
                 />
               </motion.div>

@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   server:
@@ -36,8 +36,5 @@ services:
       VITE_API_URL: ${VITE_API_URL}
       VITE_CLOUDINARY_URL: ${VITE_CLOUDINARY_URL}
       VITE_UPLOAD_PRESET: ${VITE_UPLOAD_PRESET}
-      VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
-      VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
-      SUPABASE_SERVICE_KEY: ${SUPABASE_SERVICE_KEY}
     env_file:
       - ./client/.env

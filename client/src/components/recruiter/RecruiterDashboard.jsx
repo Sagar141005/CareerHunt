@@ -157,7 +157,7 @@ const RecruiterDashboard = () => {
                     className="w-full h-full object-cover rounded-full bg-neutral-100"
                     src={
                       user.profilePic ||
-                      `https://ui-avatars.com/api/?name=${user.name}`
+                      `https://ui-avatars.com/api/?name=${user.name}&background=0164FC&color=fff`
                     }
                     alt={user.name}
                   />
