@@ -49,7 +49,10 @@ const UserNavbar = () => {
             aria-label="Go to dashboard"
           >
             <div className="p-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/20 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 transition-colors">
-              <RiSparkling2Fill size={20} className="text-blue-600" />
+              <RiSparkling2Fill
+                size={20}
+                className="text-blue-600  dark:text-blue-400"
+              />
             </div>
             <span className="text-xl font-bold text-neutral-900 dark:text-white tracking-tight">
               CareerHunt

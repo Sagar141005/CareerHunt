@@ -35,7 +35,10 @@ const Footer = () => {
           <div className="flex flex-col space-y-6">
             <Link to="/" className="flex items-center gap-2 w-fit group">
               <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/30 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40 transition-colors">
-                <RiSparkling2Fill size={20} className="text-blue-600" />
+                <RiSparkling2Fill
+                  size={20}
+                  className="text-blue-600 dark:text-blue-400"
+                />
               </div>
               <span className="text-xl font-bold text-neutral-900 dark:text-white tracking-tight">
                 CareerHunt
