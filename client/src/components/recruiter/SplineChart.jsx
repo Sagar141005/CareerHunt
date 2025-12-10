@@ -1,7 +1,7 @@
 import { RiLineChartLine } from "@remixicon/react";
 import React, { useState, useEffect, useMemo } from "react";
 import ReactApexChart from "react-apexcharts";
-import api from "../api/axios";
+import api from "../../api/axios";
 
 const getPastDates = (days) => {
   const options = { day: "2-digit", month: "short" };
