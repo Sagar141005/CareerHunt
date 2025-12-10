@@ -20,24 +20,24 @@ import MDEditor from "@uiw/react-md-editor";
 import { useTheme } from "@emotion/react";
 import { LayoutProfile } from "../components/Layout";
 
+const normalizeUrl = (url) => {
+  if (!url) return "";
+
+  if (/^[a-zA-Z]+:\/\//.test(url)) return url;
+
+  return "https://" + url.trim();
+};
+
 const Profile = () => {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const { theme } = useTheme();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!user) {
       navigate("/login");
     }
-  }, [user, loading, navigate]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+  }, [user, navigate]);
 
   const ActionCard = ({ to, title, desc, icon: Icon }) => (
     <Link
@@ -175,7 +175,7 @@ const Profile = () => {
                   {user.company.website && (
                     <a
                       className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline"
-                      href={user.company.website}
+                      href={normalizeUrl(user.company.website)}
                       target="_blank"
                       rel="noreferrer"
                     >

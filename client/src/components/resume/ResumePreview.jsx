@@ -6,6 +6,14 @@ const formatDate = (dateString) => {
   return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 };
 
+const normalizeUrl = (url) => {
+  if (!url) return "";
+
+  if (/^[a-zA-Z]+:\/\//.test(url)) return url;
+
+  return "https://" + url.trim();
+};
+
 const ModernLayout = ({ data }) => {
   const accentColor = data.color || "#2563eb";
 
@@ -42,7 +50,7 @@ const ModernLayout = ({ data }) => {
           {data.personal.linkedin && (
             <a
               className="block hover:underline"
-              href={data.personal.linkedin}
+              href={normalizeUrl(data.personal.linkedin)}
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: accentColor }}
@@ -53,7 +61,7 @@ const ModernLayout = ({ data }) => {
           {data.personal.website && (
             <a
               className="block hover:underline"
-              href={data.personal.website}
+              href={normalizeUrl(data.personal.website)}
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: accentColor }}
@@ -124,7 +132,7 @@ const ModernLayout = ({ data }) => {
                     <span>{proj.title}</span>
                     {proj.link && (
                       <a
-                        href={proj.link}
+                        href={normalizeUrl(proj.link)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-xs hover:underline"
@@ -218,7 +226,7 @@ const ProfessionalLayout = ({ data }) => {
             <>
               •{" "}
               <a
-                href={data.personal.linkedin}
+                href={normalizeUrl(data.personal.linkedin)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline"
@@ -231,7 +239,7 @@ const ProfessionalLayout = ({ data }) => {
             <>
               •{" "}
               <a
-                href={data.personal.website}
+                href={normalizeUrl(data.personal.website)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline"
@@ -302,7 +310,7 @@ const ProfessionalLayout = ({ data }) => {
                   <h4 className="font-bold text-sm text-black">{proj.title}</h4>
                   {proj.link && (
                     <a
-                      href={proj.link}
+                      href={normalizeUrl(proj.link)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-xs italic hover:underline"
@@ -400,7 +408,7 @@ const CreativeLayout = ({ data }) => {
           <div>{data.personal.location}</div>
           {data.personal.linkedin && (
             <a
-              href={data.personal.linkedin}
+              href={normalizeUrl(data.personal.linkedin)}
               target="_blank"
               rel="noopener noreferrer"
               className="block underline hover:text-white"
@@ -410,7 +418,7 @@ const CreativeLayout = ({ data }) => {
           )}
           {data.personal.website && (
             <a
-              href={data.personal.website}
+              href={normalizeUrl(data.personal.website)}
               target="_blank"
               rel="noopener noreferrer"
               className="block underline hover:text-white"
@@ -519,7 +527,7 @@ const CreativeLayout = ({ data }) => {
                     </div>
                     {proj.link && (
                       <a
-                        href={proj.link}
+                        href={normalizeUrl(proj.link)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[10px] underline hover:no-underline"
