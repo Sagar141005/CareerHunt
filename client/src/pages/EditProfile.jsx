@@ -16,7 +16,7 @@ import Loader from "../components/Loader";
 import { toast } from "react-toastify";
 import Button from "../components/ui/Button";
 import InputField from "../components/ui/InputField";
-import { useTheme } from "@emotion/react";
+import { useTheme } from "../context/ThemeContext";
 
 const EditProfile = () => {
   const { user, loading } = useAuth();
