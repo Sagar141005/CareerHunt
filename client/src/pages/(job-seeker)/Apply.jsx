@@ -19,7 +19,7 @@ import {
 } from "@remixicon/react";
 import Footer from "../../components/Footer";
 import { toast } from "react-toastify";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import Button from "../../components/ui/Button";
 import TextAreaField from "../../components/ui/TextAreaField";
 
@@ -119,7 +119,6 @@ const Apply = () => {
       await api.post(`/applications/${jobId}`, {
         resumeId: selectedResumeId,
         coverLetter: coverLetter,
-        tailoredSummary: tailoredResumeContent,
       });
       toast.success("Application submitted successfully!");
       navigate("/my-applications");

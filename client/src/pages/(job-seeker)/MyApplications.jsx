@@ -4,7 +4,7 @@ import api from "../../api/axios";
 import JobCard from "../../components/job-seeker/JobCard";
 import Footer from "../../components/Footer";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import {
   RiBriefcaseLine,
   RiSearchLine,
