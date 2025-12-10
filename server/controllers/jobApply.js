@@ -184,8 +184,7 @@ export const applyToJob = async (req, res) => {
   try {
     const userId = req.user._id;
     const { jobPostId } = req.params;
-    const { resumeId, resumeVersionNumber, coverLetterVersionNumber } =
-      req.body;
+    const { resumeId, coverLetter } = req.body;
 
     if (!resumeId) {
       return res.status(400).json({ message: "Resume ID is required" });
@@ -221,16 +220,14 @@ export const applyToJob = async (req, res) => {
       }
 
       job.resume = resumeId;
-      job.resumeVersionNumber = resumeVersionNumber;
-      job.coverLetterVersionNumber = coverLetterVersionNumber;
+      job.coverLetter = coverLetter || "";
     } else {
       job = new Job({
         userId,
         jobPostId,
         status: "Applied",
         resume: resumeId,
-        resumeVersionNumber,
-        coverLetterVersionNumber,
+        coverLetter: coverLetter || "",
         interactionHistory: [
           {
             action: "applied",
@@ -264,10 +261,7 @@ export const getJobApplication = async (req, res) => {
     const userId = req.user._id;
     const { jobId } = req.params;
 
-    const job = await Job.findOne({ _id: jobId, userId }).populate(
-      "jobPostId",
-      "recruiter title company companyLogo description location type employmentType level department tags deadline isActive applicationCount createdAt"
-    );
+    const job = await Job.findOne({ _id: jobId, userId }).populate("jobPostId");
 
     if (!job) {
       return res.status(404).json({ message: "Job not found" });
@@ -291,10 +285,7 @@ export const getAllJobApplications = async (req, res) => {
       async () => {
         const result = await Job.find({ userId })
           .sort({ createdAt: -1 })
-          .populate(
-            "jobPostId",
-            "recruiter title company companyLogo description location type employmentType level department tags deadline isActive applicationCount createdAt"
-          )
+          .populate("jobPostId")
           .lean();
 
         return result;
@@ -320,10 +311,7 @@ export const getSavedJobApplications = async (req, res) => {
 
     const savedJobs = await Job.find({ userId, isSaved: true })
       .sort({ createdAt: -1 })
-      .populate(
-        "jobPostId",
-        "recruiter title company companyLogo description location type employmentType level department tags deadline isActive applicationCount createdAt"
-      )
+      .populate("jobPostId")
       .lean();
 
     if (savedJobs.length === 0) {

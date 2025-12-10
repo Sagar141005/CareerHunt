@@ -63,12 +63,10 @@ export const createJobPost = async (req, res) => {
       .json({ message: "Job post created successfully", data: { jobPost } });
   } catch (error) {
     console.error("Error in createJobPost:", error);
-    return res
-      .status(500)
-      .json({
-        message: "Error occurred while creating job post",
-        error: error.message,
-      });
+    return res.status(500).json({
+      message: "Error occurred while creating job post",
+      error: error.message,
+    });
   }
 };
 
@@ -126,12 +124,10 @@ export const getAllJobPosts = async (req, res) => {
         job.isActive && job.deadline && new Date(job.deadline) > new Date(),
     }));
 
-    return res
-      .status(200)
-      .json({
-        message: "Job posts found successfully",
-        jobPosts: enrichedJobPosts,
-      });
+    return res.status(200).json({
+      message: "Job posts found successfully",
+      jobPosts: enrichedJobPosts,
+    });
   } catch (error) {
     return res
       .status(500)
@@ -367,10 +363,6 @@ export const getApplicationDetails = async (req, res) => {
       return res.status(404).json({ message: "Application not found" });
     }
 
-    const coverLetter = job.resume?.coverLetters?.find(
-      (cl) => cl.versionNumber === job.coverLetterVersionNumber
-    );
-
     return res.status(200).json({
       message: "Application fetched successfully",
       applicant: job.userId,
@@ -380,19 +372,8 @@ export const getApplicationDetails = async (req, res) => {
           (entry) => entry.action !== "saved" && entry.action !== "unsaved"
         )
         .sort((a, b) => new Date(b.timestamps) - new Date(a.timestamps)),
-      appliedResume: job.resume
-        ? {
-            resumeId: job.resume._id,
-            versionNumber: job.resumeVersionNumber,
-          }
-        : null,
-      appliedCoverLetter: coverLetter
-        ? {
-            resumeId: job.resume._id,
-            versionNumber: coverLetter.versionNumber,
-            content: coverLetter.content,
-          }
-        : null,
+      appliedResume: job.resume,
+      appliedCoverLetter: job.coverLetter || null,
     });
   } catch (error) {
     return res
@@ -484,13 +465,11 @@ export const updateStatus = async (req, res) => {
     const currentStatus = job.status || null;
     const validNextStatuses = VALID_STATUS_TRANSITIONS[currentStatus] || [];
     if (!validNextStatuses.includes(newStatus)) {
-      return res
-        .status(400)
-        .json({
-          message: `Invalid status transition from "${currentStatus}" to "${newStatus}". Allowed: [${validNextStatuses.join(
-            ", "
-          )}]`,
-        });
+      return res.status(400).json({
+        message: `Invalid status transition from "${currentStatus}" to "${newStatus}". Allowed: [${validNextStatuses.join(
+          ", "
+        )}]`,
+      });
     }
 
     job.status = newStatus;
@@ -540,11 +519,9 @@ export const deleteJobPost = async (req, res) => {
 
     return res.status(200).json({ message: "Job post deleted successfully" });
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        message: "An error occurred while deleting job post",
-        error: error.message,
-      });
+    return res.status(500).json({
+      message: "An error occurred while deleting job post",
+      error: error.message,
+    });
   }
 };
