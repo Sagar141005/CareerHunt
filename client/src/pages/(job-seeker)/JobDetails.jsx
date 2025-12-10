@@ -18,9 +18,13 @@ import Footer from "../../components/Footer";
 import { toast } from "react-toastify";
 import Button from "../../components/ui/Button";
 import ConfirmModal from "../../components/ConfirmModal";
+import MDEditor from "@uiw/react-md-editor";
+import { useTheme } from "../../context/ThemeContext";
 
 const JobDetails = () => {
   const { id } = useParams();
+  const { theme } = useTheme();
+
   const [job, setJob] = useState(null);
   const [jobPost, setJobPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -199,11 +203,20 @@ const JobDetails = () => {
             <h2 className="text-xl font-bold text-neutral-900 dark:text-white mb-6">
               About the role
             </h2>
-            <div className="prose prose-blue dark:prose-invert max-w-none text-neutral-600 dark:text-neutral-300 leading-relaxed">
-              <p className="text-sm whitespace-pre-line">
-                {jobPost.description || "No description provided."}
-              </p>
-            </div>
+
+            {jobPost.description && (
+              <div className="mt-4 max-w-2xl" data-color-mode={theme}>
+                <MDEditor.Markdown
+                  source={jobPost.description}
+                  style={{
+                    backgroundColor: "transparent",
+                    color: "inherit",
+                    fontSize: "1rem",
+                  }}
+                  className="!text-neutral-600 dark:!text-neutral-300"
+                />
+              </div>
+            )}
           </div>
         </div>
 
