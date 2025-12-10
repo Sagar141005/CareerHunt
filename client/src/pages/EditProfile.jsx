@@ -5,11 +5,10 @@ import api from "../api/axios";
 import MDEditor from "@uiw/react-md-editor";
 import {
   RiArrowLeftLine,
-  RiUserLine,
+  RiUser3Line,
   RiMapPinLine,
   RiBuildingLine,
   RiGlobalLine,
-  RiUploadCloud2Line,
   RiBriefcaseLine,
 } from "@remixicon/react";
 import Loader from "../components/Loader";
@@ -17,6 +16,7 @@ import { toast } from "react-toastify";
 import Button from "../components/ui/Button";
 import InputField from "../components/ui/InputField";
 import { useTheme } from "../context/ThemeContext";
+import ImageUploader from "../components/ui/ImageUploader";
 
 const EditProfile = () => {
   const { user, loading } = useAuth();
@@ -127,51 +127,10 @@ const EditProfile = () => {
     }
   };
 
-  const ImageUploader = ({ label, image, name, onChange, isRound = false }) => (
-    <div className="flex flex-col gap-3">
-      <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-        {label}
-      </span>
-      <div className="flex items-center gap-4">
-        <div
-          className={`shrink-0 w-20 h-20 border-2 border-dashed border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 overflow-hidden flex items-center justify-center ${
-            isRound ? "rounded-full" : "rounded-xl"
-          }`}
-        >
-          {image ? (
-            <img
-              src={image}
-              alt="Preview"
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <RiUserLine className="text-neutral-400" size={32} />
-          )}
-        </div>
-        <div className="flex flex-col gap-2">
-          <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg text-sm font-medium text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors">
-            <RiUploadCloud2Line size={18} />
-            <span>Upload New</span>
-            <input
-              type="file"
-              name={name}
-              accept="image/*"
-              onChange={onChange}
-              className="hidden"
-            />
-          </label>
-          <p className="text-xs text-neutral-500 dark:text-neutral-400">
-            Recommended: 400x400px, JPG or PNG.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-
   if (loading)
     return (
       <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-[#0164FC] border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
 
@@ -201,7 +160,7 @@ const EditProfile = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 shadow-sm">
             <h2 className="text-lg font-bold text-neutral-900 dark:text-white mb-6 flex items-center gap-2">
-              <RiUserLine className="text-[#0164FC]" size={20} /> Personal Info
+              <RiUser3Line className="text-blue-600" size={20} /> Personal Info
             </h2>
 
             <div className="space-y-6">
@@ -219,7 +178,7 @@ const EditProfile = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  icon={RiUserLine}
+                  icon={RiUser3Line}
                   placeholder="e.g. Jane Doe"
                 />
                 <InputField
@@ -259,7 +218,7 @@ const EditProfile = () => {
           {user.role === "recruiter" && (
             <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 shadow-sm">
               <h2 className="text-lg font-bold text-neutral-900 dark:text-white mb-6 flex items-center gap-2">
-                <RiBuildingLine className="text-[#0164FC]" size={20} /> Company
+                <RiBuildingLine className="text-blue-600" size={20} /> Company
                 Details
               </h2>
 
