@@ -472,7 +472,7 @@ const ResumeForm = ({
                         e.target.value
                       )
                     }
-                    className="w-full p-2 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:border-blue-600 outline-none text-sm"
+                    className="w-full p-2 text-neutral-900 dark:text-white placeholder-neutral-400 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:border-blue-600 outline-none text-sm"
                   />
                 </div>
               </div>
@@ -502,7 +502,7 @@ const ResumeForm = ({
                 onChange={(e) => setSkillInput(e.target.value)}
                 onKeyDown={handleAddSkill}
                 placeholder="Type a skill and hit Enter (e.g. React)"
-                className="flex-1 p-2 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:border-blue-600 focus:ring-4 focus:ring-blue-500/10   outline-none text-sm"
+                className="flex-1 p-2 text-neutral-900 dark:text-white placeholder-neutral-400 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:border-blue-600 focus:ring-4 focus:ring-blue-500/10 outline-none text-sm"
               />
               <button
                 onClick={() => {
@@ -522,7 +522,7 @@ const ResumeForm = ({
             <p className="text-xs text-neutral-400">Press Enter to add tags</p>
           </div>
 
-          <div className="flex flex-wrap gap-2 p-4 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg min-h-[100px]">
+          <div className="flex flex-wrap items-start gap-2 p-4 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg min-h-[100px]">
             {data.skills.length === 0 && (
               <span className="text-sm text-neutral-400">
                 No skills added yet.
