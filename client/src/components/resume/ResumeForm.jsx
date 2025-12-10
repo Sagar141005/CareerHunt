@@ -1,10 +1,10 @@
 import React from "react";
 import {
-  RiImageAddLine,
   RiAddLine,
   RiDeleteBinLine,
   RiCloseLine,
   RiLoader4Line,
+  RiUser3Line,
 } from "@remixicon/react";
 import InputField from "../ui/InputField";
 import TextAreaField from "../ui/TextAreaField";
@@ -44,7 +44,7 @@ const ResumeForm = ({
                 />
               ) : (
                 <div className="text-neutral-400 group-hover:text-blue-600 flex flex-col items-center gap-1">
-                  <RiImageAddLine size={24} />
+                  <RiUser3Line size={24} />
                   <span className="text-[10px] uppercase font-bold">
                     Upload
                   </span>

@@ -1,7 +1,7 @@
 import React, { useEffect, lazy, Suspense } from "react";
 import { useAuth } from "../../context/AuthContext";
 import RecruiterPannel from "./RecruiterPannel";
-import CurrentDate from "../CurrentDate";
+import CurrentDate from "./CurrentDate";
 import { useNavigate } from "react-router-dom";
 import useMonthlyGrowth from "../../hooks/useMonthlyGrowth";
 import { MoonLoader } from "react-spinners";
@@ -15,7 +15,7 @@ import {
 } from "@remixicon/react";
 
 const RadialChart = lazy(() => import("./RadialChart"));
-const SplineChart = lazy(() => import("../SplineChart"));
+const SplineChart = lazy(() => import("./SplineChart"));
 const HorizontalBar = lazy(() => import("./HorizontalBar"));
 const Applicant = lazy(() => import("./Applicant"));
 

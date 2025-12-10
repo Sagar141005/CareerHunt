@@ -6,12 +6,11 @@ import Footer from "../../components/Footer";
 import { Link } from "react-router-dom";
 import {
   RiArrowRightLine,
-  RiArrowLeftSLine,
-  RiArrowRightSLine,
   RiSearchLine,
   RiFileListLine,
 } from "@remixicon/react";
 import Button from "../../components/ui/Button";
+import Pagination from "@mui/material/Pagination";
 
 const Saved = () => {
   const [jobs, setJobs] = useState([]);
@@ -91,37 +90,11 @@ const Saved = () => {
               ))}
             </div>
 
-            {totalPages > 1 && (
-              <div className="flex justify-center pt-6 border-t border-neutral-200 dark:border-neutral-800">
-                <div className="inline-flex items-center gap-2 p-1 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-sm">
-                  <button
-                    onClick={() =>
-                      setCurrentPage((prev) => Math.max(prev - 1, 1))
-                    }
-                    disabled={currentPage === 1}
-                    className="p-2 text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                  >
-                    <RiArrowLeftSLine size={20} />
-                  </button>
-                  <span className="text-sm font-medium px-4 text-neutral-700 dark:text-neutral-300">
-                    Page{" "}
-                    <span className="text-neutral-900 dark:text-white font-bold">
-                      {currentPage}
-                    </span>{" "}
-                    of {totalPages}
-                  </span>
-                  <button
-                    onClick={() =>
-                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                    }
-                    disabled={currentPage === totalPages}
-                    className="p-2 text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                  >
-                    <RiArrowRightSLine size={20} />
-                  </button>
-                </div>
-              </div>
-            )}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-neutral-900 rounded-2xl border border-dashed border-neutral-200 dark:border-neutral-800 text-center px-4">

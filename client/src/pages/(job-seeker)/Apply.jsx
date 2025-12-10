@@ -135,7 +135,7 @@ const Apply = () => {
   if (loadingPage || !job) {
     return (
       <div className="h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-950">
-        <RiLoader4Line className="animate-spin text-[#0164FC]" size={40} />
+        <RiLoader4Line className="animate-spin text-blue-600" size={40} />
       </div>
     );
   }
@@ -224,7 +224,7 @@ const Apply = () => {
           <div className="lg:col-span-2 order-1 lg:order-2">
             <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 sm:p-8 shadow-sm">
               <div className="flex items-center gap-3 mb-8 border-b border-neutral-100 dark:border-neutral-800 pb-6">
-                <div className="p-2.5 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-[#0164FC]">
+                <div className="p-2.5 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-blue-600">
                   <RiSparkling2Fill size={24} />
                 </div>
                 <div>

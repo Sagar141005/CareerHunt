@@ -91,12 +91,12 @@ const Resumes = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div
               onClick={handleCreateNew}
-              className="group relative aspect-[3/4] flex flex-col items-center justify-center bg-neutral-50 dark:bg-neutral-900/50 border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-2xl cursor-pointer hover:border-[#0164FC] hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all duration-300"
+              className="group relative aspect-[3/4] flex flex-col items-center justify-center bg-neutral-50 dark:bg-neutral-900/50 border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-2xl cursor-pointer hover:border-blue-600 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all duration-300"
             >
-              <div className="w-16 h-16 bg-white dark:bg-neutral-800 rounded-full flex items-center justify-center text-neutral-400 shadow-sm group-hover:text-[#0164FC] group-hover:scale-110 transition-all duration-300">
+              <div className="w-16 h-16 bg-white dark:bg-neutral-800 rounded-full flex items-center justify-center text-neutral-400 shadow-sm group-hover:text-blue-600 group-hover:scale-110 transition-all duration-300">
                 <RiAddLine size={32} />
               </div>
-              <h3 className="mt-4 font-bold text-neutral-900 dark:text-white group-hover:text-[#0164FC] transition-colors">
+              <h3 className="mt-4 font-bold text-neutral-900 dark:text-white group-hover:text-blue-600 transition-colors">
                 New Resume
               </h3>
               <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">

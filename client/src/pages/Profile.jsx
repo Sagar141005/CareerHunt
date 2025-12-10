@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -8,17 +8,17 @@ import {
   RiGlobalLine,
   RiSearchLine,
   RiMagicLine,
-  RiPencilLine,
+  RiPencilRuler2Line,
   RiAddCircleLine,
   RiGroupLine,
   RiArrowRightLine,
+  RiPencilLine,
 } from "@remixicon/react";
-import UserNavbar from "../components/job-seeker/UserNavbar";
 import Footer from "../components/Footer";
-import RecruiterPannel from "../components/RecruiterPannel";
 import Button from "../components/ui/Button";
 import MDEditor from "@uiw/react-md-editor";
 import { useTheme } from "@emotion/react";
+import { LayoutProfile } from "../components/Layout";
 
 const Profile = () => {
   const { user, loading } = useAuth();
@@ -34,7 +34,7 @@ const Profile = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-[#0164FC] border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -46,11 +46,11 @@ const Profile = () => {
     >
       <div>
         <div className="flex justify-between items-start mb-4">
-          <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800 text-[#0164FC] group-hover:bg-[#0164FC] group-hover:text-white transition-colors duration-300">
+          <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
             <Icon size={24} />
           </div>
           <RiArrowRightLine
-            className="text-neutral-300 group-hover:text-[#0164FC] transition-colors"
+            className="text-neutral-300 group-hover:text-blue-600 dark:text-blue-400 transition-colors"
             size={24}
           />
         </div>
@@ -65,16 +65,11 @@ const Profile = () => {
   );
 
   return (
-    <div
-      className={`min-h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300 
-      ${user.role === "recruiter" ? "pl-56" : ""}`}
-    >
-      {user.role === "recruiter" ? <RecruiterPannel /> : <UserNavbar />}
-
+    <LayoutProfile user={user}>
       <main className="pb-20">
         <div className="bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 mb-8">
           <div className="relative max-w-7xl mx-auto">
-            <div className="h-64 w-full bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 relative overflow-hidden">
+            <div className="h-64 w-full bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 relative overflow-hidden">
               <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
             </div>
 
@@ -140,7 +135,7 @@ const Profile = () => {
                       )}
                     </div>
 
-                    <Button icon={RiPencilLine}>
+                    <Button icon={RiPencilRuler2Line}>
                       <Link to="/profile/edit">Edit Profile</Link>
                     </Button>
                   </div>
@@ -154,13 +149,16 @@ const Profile = () => {
           {user.role === "recruiter" && user.company && (
             <section>
               <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-4 flex items-center gap-2">
-                <RiBuildingLine className="text-[#0164FC]" size={20} /> Company
-                Details
+                <RiBuildingLine
+                  className="text-blue-600 dark:text-blue-400"
+                  size={20}
+                />{" "}
+                Company Details
               </h3>
               <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 flex flex-col md:flex-row items-start gap-6 shadow-sm">
-                <div className="w-16 h-16 rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-100 dark:border-neutral-700 p-2 flex items-center justify-center shrink-0">
+                <div className="w-16 h-16 rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-100 dark:border-neutral-700 flex items-center justify-center shrink-0">
                   <img
-                    className="max-w-full max-h-full object-contain"
+                    className="w-full h-full object-cover"
                     src={
                       user.company.logoUrl || "https://via.placeholder.com/64"
                     }
@@ -176,7 +174,7 @@ const Profile = () => {
                   </p>
                   {user.company.website && (
                     <a
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0164FC] hover:underline"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline"
                       href={user.company.website}
                       target="_blank"
                       rel="noreferrer"
@@ -245,7 +243,7 @@ const Profile = () => {
       </main>
 
       {user.role === "recruiter" ? "" : <Footer />}
-    </div>
+    </LayoutProfile>
   );
 };
 

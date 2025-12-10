@@ -7,8 +7,6 @@ import {
   RiSearch2Line,
   RiFilter3Line,
   RiCloseLine,
-  RiArrowRightSLine,
-  RiArrowLeftSLine,
 } from "@remixicon/react";
 import Slider from "@mui/material/Slider";
 import CheckboxGroup from "../../components/CheckboxGroup";
@@ -17,6 +15,7 @@ import JobCard from "../../components/job-seeker/JobCard";
 import Footer from "../../components/Footer";
 import { toast } from "react-toastify";
 import InputField from "../../components/ui/InputField";
+import Pagination from "../../components/ui/Pagination";
 
 const FindJob = () => {
   const [jobs, setJobs] = useState([]);
@@ -224,7 +223,7 @@ const FindJob = () => {
               <span>Search</span>
             </button>
             <button
-              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#0164FC] text-white rounded-xl font-medium shadow-lg shadow-blue-500/20 active:scale-95 transition-transform"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl font-medium shadow-lg shadow-blue-500/20 active:scale-95 transition-transform"
               onClick={() => setFilterSidebarOpen(true)}
             >
               <RiFilter3Line size={18} />
@@ -367,7 +366,7 @@ const FindJob = () => {
               </button>
               <button
                 onClick={() => setFilterSidebarOpen(false)}
-                className="w-full py-3 bg-[#0164FC] text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 active:scale-[0.98] transition-all"
+                className="w-full py-3 bg-blue-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 active:scale-[0.98] transition-all"
               >
                 Show Results
               </button>
@@ -470,37 +469,11 @@ const FindJob = () => {
             </div>
           )}
 
-          {totalPages > 1 && (
-            <div className="mt-12 flex justify-center">
-              <div className="inline-flex items-center gap-2 p-1 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-sm">
-                <button
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.max(prev - 1, 1))
-                  }
-                  disabled={currentPage === 1}
-                  className="p-2 text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                >
-                  <RiArrowLeftSLine size={20} />
-                </button>
-                <span className="text-sm font-medium px-4 text-neutral-700 dark:text-neutral-300">
-                  Page{" "}
-                  <span className="text-neutral-900 dark:text-white font-bold">
-                    {currentPage}
-                  </span>{" "}
-                  of {totalPages}
-                </span>
-                <button
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                  }
-                  disabled={currentPage === totalPages}
-                  className="p-2 text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                >
-                  <RiArrowRightSLine size={20} />
-                </button>
-              </div>
-            </div>
-          )}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </main>
       </div>
 

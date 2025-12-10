@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
-import RecruiterPannel from "../components/RecruiterPannel";
-import UserNavbar from "../components/job-seeker/UserNavbar";
 import {
   RiMoonClearLine,
   RiSunLine,
@@ -18,29 +15,7 @@ import Button from "../components/ui/Button";
 import ConfirmModal from "../components/ConfirmModal";
 import { useTheme } from "../context/ThemeContext";
 import InputField from "../components/ui/InputField";
-
-const Layout = React.memo(({ children, user }) => {
-  if (user.role === "recruiter") {
-    return (
-      <div className="flex h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300">
-        <RecruiterPannel />
-        <div className="flex-1 overflow-y-auto p-8">{children}</div>
-      </div>
-    );
-  }
-  return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300">
-      <UserNavbar />
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">{children}</div>
-    </div>
-  );
-});
-
-const SectionHeader = ({ title }) => (
-  <h4 className="text-xs font-medium text-neutral-900 dark:text-white uppercase tracking-wide mb-2">
-    {title}
-  </h4>
-);
+import { LayoutSetting } from "../components/Layout";
 
 const Settings = () => {
   const { user, logout } = useAuth();
@@ -91,8 +66,8 @@ const Settings = () => {
   const handleNewPasswordChange = (e) => setNewPassword(e.target.value);
 
   return (
-    <Layout user={user}>
-      <div className="mb-10">
+    <LayoutSetting user={user}>
+      <div className="px-6 md:px-10 py-8">
         <h1 className="text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
           Settings
         </h1>
@@ -103,7 +78,9 @@ const Settings = () => {
 
       <div className="space-y-10">
         <section>
-          <SectionHeader title="Appearance" />
+          <h4 className="text-xs font-medium text-neutral-900 dark:text-white uppercase tracking-wide mb-2">
+            Appearance
+          </h4>
           <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-1 shadow-sm flex items-center">
             <button
               onClick={() => setTheme("light")}
@@ -130,7 +107,9 @@ const Settings = () => {
         </section>
 
         <section>
-          <SectionHeader title="Security" />
+          <h4 className="text-xs font-medium text-neutral-900 dark:text-white uppercase tracking-wide mb-2">
+            Security
+          </h4>
           <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-6 shadow-sm">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-blue-600 dark:text-blue-400">
@@ -177,7 +156,9 @@ const Settings = () => {
         </section>
 
         <section>
-          <SectionHeader title="Account" />
+          <h4 className="text-xs font-medium text-neutral-900 dark:text-white uppercase tracking-wide mb-2">
+            Account
+          </h4>
           <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl overflow-hidden shadow-sm">
             <div className="flex items-center justify-between p-4 border-b border-neutral-100 dark:border-neutral-800">
               <div className="flex items-center gap-3">
@@ -231,7 +212,7 @@ const Settings = () => {
         onClose={() => setShowDeleteConfirm(false)}
         onConfirm={handleDeleteAccount}
       />
-    </Layout>
+    </LayoutSetting>
   );
 };
 
