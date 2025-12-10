@@ -155,7 +155,10 @@ const Applicants = () => {
                       <div className="flex items-center gap-4 min-w-0">
                         <img
                           className="h-12 w-12 rounded-full object-cover border border-neutral-100 dark:border-neutral-700 bg-neutral-50"
-                          src={applicant.userId.profilePic || "/Recruiter.png"}
+                          src={
+                            applicant.userId?.profilePic ||
+                            `https://ui-avatars.com/api/?name=${applicant.userId?.name}&background=0164FC&color=fff`
+                          }
                           alt={applicant.userId.name}
                           loading="lazy"
                         />
@@ -164,7 +167,7 @@ const Applicants = () => {
                           <h4 className="text-base font-bold text-neutral-900 dark:text-white truncate group-hover:text-blue-600 transition-colors">
                             {applicant.userId.name}
                           </h4>
-                          <p className="text-sm text-neutral-500 dark:text-neutral-400 truncate">
+                          <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate">
                             {applicant.userId.email || "No email provided"}
                           </p>
                         </div>
