@@ -1,4 +1,4 @@
-import { RiUploadCloud2Line, RiUserLine } from "@remixicon/react";
+import { RiUploadCloud2Line, RiUser3Line } from "@remixicon/react";
 
 const ImageUploader = ({ label, image, name, onChange, isRound = false }) => (
   <div className="flex flex-col gap-3">
@@ -18,7 +18,7 @@ const ImageUploader = ({ label, image, name, onChange, isRound = false }) => (
             className="w-full h-full object-cover"
           />
         ) : (
-          <RiUserLine className="text-neutral-400" size={32} />
+          <RiUser3Line className="text-neutral-400" size={32} />
         )}
       </div>
       <div className="flex flex-col gap-2">
