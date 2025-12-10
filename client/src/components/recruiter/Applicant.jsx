@@ -41,7 +41,7 @@ const Applicant = () => {
                 className="h-10 w-10 object-cover rounded-full border border-neutral-100 dark:border-neutral-700 bg-white"
                 src={
                   user.userId?.profilePic ||
-                  `https://ui-avatars.com/api/?name=${user.userId?.name}&background=random`
+                  `https://ui-avatars.com/api/?name=${user.userId?.name}&background=0164FC&color=fff`
                 }
                 alt={user.userId?.name}
                 loading="lazy"
