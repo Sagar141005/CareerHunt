@@ -34,11 +34,9 @@ const JobSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Resume",
     },
-    resumeVersionNumber: {
-      type: Number,
-    },
-    coverLetterVersionNumber: {
-      type: Number,
+    coverLetter: {
+      type: String,
+      default: "",
     },
     interactionHistory: [
       {
