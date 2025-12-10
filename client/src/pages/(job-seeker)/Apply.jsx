@@ -29,13 +29,17 @@ const Apply = () => {
 
   const [job, setJob] = useState(null);
   const [userResumes, setUserResumes] = useState([]);
+
   const [showTailoredPreview, setShowTailoredPreview] = useState(false);
+  const [tailoredResumeContent, setTailoredResumeContent] = useState("");
+  const [originalResumeData, setOriginalResumeData] = useState(null);
+
   const [loadingPage, setLoadingPage] = useState(true);
   const [loadingTailor, setLoadingTailor] = useState(false);
   const [loadingCoverLetter, setLoadingCoverLetter] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
   const [selectedResumeId, setSelectedResumeId] = useState("");
-  const [tailoredResumeContent, setTailoredResumeContent] = useState("");
   const [coverLetter, setCoverLetter] = useState("");
 
   useEffect(() => {
@@ -56,6 +60,13 @@ const Apply = () => {
     fetchData();
   }, [jobId]);
 
+  useEffect(() => {
+    setShowTailoredPreview(false);
+    setTailoredResumeContent("");
+    setOriginalResumeData(null);
+    setCoverLetter("");
+  }, [selectedResumeId]);
+
   const handleTailorResume = async () => {
     if (!selectedResumeId)
       return toast.warning("Please select a resume first.");
@@ -63,6 +74,8 @@ const Apply = () => {
       setLoadingTailor(true);
       const resumeRes = await api.get(`/ai/resume/${selectedResumeId}`);
       const fullResume = resumeRes.data.resume;
+
+      setOriginalResumeData(fullResume);
 
       const response = await api.post("/ai/resume/ai/enhance", {
         text: fullResume.personal.summary || "Professional Summary",
@@ -87,11 +100,25 @@ const Apply = () => {
       return toast.warning("Please select a resume first.");
     try {
       setLoadingCoverLetter(true);
-      const resumeRes = await api.get(`/ai/resume/${selectedResumeId}`);
-      const fullResume = resumeRes.data.resume;
+      let fullResume = originalResumeData;
+
+      if (!fullResume) {
+        const resumeRes = await api.get(`/ai/resume/${selectedResumeId}`);
+        fullResume = resumeRes.data.resume;
+      }
+
+      const resumeContext = showTailoredPreview
+        ? {
+            ...fullResume,
+            personal: {
+              ...fullResume.personal,
+              summary: tailoredResumeContent,
+            },
+          }
+        : fullResume;
 
       const response = await api.post("/ai/resume/ai/cover-letter", {
-        resumeData: fullResume,
+        resumeData: resumeContext,
         jobPost: job,
       });
 
@@ -116,10 +143,33 @@ const Apply = () => {
 
     try {
       setSubmitting(true);
+
+      if (showTailoredPreview && tailoredResumeContent && originalResumeData) {
+        try {
+          const updatedPersonal = {
+            ...originalResumeData.personal,
+            summary: tailoredResumeContent,
+          };
+
+          const updatePayload = {
+            ...originalResumeData,
+            personal: updatedPersonal,
+          };
+
+          await api.put(`/ai/resume/${selectedResumeId}`, updatePayload);
+        } catch (error) {
+          console.error("Failed to update resume summary:", error);
+          toast.warning(
+            "Application sending, but failed to save tailored summary to resume."
+          );
+        }
+      }
+
       await api.post(`/applications/${jobId}`, {
         resumeId: selectedResumeId,
         coverLetter: coverLetter,
       });
+
       toast.success("Application submitted successfully!");
       navigate("/my-applications");
     } catch (err) {

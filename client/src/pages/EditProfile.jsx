@@ -11,7 +11,6 @@ import {
   RiGlobalLine,
   RiBriefcaseLine,
 } from "@remixicon/react";
-import Loader from "../components/Loader";
 import { toast } from "react-toastify";
 import Button from "../components/ui/Button";
 import InputField from "../components/ui/InputField";
@@ -199,17 +198,15 @@ const EditProfile = () => {
                   className="border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden"
                   data-color-mode={theme}
                 >
-                  <Suspense fallback={<Loader />}>
-                    <MDEditor
-                      value={formData.bio}
-                      onChange={(value) =>
-                        setFormData((prev) => ({ ...prev, bio: value || "" }))
-                      }
-                      preview="edit"
-                      height={200}
-                      className="!border-none"
-                    />
-                  </Suspense>
+                  <MDEditor
+                    value={formData.bio}
+                    onChange={(value) =>
+                      setFormData((prev) => ({ ...prev, bio: value || "" }))
+                    }
+                    preview="edit"
+                    height={200}
+                    className="!border-none"
+                  />
                 </div>
               </div>
             </div>

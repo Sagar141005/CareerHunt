@@ -3,21 +3,24 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 import RecruiterPannel from "../../components/recruiter/RecruiterPannel";
 import CurrentDate from "../../components/recruiter/CurrentDate";
+import ResumePreview from "../../components/resume/ResumePreview";
 import { MoonLoader } from "react-spinners";
 import {
-  RiFileTextLine,
+  RiPagesLine,
   RiDownloadLine,
   RiTimeLine,
   RiArrowLeftLine,
-  RiMailLine,
+  RiFileList3Line,
   RiArrowDownSLine,
   RiCheckLine,
   RiLoader4Line,
   RiArrowRightLine,
+  RiMailLine,
 } from "@remixicon/react";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "react-toastify";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
+import Button from "../../components/ui/Button";
 
 const STATUS_OPTIONS = [
   "Applied",
@@ -33,7 +36,7 @@ const ApplicantDetail = () => {
   const navigate = useNavigate();
   const [applicant, setApplicant] = useState(null);
   const [appliedResume, setAppliedResume] = useState(null);
-  const [appliedCoverLetter, setAppliedCoverLetter] = useState(null);
+  const [appliedCoverLetter, setAppliedCoverLetter] = useState("");
   const [status, setStatus] = useState("");
   const [interactionHistory, setInteractionHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -101,6 +104,11 @@ const ApplicantDetail = () => {
     }
   };
 
+  const handlePrintVisual = () => {
+    if (!appliedResume) return;
+    window.print();
+  };
+
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
       case "applied":
@@ -137,16 +145,25 @@ const ApplicantDetail = () => {
     }
   };
 
-  const downloadLink = (
-    resumeId,
-    versionNumber,
-    type = "resume",
-    format = "pdf"
-  ) => {
-    return `${import.meta.env.VITE_API_URL}/ai/${
-      type === "coverLetter" ? "cover-letter/download" : "resume/download"
-    }?resumeId=${resumeId}&versionNumber=${versionNumber}&format=${format}`;
-  };
+  const formattedResumeData = React.useMemo(() => {
+    if (!appliedResume) return null;
+    return {
+      ...appliedResume,
+      skills:
+        typeof appliedResume.skills === "string"
+          ? appliedResume.skills
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean)
+          : appliedResume.skills || [],
+      theme: appliedResume.theme || "modern",
+      color: appliedResume.color || "#2563eb",
+      personal: appliedResume.personal || {},
+      experience: appliedResume.experience || [],
+      education: appliedResume.education || [],
+      projects: appliedResume.projects || [],
+    };
+  }, [appliedResume]);
 
   if (loading)
     return (
@@ -154,7 +171,6 @@ const ApplicantDetail = () => {
         <MoonLoader color="#0164FC" size={30} />
       </div>
     );
-
   if (!applicant)
     return <p className="text-center mt-10">Applicant not found.</p>;
 
@@ -162,7 +178,7 @@ const ApplicantDetail = () => {
     <div className="flex h-screen bg-neutral-50 dark:bg-neutral-950 transition-colors duration-300 overflow-hidden flex-col md:flex-row">
       <RecruiterPannel />
 
-      <main className="flex-1 flex flex-col h-full overflow-hidden relative">
+      <main className="flex-1 flex flex-col h-full overflow-y-auto relative">
         <div className="pt-6 px-6 lg:px-8 pb-4 shrink-0 bg-neutral-50 dark:bg-neutral-950 z-10">
           <button
             onClick={() => navigate(-1)}
@@ -195,14 +211,14 @@ const ApplicantDetail = () => {
             </div>
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto px-6 lg:px-8 pb-8 custom-scrollbar">
+        <div className="flex-1 px-6 lg:px-8 pb-8 custom-scrollbar">
           <div className="max-w-6xl mx-auto space-y-8 pt-2">
             <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6">
               <div className="flex items-center gap-6">
                 <img
                   src={
                     applicant.profilePic ||
-                    "https://ui-avatars.com/api/?name=" + applicant.name
+                    `https://ui-avatars.com/api/?name=${applicant.name}&background=0164FC&color=fff`
                   }
                   alt={applicant.name}
                   className="w-20 h-20 rounded-full object-cover border-4 border-neutral-100 dark:border-neutral-800"
@@ -312,69 +328,112 @@ const ApplicantDetail = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-8">
                 <section>
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-500 mb-4 flex items-center gap-2">
-                    <RiFileTextLine size={18} /> Resume
-                  </h3>
+                  <div className="mb-4">
+                    <h3 className="text-xs font-medium uppercase tracking-widest text-neutral-500 dark:text-neutral-400 flex items-center gap-2">
+                      <RiPagesLine size={16} /> Attached Resume
+                    </h3>
+                  </div>
+
                   {appliedResume ? (
-                    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-4 flex items-center justify-between group hover:border-blue-300 dark:hover:border-blue-700 transition-colors shadow-sm">
-                      <div className="flex items-center gap-4">
-                        <div className="p-3 bg-red-50 text-red-600 rounded-lg shrink-0">
-                          <RiFileTextLine size={24} />
+                    <div className="group relative bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-1 shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300">
+                      <div className="flex items-center gap-4 p-4">
+                        <div className="h-14 w-14 rounded-lg bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/20 flex items-center justify-center shrink-0 text-blue-600 dark:text-blue-400">
+                          <RiPagesLine size={28} />
                         </div>
-                        <div>
-                          <p className="font-bold text-neutral-900 dark:text-white">
-                            Resume_v{appliedResume.versionNumber}.pdf
-                          </p>
-                          <p className="text-xs text-neutral-500">
-                            Submitted{" "}
-                            {formatDistanceToNow(
-                              new Date(appliedResume.createdAt || Date.now())
-                            )}{" "}
-                            ago
+
+                        <div className="flex-1 min-w-0">
+                          <h4
+                            className="text-base font-bold text-neutral-900 dark:text-white truncate"
+                            title={appliedResume.title}
+                          >
+                            {appliedResume.title || `${applicant.name}_Resume`}
+                            .pdf
+                          </h4>
+                          <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 flex items-center gap-2">
+                            <span>PDF Document</span>
+                            <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700"></span>
+                            <span>
+                              Uploaded{" "}
+                              {formatDistanceToNow(
+                                new Date(appliedResume.createdAt)
+                              )}{" "}
+                              ago
+                            </span>
                           </p>
                         </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <a
-                          href={downloadLink(
-                            appliedResume.resumeId,
-                            appliedResume.versionNumber,
-                            "resume",
-                            "pdf"
-                          )}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="flex items-center gap-2 px-4 py-2 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-sm font-semibold text-neutral-700 dark:text-neutral-300 transition-colors"
+
+                        <Button
+                          variant="black"
+                          icon={RiDownloadLine}
+                          onClick={handlePrintVisual}
                         >
-                          <RiDownloadLine size={16} /> PDF
-                        </a>
+                          Download
+                        </Button>
+                      </div>
+
+                      <div className="bg-neutral-50 dark:bg-neutral-800/50 border-t border-neutral-200 dark:border-neutral-800 px-4 -m-1 py-2 flex justify-between items-center rounded-b-xl">
+                        <span className="text-[10px] font-medium text-neutral-400 uppercase tracking-wide">
+                          Alternative Formats
+                        </span>
+                        <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                          Coming soon
+                        </p>
                       </div>
                     </div>
                   ) : (
-                    <div className="p-6 bg-neutral-50 dark:bg-neutral-900/50 rounded-xl text-center text-sm text-neutral-500 border border-dashed border-neutral-200 dark:border-neutral-800">
-                      No resume attached.
+                    <div className="flex flex-col items-center justify-center py-12 border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50/30 dark:bg-neutral-900/30">
+                      <RiPagesLine
+                        className="text-neutral-300 dark:text-neutral-700 mb-2"
+                        size={32}
+                      />
+                      <p className="text-sm text-neutral-500 dark:text-neutral-400 font-medium">
+                        No resume attached
+                      </p>
                     </div>
                   )}
                 </section>
 
                 <section>
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-500 mb-4 flex items-center gap-2">
-                    <RiFileTextLine size={18} /> Cover Letter
-                  </h3>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xs font-medium uppercase tracking-widest text-neutral-500 dark:text-neutral-400 flex items-center gap-2">
+                      <RiFileList3Line size={16} /> Cover Letter
+                    </h3>
+                    {appliedCoverLetter && (
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(appliedCoverLetter);
+                          toast.success("Copied to clipboard");
+                        }}
+                        className="text-[10px] font-bold text-blue-600 dark:text-blue-400 hover:underline uppercase tracking-wide cursor-pointer"
+                      >
+                        Copy Text
+                      </button>
+                    )}
+                  </div>
+
                   {appliedCoverLetter ? (
-                    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-6 relative shadow-sm">
-                      <div className="prose prose-sm dark:prose-invert max-w-none text-neutral-600 dark:text-neutral-300 leading-relaxed whitespace-pre-wrap font-serif">
-                        {appliedCoverLetter.content}
+                    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-sm overflow-hidden">
+                      <div className="p-8 sm:p-10">
+                        <article className="prose prose-sm dark:prose-invert max-w-none">
+                          <div className="font-serif text-neutral-700 dark:text-neutral-300 leading-relaxed whitespace-pre-wrap text-base">
+                            {appliedCoverLetter}
+                          </div>
+                        </article>
                       </div>
                     </div>
                   ) : (
-                    <div className="p-6 bg-neutral-50 dark:bg-neutral-900/50 rounded-xl text-center text-sm text-neutral-500 border border-dashed border-neutral-200 dark:border-neutral-800">
-                      No cover letter provided.
+                    <div className="flex flex-col items-center justify-center py-12 border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50/30 dark:bg-neutral-900/30">
+                      <RiFileList3Line
+                        className="text-neutral-300 dark:text-neutral-700 mb-2"
+                        size={32}
+                      />
+                      <p className="text-sm text-neutral-500 dark:text-neutral-400 font-medium">
+                        No cover letter provided
+                      </p>
                     </div>
                   )}
                 </section>
               </div>
-
               <div className="lg:col-span-1">
                 <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 sticky top-6 shadow-sm">
                   <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-900 dark:text-white mb-6 flex items-center gap-2">
@@ -436,6 +495,9 @@ const ApplicantDetail = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div className="hidden print:block">
+          {formattedResumeData && <ResumePreview data={formattedResumeData} />}
         </div>
       </main>
     </div>
