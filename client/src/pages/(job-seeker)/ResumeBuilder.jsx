@@ -298,8 +298,10 @@ const ResumeBuilder = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-neutral-50 dark:bg-neutral-950 overflow-hidden transition-colors duration-300">
-      <UserNavbar />
+    <div className="h-screen flex flex-col bg-neutral-50 dark:bg-neutral-950 overflow-hidden transition-colors duration-300 print:h-auto print:overflow-visible">
+      <div className="print:hidden">
+        <UserNavbar />
+      </div>
       <div className="h-16 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between px-6 shrink-0 print:hidden">
         <div className="flex items-center gap-4">
           <button
@@ -335,7 +337,7 @@ const ResumeBuilder = () => {
         </div>
       </div>
 
-      <main className="flex-grow flex h-[calc(100vh-128px)]">
+      <main className="flex-grow flex h-[calc(100vh-128px)] print:h-auto print:block">
         <div className="w-full lg:w-[45%] xl:w-[40%] flex flex-col bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 h-full z-20 print:hidden">
           <div className="px-6 py-4 border-b border-neutral-100 dark:border-neutral-800 overflow-x-auto">
             <div className="flex items-center gap-2 min-w-max">
@@ -478,7 +480,10 @@ const ResumeBuilder = () => {
           </div>
         </div>
 
-        <div className="hidden lg:flex flex-1 bg-neutral-100/50 dark:bg-black/40 items-start justify-center p-5 overflow-y-auto relative print:p-0 print:bg-white print:block print:w-full print:h-auto print:overflow-visible custom-scrollbar">
+        <div
+          className="hidden lg:flex flex-1 bg-neutral-100/50 dark:bg-black/40 items-start justify-center p-5 overflow-y-auto relative custom-scrollbar 
+          print:p-0 print:m-0 print:bg-white print:block print:w-full print:h-auto print:overflow-visible print:static"
+        >
           <ResumePreview data={data} />
         </div>
       </main>

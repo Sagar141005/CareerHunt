@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const formatDate = (dateString) => {
   if (!dateString) return "";
@@ -581,6 +581,30 @@ const CreativeLayout = ({ data }) => {
 };
 
 const ResumePreview = ({ data }) => {
+  const [numPages, setNumPages] = useState(1);
+  const contentRef = useRef(null);
+
+  useEffect(() => {
+    const calculatePages = () => {
+      if (contentRef.current) {
+        const contentHeight = contentRef.current.offsetHeight;
+        const pageHeightPx = 1122;
+        const pages = Math.ceil(contentHeight / pageHeightPx);
+
+        setNumPages((prev) => (pages !== prev ? Math.max(pages, 1) : prev));
+      }
+    };
+
+    calculatePages();
+
+    const observer = new ResizeObserver(calculatePages);
+    if (contentRef.current) {
+      observer.observe(contentRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [data]);
+
   const getLayout = () => {
     switch (data.theme) {
       case "professional":
@@ -593,34 +617,51 @@ const ResumePreview = ({ data }) => {
     }
   };
 
+  const fullHeight = `${numPages * 297}mm`;
+
   return (
-    <div>
+    <div className="relative">
       <div
         id="resume-preview"
-        className="bg-white w-[210mm] min-h-[297mm]
-        shadow-2xl origin-top scale-[0.7] xl:scale-[0.85] 2xl:scale-100 transition-transform duration-300 print:scale-100 print:shadow-none print:m-0 print:w-full overflow-visible"
+        style={{ minHeight: fullHeight }}
+        className="bg-white w-[210mm] shadow-2xl origin-top relative 
+        scale-[0.7] xl:scale-[0.85] 2xl:scale-100 transition-transform duration-300 
+        print:scale-100 print:shadow-none print:m-0 print:w-full print:h-auto print:overflow-visible"
       >
-        {getLayout()}
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-50 print:hidden">
+          {Array.from({ length: numPages - 1 }).map((_, i) => (
+            <div
+              key={i}
+              className="w-full border-b-2 border-dashed border-red-300 relative"
+              style={{ top: `${(i + 1) * 297}mm` }}
+            >
+              <span className="absolute right-0 -top-6 text-red-400 text-xs font-bold bg-white px-2 rounded-l">
+                End Page {i + 1}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div ref={contentRef} className="h-full">
+          {getLayout()}
+        </div>
       </div>
+
       <style>{`
         @media print {
           @page { margin: 0; size: auto; }
-          section {
-            page-break-inside: avoid;
-          }
-          body { background: white; }
-          body * { visibility: hidden; }
-          #resume-preview, #resume-preview * { visibility: visible; }
+          body { background: white !important; }
+          
+          /* Prevent page breaks inside specific items, but allow sections to split */
+        
+
+          /* Ensure sidebar backgrounds print correctly */
+          * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+          /* Force container to take up full calculated height on print */
           #resume-preview {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            margin: 0 !important;
-            padding: 0 !important;
-            transform: none !important;
-            z-index-9999;
+            min-height: ${fullHeight} !important;
+            height: ${fullHeight} !important;
           }
         }
       `}</style>
