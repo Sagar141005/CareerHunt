@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import {
   RiMailLine,
   RiLockPasswordLine,
-  RiUserLine,
+  RiUser3Line,
   RiEyeLine,
   RiEyeOffLine,
   RiGoogleFill,
@@ -165,7 +165,7 @@ const Signup = () => {
             </label>
             <div className="relative group">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-neutral-400 group-focus-within:text-blue-600 transition-colors">
-                <RiUserLine size={20} />
+                <RiUser3Line size={20} />
               </div>
               <input
                 id="name"
