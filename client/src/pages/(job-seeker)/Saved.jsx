@@ -83,7 +83,7 @@ const Saved = () => {
           <div className="flex flex-col gap-12">
             <div className="flex flex-wrap gap-6 justify-center sm:justify-start">
               {currentJobs.map((job) => (
-                <div key={job._id} className="flex-shrink-0 basis-72">
+                <div key={job._id} className="flex-shrink-0 basis-64">
                   <JobCard job={job} />
                 </div>
               ))}

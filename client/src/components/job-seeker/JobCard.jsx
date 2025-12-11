@@ -151,22 +151,45 @@ const JobCard = ({ job }) => {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 mt-1">
-          <div className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-xs font-medium">
-            <RiBriefcaseLine size={12} />
-            {job.type}
-          </div>
-          <div className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-xs font-medium">
-            <RiBuilding4Line size={12} />
-            {job.level}
-          </div>
-          {job.location && (
-            <div className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-xs font-medium">
-              <RiMapPin2Line size={12} />
-              {job.location}
+        {(() => {
+          const items = [
+            job.type && {
+              icon: <RiBriefcaseLine size={12} />,
+              label: job.type,
+            },
+            job.level && {
+              icon: null,
+              label: job.level,
+            },
+            job.location && {
+              icon: <RiMapPin2Line size={12} />,
+              label: job.location,
+            },
+          ].filter(Boolean);
+
+          const firstTwo = items.slice(0, 2);
+          const remaining = items.length - 2;
+
+          return (
+            <div className="flex flex-wrap gap-2 mt-1">
+              {firstTwo.map((item, index) => (
+                <div
+                  key={index}
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-xs font-medium"
+                >
+                  {item.icon}
+                  {item.label}
+                </div>
+              ))}
+
+              {remaining > 0 && (
+                <div className="inline-flex items-center px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-xs font-semibold">
+                  +{remaining}
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          );
+        })()}
       </div>
 
       <div className="mt-6 pt-4 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between">

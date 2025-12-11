@@ -375,7 +375,7 @@ const FindJob = () => {
         </>
       )}
 
-      <div className="flex-1 max-w-7xl mx-auto w-full flex flex-col lg:flex-row gap-8 px-4 sm:px-6 py-8">
+      <div className="flex-1 max-w-7xl mx-auto w-full flex flex-col lg:flex-row gap-24 px-4 sm:px-6 py-8">
         <aside className="hidden lg:block w-64 shrink-0">
           <div className="sticky top-40 max-h-[calc(100vh-10rem)] overflow-y-auto pr-2 custom-scrollbar">
             <div className="flex items-center justify-between mb-6">
@@ -449,7 +449,7 @@ const FindJob = () => {
           {jobs.length > 0 ? (
             <div className="flex flex-wrap gap-6 justify-center sm:justify-start">
               {jobs.map((job) => (
-                <div key={job._id} className="flex-shrink-0 basis-72">
+                <div key={job._id} className="flex-shrink-0 basis-64">
                   <JobCard key={job._id} job={job} />
                 </div>
               ))}

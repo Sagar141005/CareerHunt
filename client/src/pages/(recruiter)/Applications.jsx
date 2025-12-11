@@ -68,7 +68,7 @@ const Applications = () => {
             ) : jobs.length > 0 ? (
               <div className="flex flex-wrap gap-6 justify-center sm:justify-start">
                 {jobs.map((job) => (
-                  <div key={job._id} className="flex-shrink-0 basis-72">
+                  <div key={job._id} className="flex-shrink-0 basis-64">
                     <JobPost job={job} applicants={true} />
                   </div>
                 ))}
