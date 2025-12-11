@@ -63,10 +63,9 @@ const Saved = () => {
           </div>
 
           {jobs.length > 0 && (
-            <Button icon={RiArrowRightLine}>
-              <Link to="/jobs" className="items-end">
-                Find more
-              </Link>
+            <Button className="md:w-fit w-full">
+              <Link to="/jobs">Find more</Link>
+              <RiArrowRightLine size={18} className="mb-[1px]" />
             </Button>
           )}
         </div>
@@ -84,7 +83,7 @@ const Saved = () => {
           <div className="flex flex-col gap-12">
             <div className="flex flex-wrap gap-6 justify-center sm:justify-start">
               {currentJobs.map((job) => (
-                <div key={job._id} className="w-auto flex-shrink-0">
+                <div key={job._id} className="flex-shrink-0 basis-72">
                   <JobCard job={job} />
                 </div>
               ))}

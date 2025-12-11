@@ -447,9 +447,11 @@ const FindJob = () => {
           </div>
 
           {jobs.length > 0 ? (
-            <div className="w-full flex items-center gap-4 flex-wrap justify-center lg:justify-start">
+            <div className="flex flex-wrap gap-6 justify-center sm:justify-start">
               {jobs.map((job) => (
-                <JobCard key={job._id} job={job} />
+                <div key={job._id} className="flex-shrink-0 basis-72">
+                  <JobCard key={job._id} job={job} />
+                </div>
               ))}
             </div>
           ) : (
