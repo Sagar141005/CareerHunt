@@ -7,10 +7,11 @@ const InputField = ({
   placeholder,
   type = "text",
   half = false,
+  required = false,
 }) => (
   <div className={`space-y-1.5 ${half ? "col-span-1" : "col-span-2"}`}>
     <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-      {label}
+      {label} {required && <span className="text-red-500">*</span>}
     </label>
 
     <div className={`relative ${Icon ? "group" : ""}`}>

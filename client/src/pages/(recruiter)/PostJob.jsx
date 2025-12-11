@@ -35,10 +35,10 @@ const PostJob = () => {
     location: "",
     type: "",
     salary: "",
-    openings: 1,
+    openings: "",
     employmentType: "",
-    level: "Mid",
-    department: "Other",
+    level: "",
+    department: "",
     deadline: "",
     tags: "",
     company: "",
@@ -239,6 +239,7 @@ const PostJob = () => {
                 icon={RiGroupLine}
                 required
                 min="1"
+                placeholder="e.g. 10"
               />
 
               <SelectField
@@ -254,6 +255,7 @@ const PostJob = () => {
                   "Freelance",
                   "Internship",
                 ]}
+                required
               />
 
               <SelectField

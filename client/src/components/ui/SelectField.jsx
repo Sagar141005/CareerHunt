@@ -17,11 +17,15 @@ const SelectField = ({
       </div>
       <select
         name={name}
-        value={value}
+        value={value || ""}
         onChange={onChange}
         required={required}
         className="block w-full pl-10 pr-10 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all text-sm appearance-none cursor-pointer"
       >
+        <option value="" disabled>
+          Select {label}
+        </option>
+
         {options.map((opt) => (
           <option key={opt} value={opt}>
             {opt}
