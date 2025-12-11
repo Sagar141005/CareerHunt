@@ -15,7 +15,7 @@ import {
   RiErrorWarningLine,
 } from "@remixicon/react";
 import Footer from "../../components/Footer";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import Button from "../../components/ui/Button";
 import ConfirmModal from "../../components/ConfirmModal";
 import MDEditor from "@uiw/react-md-editor";
