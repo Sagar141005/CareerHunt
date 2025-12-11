@@ -4,7 +4,7 @@ import RecruiterPannel from "./RecruiterPannel";
 import CurrentDate from "./CurrentDate";
 import { useNavigate } from "react-router-dom";
 import useMonthlyGrowth from "../../hooks/useMonthlyGrowth";
-import { MoonLoader } from "react-spinners";
+import { ClipLoader } from "react-spinners";
 import {
   RiBuildingLine,
   RiUser3Line,
@@ -132,7 +132,7 @@ const RecruiterDashboard = () => {
               <Suspense
                 fallback={
                   <div className="h-full w-full flex items-center justify-center">
-                    <MoonLoader size={20} color="#0164FC" />
+                    <ClipLoader size={20} color="#0164FC" />
                   </div>
                 }
               >

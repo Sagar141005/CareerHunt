@@ -5,7 +5,7 @@ import { RiBriefcaseLine, RiFunctionAddLine } from "@remixicon/react";
 import api from "../../api/axios";
 import { Link } from "react-router-dom";
 import RecruiterSearch from "../../components/recruiter/RecruiterSearch";
-import { MoonLoader } from "react-spinners";
+import { ClipLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
 import Button from "../../components/ui/Button";
 import JobPost from "../../components/recruiter/JobPost";
@@ -63,12 +63,14 @@ const Applications = () => {
             {" "}
             {loader ? (
               <div className="flex w-full justify-center items-center h-64">
-                <MoonLoader color="#3B82F6" size={40} />
+                <ClipLoader color="#3B82F6" size={40} />
               </div>
             ) : jobs.length > 0 ? (
-              <div className="grid grid-cols-1 justify-items-center md:justify-items-stretch md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-6 gap-4">
+              <div className="flex flex-wrap gap-6 justify-center sm:justify-start">
                 {jobs.map((job) => (
-                  <JobPost key={job._id} job={job} applicants={true} />
+                  <div key={job._id} className="flex-shrink-0 basis-72">
+                    <JobPost job={job} applicants={true} />
+                  </div>
                 ))}
               </div>
             ) : (

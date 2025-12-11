@@ -4,7 +4,7 @@ import RecruiterPannel from "../../components/recruiter/RecruiterPannel";
 import CurrentDate from "../../components/recruiter/CurrentDate";
 import RecruiterSearch from "../../components/recruiter/RecruiterSearch";
 import api from "../../api/axios";
-import { MoonLoader } from "react-spinners";
+import { ClipLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
 import {
   RiArrowLeftLine,
@@ -130,7 +130,7 @@ const Applicants = () => {
         <div className="flex-1 overflow-y-auto px-6 lg:px-8 pb-6 pt-4 custom-scrollbar">
           {loader ? (
             <div className="flex h-64 items-center justify-center">
-              <MoonLoader color="#3B82F6" size={40} />
+              <ClipLoader color="#3B82F6" size={40} />
             </div>
           ) : filteredApplicants.length > 0 ? (
             <motion.div layout className="flex flex-col gap-3">
