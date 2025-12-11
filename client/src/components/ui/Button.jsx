@@ -33,7 +33,7 @@ export default function Button({
         {React.cloneElement(children, {
           className: "w-full h-full flex items-center justify-center",
         })}
-        {Icon && <Icon size={14} className="mb-[1px]" />}
+        {Icon && <Icon size={18} className="mb-[1px]" />}
       </div>
     );
   }
@@ -41,7 +41,7 @@ export default function Button({
   return (
     <button onClick={onClick} className={classes} {...props}>
       {children}
-      {Icon && <Icon size={14} className="mb-[1px]" />}
+      {Icon && <Icon size={18} className="mb-[1px]" />}
     </button>
   );
 }
