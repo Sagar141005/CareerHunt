@@ -4,7 +4,7 @@ import CurrentDate from "../../components/recruiter/CurrentDate";
 import JobPost from "../../components/recruiter/JobPost";
 import api from "../../api/axios";
 import { Link } from "react-router-dom";
-import { MoonLoader } from "react-spinners";
+import { ClipLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
 import Button from "../../components/ui/Button";
 import {
@@ -73,9 +73,10 @@ const JobPosts = () => {
               </span>{" "}
               Active Jobs
             </p>
-            <Button icon={RiAddLine}>
+            <Button>
               <Link to="/post/job" className="w-fit">
                 Add Job Post
+                <RiAddLine size={18} className="mb-[1px]" />
               </Link>
             </Button>
           </div>
@@ -83,12 +84,14 @@ const JobPosts = () => {
           <div className="min-h-[400px]">
             {loading ? (
               <div className="flex w-full justify-center items-center h-64">
-                <MoonLoader color="#3B82F6" size={40} />
+                <ClipLoader color="#3B82F6" size={40} />
               </div>
             ) : jobs.length > 0 ? (
-              <div className="grid grid-cols-1 justify-items-center md:justify-items-stretch md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-6 gap-4">
+              <div className="flex flex-wrap gap-6 justify-center sm:justify-start">
                 {currentJobs.map((job) => (
-                  <JobPost key={job._id} job={job} />
+                  <div key={job._id} className="flex-shrink-0 basis-72">
+                    <JobPost key={job._id} job={job} />
+                  </div>
                 ))}
               </div>
             ) : (

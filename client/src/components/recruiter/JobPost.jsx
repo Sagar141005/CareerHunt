@@ -13,7 +13,7 @@ const JobPost = ({ job, applicants = false }) => {
   const isOpen = job.isOpen;
 
   return (
-    <div className="group relative flex flex-col h-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 hover:shadow-xl hover:shadow-neutral-200/40 dark:hover:shadow-none hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300">
+    <div className="group relative flex flex-col w-full h-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 hover:shadow-xl hover:shadow-neutral-200/40 dark:hover:shadow-none hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300">
       <div className="flex justify-between items-start mb-4">
         <div className="h-12 w-12 rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-100 dark:border-neutral-700 flex items-center justify-center p-2">
           {job.companyLogo ? (
