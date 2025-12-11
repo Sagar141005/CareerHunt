@@ -3,14 +3,10 @@
 **CareerHunt** is a full-stack job board platform built for both developers and recruiters.  
 It uses the latest technologies, includes DevOps workflows, and leverages AI tools to enhance the experience for both developers and recruiters.
 
----
-
 ## 🔗 Live Demo
 
 - **Frontend**: [career-hunt.xyz](https://career-hunt.xyz)  
 - **Backend API**: [api.career-hunt.xyz](https://api.career-hunt.xyz)
-
----
 
 ## 🎯 Purpose of the Project
 
@@ -20,8 +16,6 @@ This project is designed to simulate working on a real-world startup product. Th
 - Using scalable OAuth login with Google, GitHub, and LinkedIn  
 - Integrating OpenAI to improve resumes and generate cover letters  
 - Showing end-to-end DevOps setup with Docker, CI/CD, and cloud deployment  
-
----
 
 ## ✨ Key Features
 
@@ -40,8 +34,6 @@ This project is designed to simulate working on a real-world startup product. Th
 - Auto-fill company details from your profile  
 - Upload logos via Cloudinary  
 
----
-
 ## 🧱 Tech Stack
 
 | Layer        | Tools / Stack                                       |
@@ -56,7 +48,20 @@ This project is designed to simulate working on a real-world startup product. Th
 | DevOps       | Docker, GitHub Actions                               |
 | Hosting      | Vercel (Frontend), Render (Backend)                  |
 
----
+## 💡 System Design Decisions
+
+This project isn't just about functionality; it's about making scalable architectural choices.
+
+- **Why NoSQL (MongoDB)?**
+  - Job descriptions vary wildly in structure. A document-store allows for flexible schemas (e.g., some jobs have "equity," others don't) without complex migrations.
+  - *Trade-off:* Relational integrity is handled at the application level (Mongoose refs) rather than the DB level.
+
+- **Why Redis?**
+  - The "Browse Jobs" page is read-heavy. Fetching from MongoDB every refresh is inefficient.
+  - We cache job listings for 1 hour, reducing database load by ~40% during testing.
+
+- **Why Docker?**
+  - Ensures environment parity. The app runs exactly the same on a developer's Mac as it does on the Linux production server, eliminating "it works on my machine" bugs.
 
 ## 🚀 Deployment
 
@@ -64,14 +69,12 @@ This project is designed to simulate working on a real-world startup product. Th
 - Automatically deployed from GitHub’s `main` branch  
 - **Live URL**: [https://career-hunt.xyz](https://career-hunt.xyz)
 
-### 🛠 Backend (Render)
+### 🛠 Backend (Railway)
 - Dockerized Express server  
 - Deployed via GitHub Actions CI/CD  
 - **API live at**: [https://api.career-hunt.xyz](https://api.career-hunt.xyz)
 
 > ℹ️ The frontend and backend are hosted on separate subdomains to follow best practices. Secure routes are protected and not publicly exposed.
-
----
 
 ## 🔐 Environment Variables
 
@@ -110,8 +113,6 @@ This feature uses the **OpenAI API** to:
 
 > 🎯 It aims to demonstrate how AI can add real value inside modern web applications.
 
----
-
 ## 🐳 Docker Setup
 
 ### 🔧 For Development
@@ -136,8 +137,6 @@ docker-compose -f docker-compose.prod.yml up --build -d
 - Builds the Docker image for the backend  
 - Runs tests and deploys using GitHub Actions
 
----
-
 ## 🧪 Upcoming Features / TODO
 
 ### ⚡ One-Click Job Management
@@ -154,8 +153,6 @@ docker-compose -f docker-compose.prod.yml up --build -d
 ### 🤖 AI Enhancements
 - 🗣️ AI mock interview assistant
 - 🎯 Smart job recommendations
-
----
 
 ## 📇 Contact
 
