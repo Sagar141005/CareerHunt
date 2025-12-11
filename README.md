@@ -154,6 +154,18 @@ docker-compose -f docker-compose.prod.yml up --build -d
 - 🗣️ AI mock interview assistant
 - 🎯 Smart job recommendations
 
+## 🤝 Contributing
+Contributions are welcome!  
+You can add new regex patterns, improve descriptions, or enhance UI/UX.  
+1. Fork the repo  
+2. Create a feature branch  
+3. Submit a PR  
+
+## ⭐ Support the Project
+If you found CareerHunt useful or interesting…  
+**Consider starring the repo!**  
+It helps the project reach more developers.  
+
 ## 📇 Contact
 
 Want to collaborate or give feedback?
