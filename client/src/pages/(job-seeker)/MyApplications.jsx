@@ -38,6 +38,8 @@ const MyApplications = () => {
   }, []);
 
   const filteredApps = applications.filter((app) => {
+    if (app.status === null) return false;
+
     const status = app.status?.toLowerCase();
     const matchesTab =
       activeTab === "all"

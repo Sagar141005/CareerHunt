@@ -65,7 +65,7 @@ const JobDetails = () => {
 
   const hasWithdrawn = job?.status === "Withdrawn";
 
-  const notApplied = !job?._id && job?.status === null;
+  const notApplied = job?.status === null;
 
   if (!jobPost)
     return (
