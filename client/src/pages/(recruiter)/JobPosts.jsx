@@ -5,7 +5,7 @@ import JobPost from "../../components/recruiter/JobPost";
 import api from "../../api/axios";
 import { Link } from "react-router-dom";
 import { MoonLoader } from "react-spinners";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import Button from "../../components/ui/Button";
 import {
   RiAddLine,

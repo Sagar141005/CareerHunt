@@ -10,7 +10,7 @@ import {
   RiKeyLine,
   RiLock2Line,
 } from "@remixicon/react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import Button from "../components/ui/Button";
 import ConfirmModal from "../components/ConfirmModal";
 import { useTheme } from "../context/ThemeContext";

@@ -18,7 +18,7 @@ import {
   RiCheckFill,
 } from "@remixicon/react";
 import Footer from "../../components/Footer";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { motion, AnimatePresence } from "motion/react";
 import Button from "../../components/ui/Button";
 import TextAreaField from "../../components/ui/TextAreaField";
@@ -68,8 +68,7 @@ const Apply = () => {
   }, [selectedResumeId]);
 
   const handleTailorResume = async () => {
-    if (!selectedResumeId)
-      return toast.warning("Please select a resume first.");
+    if (!selectedResumeId) return toast.error("Please select a resume first.");
     try {
       setLoadingTailor(true);
       const resumeRes = await api.get(`/ai/resume/${selectedResumeId}`);
@@ -96,8 +95,7 @@ const Apply = () => {
   };
 
   const handleGenerateCoverLetter = async () => {
-    if (!selectedResumeId)
-      return toast.warning("Please select a resume first.");
+    if (!selectedResumeId) return toast.error("Please select a resume first.");
     try {
       setLoadingCoverLetter(true);
       let fullResume = originalResumeData;
@@ -136,9 +134,7 @@ const Apply = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedResumeId || !coverLetter) {
-      return toast.warning(
-        "Please select a resume and include a cover letter."
-      );
+      return toast.error("Please select a resume and include a cover letter.");
     }
 
     try {
@@ -159,7 +155,7 @@ const Apply = () => {
           await api.put(`/ai/resume/${selectedResumeId}`, updatePayload);
         } catch (error) {
           console.error("Failed to update resume summary:", error);
-          toast.warning(
+          toast.error(
             "Application sending, but failed to save tailored summary to resume."
           );
         }

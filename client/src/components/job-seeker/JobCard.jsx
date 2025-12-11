@@ -11,7 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import api from "../../api/axios";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import Button from "../ui/Button";
 
 const JobCard = ({ job }) => {

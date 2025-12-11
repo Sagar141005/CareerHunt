@@ -5,7 +5,7 @@ import CurrentDate from "../../components/recruiter/CurrentDate";
 import RecruiterSearch from "../../components/recruiter/RecruiterSearch";
 import api from "../../api/axios";
 import { MoonLoader } from "react-spinners";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import {
   RiArrowLeftLine,
   RiUserSearchLine,

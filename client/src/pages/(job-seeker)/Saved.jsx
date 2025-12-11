@@ -10,7 +10,7 @@ import {
   RiFileListLine,
 } from "@remixicon/react";
 import Button from "../../components/ui/Button";
-import Pagination from "@mui/material/Pagination";
+import Pagination from "../../components/ui/Pagination";
 
 const Saved = () => {
   const [jobs, setJobs] = useState([]);

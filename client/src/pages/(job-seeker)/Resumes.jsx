@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../api/axios";
 import UserNavbar from "../../components/job-seeker/UserNavbar";
 import Footer from "../../components/Footer";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import {
   RiAddLine,

@@ -20,7 +20,7 @@ import api from "../../api/axios";
 import { useAuth } from "../../context/AuthContext";
 import Button from "../../components/ui/Button";
 import { useTheme } from "../../context/ThemeContext";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import InputField from "../../components/ui/InputField";
 import SelectField from "../../components/ui/SelectField";
 

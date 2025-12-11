@@ -6,7 +6,7 @@ import api from "../../api/axios";
 import { Link } from "react-router-dom";
 import RecruiterSearch from "../../components/recruiter/RecruiterSearch";
 import { MoonLoader } from "react-spinners";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import Button from "../../components/ui/Button";
 import JobPost from "../../components/recruiter/JobPost";
 

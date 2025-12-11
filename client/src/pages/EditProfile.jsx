@@ -11,7 +11,7 @@ import {
   RiGlobalLine,
   RiBriefcaseLine,
 } from "@remixicon/react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import Button from "../components/ui/Button";
 import InputField from "../components/ui/InputField";
 import { useTheme } from "../context/ThemeContext";
@@ -76,19 +76,9 @@ const EditProfile = () => {
           company: { ...prev.company, logoUrl: url },
         }));
       }
-      toast.update(toastId, {
-        render: "Image uploaded!",
-        type: "success",
-        isLoading: false,
-        autoClose: 2000,
-      });
+      toast.success("Image uploaded!", { id: toastId });
     } catch (err) {
-      toast.update(toastId, {
-        render: "Upload failed.",
-        type: "error",
-        isLoading: false,
-        autoClose: 3000,
-      });
+      toast.error("Upload failed.", { id: toastId });
     }
   };
 
@@ -113,16 +103,18 @@ const EditProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const toastId = toast.loading("Saving changes...");
     try {
       await api.put("auth/profile", formData);
-      toast.success("Profile updated successfully!");
+      toast.success("Profile updated successfully!", { id: toastId });
       navigate("/profile");
     } catch (error) {
       const msg =
         error.response?.data?.message ||
         error.message ||
         "Failed to update profile";
-      toast.error(msg);
+      toast.error(msg, { id: toastId });
     }
   };
 

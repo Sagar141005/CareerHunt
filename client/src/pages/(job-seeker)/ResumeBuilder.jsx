@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import UserNavbar from "../../components/job-seeker/UserNavbar";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import {
   RiUser3Line,
   RiBriefcase2Line,
@@ -260,7 +260,7 @@ const ResumeBuilder = () => {
 
   const handleEnhance = async (section, id, field, currentValue, type) => {
     if (!currentValue || currentValue.length < 5) {
-      toast.warning("Please provide a rough draft first!");
+      toast.error("Please provide a rough draft first!");
       return;
     }
     setAiLoading({ section, id });

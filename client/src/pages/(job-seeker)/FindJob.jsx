@@ -13,7 +13,7 @@ import CheckboxGroup from "../../components/CheckboxGroup";
 import api from "../../api/axios";
 import JobCard from "../../components/job-seeker/JobCard";
 import Footer from "../../components/Footer";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import InputField from "../../components/ui/InputField";
 import Pagination from "../../components/ui/Pagination";
 

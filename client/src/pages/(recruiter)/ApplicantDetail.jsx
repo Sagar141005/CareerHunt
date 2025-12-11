@@ -17,7 +17,7 @@ import {
   RiMailLine,
 } from "@remixicon/react";
 import { formatDistanceToNow } from "date-fns";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { motion, AnimatePresence } from "motion/react";
 import Button from "../../components/ui/Button";
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import api from "../../api/axios";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import {
   RiMailLine,
   RiLockPasswordLine,
