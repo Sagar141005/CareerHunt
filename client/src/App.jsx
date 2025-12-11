@@ -41,9 +41,7 @@ const ResumeBuilder = lazy(() => import("./pages/(job-seeker)/ResumeBuilder"));
 const ProtectedLayout = () => {
   return (
     <RequireAuth>
-      <ErrorBoundary>
-        <Outlet />
-      </ErrorBoundary>
+      <Outlet />
     </RequireAuth>
   );
 };
@@ -59,51 +57,53 @@ const RecruiterLayout = () => {
 function App() {
   return (
     <>
-      <ToastProvider />
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<TermsAndConditions />} />
-          <Route path="/oauth-callback" element={<OAuthCallback />} />
+      <ErrorBoundary>
+        <ToastProvider />
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsAndConditions />} />
+            <Route path="/oauth-callback" element={<OAuthCallback />} />
 
-          <Route element={<ProtectedLayout />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/profile/edit" element={<EditProfile />} />
-            <Route path="/setting" element={<Setting />} />
+            <Route element={<ProtectedLayout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/edit" element={<EditProfile />} />
+              <Route path="/setting" element={<Setting />} />
 
-            <Route path="/jobs" element={<FindJob />} />
-            <Route path="/jobs/:id" element={<JobDetails />} />
-            <Route path="/saved" element={<Saved />} />
-            <Route path="/my-applications" element={<MyApplications />} />
-            <Route path="/apply/:jobId" element={<Apply />} />
+              <Route path="/jobs" element={<FindJob />} />
+              <Route path="/jobs/:id" element={<JobDetails />} />
+              <Route path="/saved" element={<Saved />} />
+              <Route path="/my-applications" element={<MyApplications />} />
+              <Route path="/apply/:jobId" element={<Apply />} />
 
-            <Route path="/resume" element={<Resumes />} />
-            <Route path="/resume/builder/:id" element={<ResumeBuilder />} />
+              <Route path="/resume" element={<Resumes />} />
+              <Route path="/resume/builder/:id" element={<ResumeBuilder />} />
 
-            <Route element={<RecruiterLayout />}>
-              <Route path="/post/job" element={<PostJob />} />
-              <Route path="/post/job/edit/:jobId" element={<EditJobPost />} />
-              <Route path="/job/posts" element={<JobPosts />} />
-              <Route path="/applications" element={<Applications />} />
-              <Route
-                path="/applications/applicants/:jobId"
-                element={<Applicants />}
-              />
-              <Route
-                path="/applications/applicant/:jobPostId/:userId"
-                element={<ApplicantDetail />}
-              />
+              <Route element={<RecruiterLayout />}>
+                <Route path="/post/job" element={<PostJob />} />
+                <Route path="/post/job/edit/:jobId" element={<EditJobPost />} />
+                <Route path="/job/posts" element={<JobPosts />} />
+                <Route path="/applications" element={<Applications />} />
+                <Route
+                  path="/applications/applicants/:jobId"
+                  element={<Applicants />}
+                />
+                <Route
+                  path="/applications/applicant/:jobPostId/:userId"
+                  element={<ApplicantDetail />}
+                />
+              </Route>
             </Route>
-          </Route>
 
-          <Route path="/404" element={<NotFound />} />
-          <Route path="*" element={<Navigate to="/404" replace />} />
-        </Routes>
-      </Suspense>
+            <Route path="/404" element={<NotFound />} />
+            <Route path="*" element={<Navigate to="/404" replace />} />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 }
