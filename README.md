@@ -155,8 +155,7 @@ docker-compose -f docker-compose.prod.yml up --build -d
 - 🎯 Smart job recommendations
 
 ## 🤝 Contributing
-Contributions are welcome!  
-You can add new regex patterns, improve descriptions, or enhance UI/UX.  
+Contributions are welcome!
 1. Fork the repo  
 2. Create a feature branch  
 3. Submit a PR  
