@@ -41,15 +41,15 @@ const JobPost = ({ job, applicants = false }) => {
 
       <div className="flex-1 flex flex-col gap-3">
         <div>
-          <h3 className="text-lg font-bold text-neutral-900 dark:text-white line-clamp-1 group-hover:text-blue-600 transition-colors">
+          <h3 className="text-lg font-bold text-neutral-900 dark:text-white truncate group-hover:text-blue-600 transition-colors">
             {job.title}
           </h3>
           <div className="flex items-center gap-2 mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-            <span className="font-medium text-neutral-700 dark:text-neutral-300">
+            <span className="font-medium text-neutral-700 dark:text-neutral-300 truncate max-w-[60px]">
               {job.company}
             </span>
             <span className="text-neutral-300 dark:text-neutral-700">•</span>
-            <span className="flex items-center gap-1 text-xs">
+            <span className="flex items-center gap-1 text-xs shrink-0">
               <RiTimeLine size={14} />
               {formatDistanceToNow(new Date(job.createdAt), {
                 addSuffix: true,
