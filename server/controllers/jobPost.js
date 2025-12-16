@@ -153,6 +153,9 @@ export const updateJobPost = async (req, res) => {
       "level",
       "department",
       "isActive",
+      "salary",
+      "openings",
+      "employmentType",
     ];
     const filteredData = Object.fromEntries(
       Object.entries(req.body).filter(([key]) => allowedUpdates.includes(key))

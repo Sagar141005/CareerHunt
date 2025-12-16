@@ -114,11 +114,16 @@ const JobCard = ({ job }) => {
     <div className="group relative flex flex-col w-full h-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 hover:shadow-xl hover:shadow-neutral-200/40 dark:hover:shadow-none hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300">
       <div className="flex justify-between items-start mb-4">
         <div className="h-12 w-12 rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-100 dark:border-neutral-700 flex items-center justify-center p-2">
-          <img
-            className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal"
-            src={job.companyLogo || "https://via.placeholder.com/40"}
-            alt={`${job.company} logo`}
-          />
+          {job.companyLogo ? (
+            <img
+              src={job.companyLogo}
+              alt={job.company}
+              className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal"
+              loading="lazy"
+            />
+          ) : (
+            <RiBuilding4Line className="text-neutral-400" size={24} />
+          )}
         </div>
         <button
           disabled={isDisabled}
@@ -136,7 +141,7 @@ const JobCard = ({ job }) => {
 
       <div className="flex-1 flex flex-col gap-3">
         <div>
-          <h3 className="text-lg font-bold text-neutral-900 dark:text-white truncate group-hover:text-blue-600 transition-colors">
+          <h3 className="text-lg font-bold text-neutral-900 dark:text-white truncate max-w-[180px] group-hover:text-blue-600 transition-colors">
             {job.title}
           </h3>
           <div className="flex items-center gap-2 mt-1 text-sm text-neutral-500 dark:text-neutral-400">

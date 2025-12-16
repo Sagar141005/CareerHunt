@@ -41,7 +41,7 @@ const JobPost = ({ job, applicants = false }) => {
 
       <div className="flex-1 flex flex-col gap-3">
         <div>
-          <h3 className="text-lg font-bold text-neutral-900 dark:text-white truncate group-hover:text-blue-600 transition-colors">
+          <h3 className="text-lg font-bold text-neutral-900 dark:text-white truncate max-w-[180px] group-hover:text-blue-600 transition-colors">
             {job.title}
           </h3>
           <div className="flex items-center gap-2 mt-1 text-sm text-neutral-500 dark:text-neutral-400">
